@@ -108,7 +108,7 @@
 2. ```npm install -g @vue/cli``` (installs vue framework globally) or on macOS: ```npm install -g @vue/cli```
 3. Go into your IDE and clone the project.
 4. Open the terminal inside your IDE and type ```cd *project path*``` (sets path location to folder where vue project lies)
-5. ```npm install``` (installs 'node_modules' / vue library)
+5. ```npm install``` (installs 'node_modules' / vue library) or on macOS: ```sudo npm install```
 6. ```npm run serve``` (starts live server for web page) or on macOS: ```sudo npm run serve```
 
 ## Tutorials
