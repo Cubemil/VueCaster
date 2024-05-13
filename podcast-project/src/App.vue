@@ -1,26 +1,37 @@
+// Vue file (component) = HTML (template) + JavaScript (script) + CSS (style)
+
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Background/>
+  <h1>{{ title }}</h1>
+  <SearchBar/>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SearchBar from './components/SearchBar.vue'
+import Background from './components/Background.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components: {Background, SearchBar},
+  data() {
+    return {
+      title: 'Vue Podcast App'
+    }
   }
 }
 </script>
 
+
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  /*color: #2c3e50;*/
+  color: #fdfdfd;
   margin-top: 60px;
 }
 </style>
+
