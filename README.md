@@ -1,5 +1,10 @@
 # WMP-SoSe2024
 
+# Teilnehmer
+Clemens Abraham
+Felix Gahler
+Emil Petersen
+
 ## Aufgabe/Idee:
 - Weboberfläche mit Api anbindung zu fyyd.de
 - Anforderungen sollen wir selber ausdenken/erstellen.
