@@ -1,7 +1,7 @@
 <template>
   <div class="searchbar">
-    <img src="../assets/search_icon.png" height="18" class="search_icon"/>
-    <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="40"
+    <img src="../assets/search_icon.png" height="16" class="search_icon"/>
+    <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="34"
            ref="inputField" @input="inputNotEmpty">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
@@ -42,7 +42,7 @@ export default {
   padding-left: 38px;
   padding-right: 38px;
   background-image: url('../assets/search_icon.png'); /* URL of your icon image */
-  background-size: 16px; /* Adjust the size of the icon */
+  background-size: 15px; /* Adjust the size of the icon */
   background-position: 14px 50%; /* Adjust the position of the icon */
   background-repeat: no-repeat;
 }
@@ -53,7 +53,7 @@ export default {
 
 .searchbar_input:focus {
   background-image: url('../assets/hovered_search_icon.png'); /* URL of your icon image */
-  background-size: 16px; /* Adjust the size of the icon */
+  background-size: 15px; /* Adjust the size of the icon */
   background-position: 14px 50%; /* Adjust the position of the icon */
   background-repeat: no-repeat;
 }
@@ -62,7 +62,7 @@ export default {
   border: 1px solid #434343;
   background: #292929;
   background-image: url('../assets/hovered_search_icon.png'); /* URL of your icon image */
-  background-size: 16px; /* Adjust the size of the icon */
+  background-size: 15px; /* Adjust the size of the icon */
   background-position: 14px 50%; /* Adjust the position of the icon */
   background-repeat: no-repeat;
 }
