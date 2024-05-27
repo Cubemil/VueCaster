@@ -8,41 +8,41 @@
 </template>
 
 <script>
-// axios => library for making HTTP requests (installed via npm)
-import axios from 'axios'
-
-// api url (version 2.0 important!)
-const API_URL = 'https://api.fyyd.de/0.2'
-/* find a pdocast inside fyyd's db:
-GET /search/podcast/?title=talkohnegast HTTP/1.1
-Host: api.fyyd.de/0.2 */
+import axios from 'axios';
 
 export default {
   methods: {
     inputNotEmpty(event) {
       if (event.target.value.trim() !== '') {
-        this.$refs.deleteIcon.style.visibility = 'visible';
+        this.$refs.deleteIcon.style.visibility = 'visible'
       } else {
-        this.$refs.deleteIcon.style.visibility = 'hidden';
+        this.$refs.deleteIcon.style.visibility = 'hidden'
       }
     },
     clearInput() {
-      this.$refs.deleteIcon.style.visibility = 'hidden';
-      this.$refs.inputField.value = '';
+      this.$refs.deleteIcon.style.visibility = 'hidden'
+      this.$refs.inputField.value = ''
     },
     async onEnterPress() {
-      const query = this.$refs.inputField.value.trim()
-      if (query !== ''){
-        try {
-          const response = await axios.get('https://api.fyyd.de/0.2/search/podcast', { params: { title: query } })
-        console.log('Search results:', response.data)
-        } catch (err) {
-        console.log('Error searching for podcast: query', err)
-        }
+  const query = this.$refs.inputField.value.trim();
+  if (query !== '') {
+    try {
+      const response = await axios.get(`https://api.fyyd.de/0.2/search/podcast`, {
+        params: { title: query }
+      });
+      const podcast = response.data[0];
+      if (podcast) {
+        console.log('Navigating to PodcastDetails with id:', podcast.id); // Debugging line
+        this.$router.push({ name: 'PodcastDetails', params: { id: podcast.id } });
+      } else {
+        console.error('Podcast not found');
       }
+    } catch (error) {
+      console.error('Error searching for podcast:', error);
     }
   }
-
+  }
+}
 }
 </script>
 
@@ -103,4 +103,3 @@ export default {
   visibility: hidden;
 }
 </style>
-
