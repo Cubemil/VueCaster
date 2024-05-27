@@ -1,10 +1,12 @@
 // Vue file (component) = HTML (template) + JavaScript (script) + CSS (style)
 
 <template>
-  <Background/>
-  <h1>{{ title }}</h1>
-  <SearchBar/>
-  <Categories/>
+  <div id="app">
+    <Background/>
+    <h1>{{ title }}</h1>
+    <SearchBar/>
+    <Categories/>
+  </div>
 </template>
 
 <script>

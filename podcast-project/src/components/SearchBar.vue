@@ -2,12 +2,21 @@
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
     <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="34"
-           ref="inputField" @input="inputNotEmpty">
+           ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
 </template>
 
 <script>
+// axios => library for making HTTP requests (installed via npm)
+import axios from 'axios'
+
+// api url (version 2.0 important!)
+const API_URL = 'https://api.fyyd.de/0.2'
+/* find a pdocast inside fyyd's db:
+GET /search/podcast/?title=talkohnegast HTTP/1.1
+Host: api.fyyd.de/0.2 */
+
 export default {
   methods: {
     inputNotEmpty(event) {
@@ -20,8 +29,20 @@ export default {
     clearInput() {
       this.$refs.deleteIcon.style.visibility = 'hidden';
       this.$refs.inputField.value = '';
+    },
+    async onEnterPress() {
+      const query = this.$refs.inputField.value.trim()
+      if (query !== ''){
+        try {
+          const response = await axios.get('https://api.fyyd.de/0.2/search/podcast', { params: { title: query } })
+        console.log('Search results:', response.data)
+        } catch (err) {
+        console.log('Error searching for podcast: query', err)
+        }
+      }
     }
   }
+
 }
 </script>
 
