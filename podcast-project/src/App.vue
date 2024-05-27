@@ -4,16 +4,17 @@
   <Background/>
   <h1>{{ title }}</h1>
   <SearchBar/>
-
+  <Categories/>
 </template>
 
 <script>
-import SearchBar from './components/SearchBar.vue'
 import Background from './components/Background.vue'
+import SearchBar from './components/SearchBar.vue'
+import Categories from './components/Categories.vue'
 
 export default {
   name: 'App',
-  components: {Background, SearchBar},
+  components: {Background, SearchBar, Categories},
   data() {
     return {
       title: 'Vue Podcast App'
@@ -25,7 +26,7 @@ export default {
 
 <style>
 #app {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

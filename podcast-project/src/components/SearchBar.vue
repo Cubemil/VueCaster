@@ -1,6 +1,6 @@
 <template>
   <div class="searchbar">
-    <img src="../assets/search_icon.png" height="16" class="search_icon"/>
+    <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
     <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="34"
            ref="inputField" @input="inputNotEmpty">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
@@ -45,6 +45,7 @@ export default {
   background-size: 15px; /* Adjust the size of the icon */
   background-position: 14px 50%; /* Adjust the position of the icon */
   background-repeat: no-repeat;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .searchbar_input::placeholder {
@@ -67,7 +68,7 @@ export default {
   background-repeat: no-repeat;
 }
 
-.search_icon {
+.placeholder_icon_left {
   position: relative;
   top: 16px;
   left: 30px;
