@@ -4,17 +4,15 @@
   <Background/>
   <h1>{{ title }}</h1>
   <SearchBar/>
-  <Categories/>
 </template>
 
 <script>
-import Background from './components/Background.vue'
-import SearchBar from './components/SearchBar.vue'
-import Categories from './components/Categories.vue'
+import Background from '/src/components/Background.vue'
+import SearchBar from '/src/components/SearchBar.vue'
 
 export default {
   name: 'App',
-  components: {Background, SearchBar, Categories},
+  components: {Background, SearchBar},
   data() {
     return {
       title: 'Vue Podcast App'

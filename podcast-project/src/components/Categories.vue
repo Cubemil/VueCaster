@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="title">Categories</div>
+    <div class="categoriesTitle">Categories</div>
     <div class="cards_container">
       <div class="card" style="background: rgb(13, 114, 235)"><h2>Podcast-Charts</h2></div>
       <div class="card" style="background: rgb(141,102,171)"><h2>Podcast New Releases</h2></div>
@@ -12,7 +12,7 @@
 </template>
 
 <style>
-.title {
+.categoriesTitle {
   color: #fbfbfb;
   text-align: start;
   font-weight: bold;
@@ -33,11 +33,11 @@
   background: rgb(18, 18, 18);
   width: fit-content;
   margin: auto;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .card {
-  border-radius: 10px;
+  border-radius: 8px;
   width: 150px;
   height: 150px;
   margin: 10px;
@@ -48,17 +48,6 @@
   margin-right: 14px;
   text-align: left;
   font-size: 20px;
-  //font-weight: bold;
 }
-
 </style>
 
-<script>
-
-import {defineComponent} from "vue";
-import Categories from "@/App.vue";
-
-export default defineComponent({
-  components: {Categories}
-})
-</script>

@@ -2,27 +2,49 @@
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
     <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="34"
-           ref="inputField" @input="inputNotEmpty" @keydown.enter="getPodcast">
+           ref="inputField" @input="inputNotEmpty" @keydown.enter="getPodcastData">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
+  <Categories v-show="showCategories"/>
+  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle" v-bind:url="url" v-bind:podcastAuthors="podcastAuthors"/>
 </template>
 
 <script>
+import Categories from '/src/components/Categories.vue'
+import PodcastDetails from '/src/components/PodcastDetails.vue'
+
 export default {
+  name: 'SearchBar',
+  components: {Categories, PodcastDetails},
+  data() {
+    return {
+      showCategories: true,
+      showPodcastDetails: false,
+      url: '',
+      podcastTitle: 'Podcast Title',
+      podcastAuthors: 'Podcasts Authors'
+    }
+  },
   methods: {
     inputNotEmpty(event) {
       if (event.target.value.trim() !== '') {
         this.$refs.deleteIcon.style.visibility = 'visible'
+        this.showCategories = false;
+        this.showPodcastDetails = true;
       } else {
         this.$refs.deleteIcon.style.visibility = 'hidden'
+        this.showCategories = true;
+        this.showPodcastDetails = false;
       }
     },
     clearInput() {
       this.$refs.deleteIcon.style.visibility = 'hidden'
       this.$refs.inputField.value = ''
+      this.showCategories = true;
+      this.showPodcastDetails = false;
     },
-    async getPodcast() {
-      if(this.$refs.inputField.value !== '') {
+    async getPodcastData() {
+      if (this.$refs.inputField.value !== '') {
         const podcastName = this.$refs.inputField.value.trim().toLowerCase();
         let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
         url.searchParams.append('title', podcastName);
@@ -31,6 +53,12 @@ export default {
         console.log('Status Text:', response.statusText);
         const body = await response.json();
         console.log(body);
+        // clarifying data you want to show from the podcast
+        this.podcastTitle = body.data[0].title;
+        this.url = body.data[0].layoutImageURL;
+        this.podcastAuthors = body.data[0].author;
+        // showing podcast details when pressing enter to search
+
       }
     }
   }
