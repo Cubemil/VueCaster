@@ -50,6 +50,7 @@ export default {
 .searchbar {
   display: flex;
   justify-content: center;
+  padding-top: 10px;
 }
 
 .searchbar_input {
