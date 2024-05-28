@@ -3,9 +3,9 @@
     <div class="title">Categories</div>
     <div class="cards_container">
       <div class="card" style="background: rgb(13, 114, 235)"><h2>Podcast-Charts</h2></div>
-      <div class="card" style="background: rgb(141,102,171)"><h2>Neue Podcasts</h2></div>
+      <div class="card" style="background: rgb(141,102,171)"><h2>Podcast New Releases</h2></div>
       <div class="card" style="background: rgb(232,20,41)"><h2>Video-Podcasts</h2></div>
-      <div class="card" style="background: rgb(39,132,106)"><h2>Nachrichten & Politik</h2></div>
+      <div class="card" style="background: rgb(39,132,106)"><h2>News & Politics</h2></div>
       <div class="card" style="background: rgb(224,51,0)"><h2>True Crime</h2></div>
     </div>
   </div>
@@ -24,7 +24,7 @@
   background: #121212;
   width: fit-content;
   margin: auto;
-  padding: 20px;
+  padding: 22px;
 }
 
 .cards_container {
@@ -38,16 +38,16 @@
 
 .card {
   border-radius: 10px;
-  width: 160px;
-  height: 160px;
+  width: 150px;
+  height: 150px;
   margin: 10px;
 }
 
 .card h2 {
-  margin: 15px;
-  padding-right: 50px;
+  margin-left: 18px;
+  margin-right: 18px;
   text-align: left;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 </style>

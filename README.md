@@ -7,7 +7,7 @@
 
 ## Aufgabe/Idee:
 - Weboberfläche mit Api anbindung zu fyyd.de
-- Anforderungen sollen wir selber ausdenken/erstellen.
+- Anforderungen sollen wir selber ausdenken/erstellen. 
 - Vorstellung + CodeReview im Praktikum
 
 ## Tools:
