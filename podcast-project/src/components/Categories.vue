@@ -44,10 +44,11 @@
 }
 
 .card h2 {
-  margin-left: 18px;
-  margin-right: 18px;
+  margin-left: 14px;
+  margin-right: 14px;
   text-align: left;
   font-size: 20px;
+  //font-weight: bold;
 }
 
 </style>

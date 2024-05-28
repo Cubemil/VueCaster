@@ -2,14 +2,12 @@
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
     <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="34"
-           ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress">
+           ref="inputField" @input="inputNotEmpty" @keydown.enter="getPodcast">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   methods: {
     inputNotEmpty(event) {
@@ -23,26 +21,19 @@ export default {
       this.$refs.deleteIcon.style.visibility = 'hidden'
       this.$refs.inputField.value = ''
     },
-    async onEnterPress() {
-  const query = this.$refs.inputField.value.trim();
-  if (query !== '') {
-    try {
-      const response = await axios.get(`https://api.fyyd.de/0.2/search/podcast`, {
-        params: { title: query }
-      });
-      const podcast = response.data[0];
-      if (podcast) {
-        console.log('Navigating to PodcastDetails with id:', podcast.id); // Debugging line
-        this.$router.push({ name: 'PodcastDetails', params: { id: podcast.id } });
-      } else {
-        console.error('Podcast not found');
+    async getPodcast() {
+      if(this.$refs.inputField.value !== '') {
+        const podcastName = this.$refs.inputField.value.trim().toLowerCase();
+        let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
+        url.searchParams.append('title', podcastName);
+        const response = await fetch(url);
+        console.log('Status:', response.status);
+        console.log('Status Text:', response.statusText);
+        const body = await response.json();
+        console.log(body);
       }
-    } catch (error) {
-      console.error('Error searching for podcast:', error);
     }
   }
-  }
-}
 }
 </script>
 
