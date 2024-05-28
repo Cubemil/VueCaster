@@ -3,7 +3,7 @@
     <div class="containerTitle">Top result</div>
     <div class="podcastCards">
       <div class="podcastCard">
-        <img :src="url" alt="Podcast Image" id="podcastImage"/>
+        <img :src="url" id="podcastImage"/>
         <div id="podcastTitle">{{ podcastTitle }}</div>
         <div id="podcastAuthors">{{ podcastAuthors }}</div>
       </div>

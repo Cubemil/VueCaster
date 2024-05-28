@@ -21,8 +21,8 @@ export default {
       showCategories: true,
       showPodcastDetails: false,
       url: '',
-      podcastTitle: 'Podcast Title',
-      podcastAuthors: 'Podcasts Authors'
+      podcastTitle: '',
+      podcastAuthors: ''
     }
   },
   methods: {
