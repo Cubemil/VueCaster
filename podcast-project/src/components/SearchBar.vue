@@ -1,8 +1,8 @@
 <template>
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
-    <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="34"
-           ref="inputField" @input="handleInput">
+    <input class="searchbar_input" type="text" placeholder="What do you want to play?" size="34"
+           ref="inputField" @input="handleInput" @keydown.enter="onEnterPress" @click="onClick">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
   <Categories v-show="showCategories"/>
@@ -39,33 +39,47 @@ export default {
       }
     },
     clearInput() {
-      this.$refs.deleteIcon.style.visibility = 'hidden'
-      this.$refs.inputField.value = ''
+      this.$refs.deleteIcon.style.visibility = 'hidden';
+      this.$refs.inputField.value = '';
       this.showCategories = true;
       this.showPodcastDetails = false;
     },
     async getPodcastData() {
-      if (this.$refs.inputField.value !== '') {
-        const podcastName = this.$refs.inputField.value.trim().toLowerCase();
-        let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
-        url.searchParams.append('title', podcastName);
-        const response = await fetch(url);
-        console.log('Status:', response.status);
-        console.log('Status Text:', response.statusText);
-        const body = await response.json();
-        console.log(body);
-        console.log(body.data[0].title);
-        // clarifying data you want to show from the podcast
-        this.podcastTitle = body.data[0].title;
-        this.url = body.data[0].layoutImageURL;
-        this.podcastAuthors = body.data[0].author;
-        // showing podcast details when pressing enter to search
+      try {
+        if (this.$refs.inputField.value !== '') {
+          const podcastName = this.$refs.inputField.value.trim().toLowerCase();
+          let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
+          url.searchParams.append('title', podcastName);
+          const response = await fetch(url);
+          console.log('Status:', response.status);
+          console.log('Status Text:', response.statusText);
+          const body = await response.json();
+          console.log(body);
+          console.log(body.data[0].title);
+          // clarifying data you want to show from the podcast
+          this.podcastTitle = body.data[0].title;
+          this.url = body.data[0].layoutImageURL;
+          this.podcastAuthors = body.data[0].author;
+          // showing podcast details when pressing enter to search
+        }
+      } catch (err) {
+        console.log('Error searching for podcast: query', err)
       }
-    },
+    }
+    ,
     handleInput() {
       this.inputNotEmpty();
       this.getPodcastData();
     },
+    onEnterPress() {
+      if (this.$refs.inputField.value !== '') {
+        this.$refs.inputField.style.outlineWidth = '0px';
+        this.getPodcastData();
+      }
+    },
+    onClick() {
+      this.$refs.inputField.style.outlineWidth = '1px';
+    }
   }
 }
 </script>
