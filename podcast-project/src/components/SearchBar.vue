@@ -2,11 +2,12 @@
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
     <input class="searchbar_input" type="text" placeholder="Which podcast do you want to play?" size="34"
-           ref="inputField" @input="inputNotEmpty" @keydown.enter="getPodcastData">
+           ref="inputField" @input="handleInput">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
   <Categories v-show="showCategories"/>
-  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle" v-bind:url="url" v-bind:podcastAuthors="podcastAuthors"/>
+  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle" v-bind:url="url"
+                  v-bind:podcastAuthors="podcastAuthors"/>
 </template>
 
 <script>
@@ -26,13 +27,13 @@ export default {
     }
   },
   methods: {
-    inputNotEmpty(event) {
-      if (event.target.value.trim() !== '') {
-        this.$refs.deleteIcon.style.visibility = 'visible'
+    inputNotEmpty() {
+      if (this.$refs.inputField.value !== '') {
+        this.$refs.deleteIcon.style.visibility = 'visible';
         this.showCategories = false;
         this.showPodcastDetails = true;
       } else {
-        this.$refs.deleteIcon.style.visibility = 'hidden'
+        this.$refs.deleteIcon.style.visibility = 'hidden';
         this.showCategories = true;
         this.showPodcastDetails = false;
       }
@@ -53,14 +54,18 @@ export default {
         console.log('Status Text:', response.statusText);
         const body = await response.json();
         console.log(body);
+        console.log(body.data[0].title);
         // clarifying data you want to show from the podcast
         this.podcastTitle = body.data[0].title;
         this.url = body.data[0].layoutImageURL;
         this.podcastAuthors = body.data[0].author;
         // showing podcast details when pressing enter to search
-
       }
-    }
+    },
+    handleInput() {
+      this.inputNotEmpty();
+      this.getPodcastData();
+    },
   }
 }
 </script>
