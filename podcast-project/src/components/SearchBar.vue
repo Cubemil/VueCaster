@@ -1,22 +1,23 @@
 <template>
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
-    <input class="searchbar_input" type="text" placeholder="What do you want to play?" size="34"
+    <input class="searchbar_input" type="text" placeholder="What do you want to play?" size="40"
            ref="inputField" @input="handleInput" @keydown.enter="onEnterPress" @click="onClick">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
   <Categories v-show="showCategories"/>
-  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle" v-bind:url="url"
-                  v-bind:podcastAuthors="podcastAuthors"/>
+  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle" v-bind:url="url" v-bind:podcastAuthors="podcastAuthors"/>
+  <Player/>
 </template>
 
 <script>
 import Categories from '/src/components/Categories.vue'
 import PodcastDetails from '/src/components/PodcastDetails.vue'
+import Player from '/src/components/Player.vue'
 
 export default {
   name: 'SearchBar',
-  components: {Categories, PodcastDetails},
+  components: {Categories, PodcastDetails, Player},
   data() {
     return {
       showCategories: true,
@@ -60,7 +61,6 @@ export default {
           this.podcastTitle = body.data[0].title;
           this.url = body.data[0].layoutImageURL;
           this.podcastAuthors = body.data[0].author;
-          // showing podcast details when pressing enter to search
         }
       } catch (err) {
         console.log('Podcast could not be found.', err);
@@ -74,6 +74,7 @@ export default {
     onEnterPress() {
       if (this.$refs.inputField.value !== '') {
         this.$refs.inputField.style.outlineWidth = '0px';
+        this.$refs.inputField.blur();
         this.getPodcastData();
       }
     },
