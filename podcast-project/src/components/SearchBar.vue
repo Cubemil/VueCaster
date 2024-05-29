@@ -63,7 +63,7 @@ export default {
           // showing podcast details when pressing enter to search
         }
       } catch (err) {
-        console.log('Error searching for podcast: query', err)
+        console.log('Podcast could not be found.', err);
       }
     }
     ,
