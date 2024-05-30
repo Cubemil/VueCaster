@@ -2,26 +2,27 @@
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
     <input class="searchbar_input" type="text" placeholder="What do you want to play?" size="40"
-           ref="inputField" @input="handleInput" @keydown.enter="onEnterPress" @click="onClick">
+           ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress" @click="onClick">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
   <Categories v-show="showCategories"/>
-  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle" v-bind:url="url" v-bind:podcastAuthors="podcastAuthors"/>
-  <Player/>
+  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle"
+                  v-bind:url="url"
+                  v-bind:podcastAuthors="podcastAuthors" ref="podcastDetails"/>
 </template>
 
 <script>
 import Categories from '/src/components/Categories.vue'
-import PodcastDetails from '/src/components/PodcastDetails.vue'
-import Player from '/src/components/Player.vue'
+import PodcastDetails from '/src/components/PodcastElement.vue'
 
 export default {
   name: 'SearchBar',
-  components: {Categories, PodcastDetails, Player},
+  components: {Categories, PodcastDetails},
   data() {
     return {
       showCategories: true,
       showPodcastDetails: false,
+      showPodcastDetailsContainer: true,
       url: '',
       podcastTitle: '',
       podcastAuthors: ''
@@ -44,6 +45,9 @@ export default {
       this.$refs.inputField.value = '';
       this.showCategories = true;
       this.showPodcastDetails = false;
+      this.url = '';
+      this.podcastTitle = '';
+      this.podcastAuthors = '';
     },
     async getPodcastData() {
       try {
@@ -67,10 +71,6 @@ export default {
       }
     }
     ,
-    handleInput() {
-      this.inputNotEmpty();
-      this.getPodcastData();
-    },
     onEnterPress() {
       if (this.$refs.inputField.value !== '') {
         this.$refs.inputField.style.outlineWidth = '0px';
