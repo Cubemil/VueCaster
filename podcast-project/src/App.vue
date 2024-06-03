@@ -1,23 +1,15 @@
 // Vue file (component) = HTML (template) + JavaScript (script) + CSS (style)
 
 <template>
-  <Background/>
-  <h1>{{ title }}</h1>
-  <SearchBar/>
+  <Homepage/>
 </template>
 
 <script>
-import Background from '/src/components/Background.vue'
-import SearchBar from '/src/components/SearchBar.vue'
+import Homepage from "/src/components/Homepage.vue";
 
 export default {
   name: 'App',
-  components: {Background, SearchBar},
-  data() {
-    return {
-      title: 'Vue Podcast App'
-    }
-  }
+  components: {Homepage}
 }
 </script>
 
