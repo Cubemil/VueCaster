@@ -2,7 +2,7 @@
   <div class="podcastContainer">
     <div class="containerTitle"></div>
     <div class="podcastCards">
-      <div class="podcastCard">
+      <div class="podcastCard" @click="sendPodcastId">
         <div class="podcastImageContainer">
           <img :src="image" class="podcastImage" v-if="image"/>
         </div>
@@ -22,7 +22,12 @@
 <script>
 export default {
   name: 'PodcastElement',
-  props: ['image', 'podcastTitle', 'podcastAuthor'] // receive podcast data
+  props: ['image', 'podcastTitle', 'podcastAuthor', 'podcastId'], 
+  methods: {
+    sendPodcastId() {
+      this.$router.push({ name: 'PodcastView', params: { podcastId: this.podcastId } });
+    }
+  }
 }
 </script>
 

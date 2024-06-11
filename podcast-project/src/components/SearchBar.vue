@@ -42,6 +42,7 @@ export default {
           const response = await fetch(url);
           const body = await response.json();
           const podcasts = body.data.map(podcast => ({
+            id: podcast.id,
             title: podcast.title,
             author: podcast.author,
             image: podcast.layoutImageURL,

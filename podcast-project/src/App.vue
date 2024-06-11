@@ -26,7 +26,7 @@ export default {
   text-align: center;
   /*color: #2c3e50;*/
   color: #fdfdfd;
-  margin-top: 5%;
+  margin-top: 15%;
 }
 </style>
 
