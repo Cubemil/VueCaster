@@ -1,5 +1,7 @@
 <template>
-  <audio controls muted>
-    <source src="" type="audio/mpeg">
-  </audio>
+  <div class="container">
+    <audio controls muted>
+      <source src="" type="audio/mpeg">
+    </audio>
+  </div>
 </template>

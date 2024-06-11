@@ -1,53 +1,37 @@
 <template>
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
-    <input class="searchbar_input" type="text" placeholder="What do you want to play?" size="40"
-           ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress" @click="onClick">
+    <input  class="searchbar_input" type="text" placeholder="What do you want to play?" size="40"
+            ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress" @click="onClick">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
-  <Categories v-show="showCategories"/>
-  <PodcastDetails v-show="showPodcastDetails" v-bind:podcastTitle="podcastTitle"
-                  v-bind:url="url"
-                  v-bind:podcastAuthors="podcastAuthors" ref="podcastDetails"/>
 </template>
 
 <script>
-import Categories from '/src/components/Categories.vue'
-import PodcastDetails from '/src/components/PodcastElement.vue'
-
 export default {
   name: 'SearchBar',
-  components: {Categories, PodcastDetails},
   data() {
-    return {
-      showCategories: true,
-      showPodcastDetails: false,
-      showPodcastDetailsContainer: true,
-      url: '',
-      podcastTitle: '',
-      podcastAuthors: ''
-    }
+    return {}
   },
   methods: {
     inputNotEmpty() {
       if (this.$refs.inputField.value !== '') {
         this.$refs.deleteIcon.style.visibility = 'visible';
-        this.showCategories = false;
-        this.showPodcastDetails = true;
       } else {
         this.$refs.deleteIcon.style.visibility = 'hidden';
-        this.showCategories = true;
-        this.showPodcastDetails = false;
       }
     },
     clearInput() {
-      this.$refs.deleteIcon.style.visibility = 'hidden';
       this.$refs.inputField.value = '';
-      this.showCategories = true;
-      this.showPodcastDetails = false;
-      this.url = '';
-      this.podcastTitle = '';
-      this.podcastAuthors = '';
+      this.$refs.deleteIcon.style.visibility = 'hidden';
+      this.$emit('clear-search');  // Emit an event to clear the search results in the parent component
+    },
+    async onEnterPress() {
+      if (this.$refs.inputField.value !== '') {
+        this.$refs.inputField.style.outlineWidth = '0px';
+        this.$refs.inputField.blur();
+        await this.getPodcastData();
+      }
     },
     async getPodcastData() {
       try {
@@ -56,36 +40,24 @@ export default {
           let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
           url.searchParams.append('title', podcastName);
           const response = await fetch(url);
-          console.log('Status:', response.status);
-          console.log('Status Text:', response.statusText);
           const body = await response.json();
-          console.log(body);
-          console.log(body.data[0].title);
-          // clarifying data you want to show from the podcast
-          this.podcastTitle = body.data[0].title;
-          this.url = body.data[0].layoutImageURL;
-          this.podcastAuthors = body.data[0].author;
+          const podcasts = body.data.map(podcast => ({
+            title: podcast.title,
+            authors: podcast.authors,
+            image: podcast.layoutImageURL,
+            url: podcast.url
+          }));
+          this.$emit('search-performed', podcasts);  // emits the search results to the parent component
         }
       } catch (err) {
-        console.log('Podcast could not be found.', err);
-      }
-    }
-    ,
-    onEnterPress() {
-      if (this.$refs.inputField.value !== '') {
-        this.$refs.inputField.style.outlineWidth = '0px';
-        this.$refs.inputField.blur();
-        this.getPodcastData();
+        console.error('Podcast could not be found.', err);
       }
     },
-    onClick() {
-      this.$refs.inputField.style.outlineWidth = '1px';
-    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .searchbar {
   display: flex;
   justify-content: center;
@@ -102,9 +74,9 @@ export default {
   font-size: 14px;
   padding-left: 38px;
   padding-right: 38px;
-  background-image: url('../assets/search_icon.png'); /* URL of your icon image */
-  background-size: 15px; /* Adjust the size of the icon */
-  background-position: 14px 50%; /* Adjust the position of the icon */
+  background-image: url('../assets/search_icon.png'); /* icon image */
+  background-size: 15px; /* icon size */
+  background-position: 14px 50%; /* icon position */
   background-repeat: no-repeat;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -114,18 +86,18 @@ export default {
 }
 
 .searchbar_input:focus {
-  background-image: url('../assets/hovered_search_icon.png'); /* URL of your icon image */
-  background-size: 15px; /* Adjust the size of the icon */
-  background-position: 14px 50%; /* Adjust the position of the icon */
+  background-image: url('../assets/hovered_search_icon.png'); /* icon image */
+  background-size: 15px; /* icon size */
+  background-position: 14px 50%; /* icon position */
   background-repeat: no-repeat;
 }
 
 .searchbar_input:hover {
   border: 1px solid #434343;
   background: #292929;
-  background-image: url('../assets/hovered_search_icon.png'); /* URL of your icon image */
-  background-size: 15px; /* Adjust the size of the icon */
-  background-position: 14px 50%; /* Adjust the position of the icon */
+  background-image: url('../assets/hovered_search_icon.png'); /* icon image */
+  background-size: 15px; /* icon size */
+  background-position: 14px 50%; /* icon position */
   background-repeat: no-repeat;
 }
 
@@ -140,6 +112,6 @@ export default {
   position: relative;
   top: 16px;
   right: 30px;
-  visibility: hidden;
+  visibility: visible;
 }
 </style>

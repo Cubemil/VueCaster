@@ -1,10 +1,10 @@
 <template>
   <div class="podcastContainer">
-    <div class="containerTitle">Top result</div>
+    <div class="containerTitle"></div>
     <div class="podcastCards">
       <div class="podcastCard">
         <div class="podcastImageContainer">
-          <img :src="url" class="podcastImage" v-if="url"/>
+          <img :src="image" class="podcastImage" v-if="image"/>
         </div>
         <div class="podcastTitle">
           <template v-if="podcastTitle">{{ podcastTitle }}</template>
@@ -21,8 +21,8 @@
 
 <script>
 export default {
-  name: 'PodcastDetails',
-  props: ['url', 'podcastTitle', 'podcastAuthors'] // receive podcast data
+  name: 'PodcastElement',
+  props: ['image', 'podcastTitle', 'podcastAuthors'] // receive podcast data
 }
 </script>
 
