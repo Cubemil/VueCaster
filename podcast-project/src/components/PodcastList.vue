@@ -58,7 +58,7 @@ export default {
 }
 
 .pagination_button {
-    background-size: containererer;
+    background-size: contain; /*note to self: bitte nicht nochmal denken, dass das ein Tippfehler ist (versteckt die Buttons sonst) */
     background-repeat: no-repeat;
     border: none;
     width: 30px; 
