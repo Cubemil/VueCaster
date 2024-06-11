@@ -1,7 +1,7 @@
 <template>
     <div class="contain">
         <div v-if="visiblePodcasts.length > 0" class="podcast-list">
-            <PodcastElement v-for="(podcast, index) in visiblePodcasts" :key="index" :podcastTitle="podcast.title" :podcastAuthors="podcast.authors" :image="podcast.image"/>
+            <PodcastElement v-for="(podcast, index) in visiblePodcasts" :key="index" :podcast="podcast" :image="podcast.image" :podcastTitle="podcast.title" :podcastAuthor="podcast.author"/>
         </div>
         <div class="pagination">
             <div v-if="podcasts.length > currentPage * 10 && currentPage > 0" @click="previousPage" class="pagination_button" id="previous_button"></div>
@@ -46,13 +46,15 @@ export default {
 .podcast-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 .pagination {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin-top: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .pagination_button {

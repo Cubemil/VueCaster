@@ -10,9 +10,9 @@
           <template v-if="podcastTitle">{{ podcastTitle }}</template>
           <div class="skeleton-title" v-else></div>
         </div>
-        <div class="podcastAuthors">
-          <template v-if="podcastAuthors">{{ podcastAuthors }}</template>
-          <div class="skeleton-authors" v-else></div>
+        <div class="podcastAuthor">
+          <template v-if="podcastAuthor">{{ podcastAuthor }}</template>
+          <div class="skeleton-author" v-else></div>
         </div>
       </div>
     </div>
@@ -22,7 +22,7 @@
 <script>
 export default {
   name: 'PodcastElement',
-  props: ['image', 'podcastTitle', 'podcastAuthors'] // receive podcast data
+  props: ['image', 'podcastTitle', 'podcastAuthor'] // receive podcast data
 }
 </script>
 
@@ -84,7 +84,7 @@ export default {
   border-radius: 6px;
 }
 
-.podcastAuthors {
+.podcastAuthor {
   color: #A7A7A7;
   font-size: 14px;
   position: relative;
@@ -109,7 +109,7 @@ export default {
   top: 20px;
 }
 
-.skeleton-authors {
+.skeleton-author {
   height: 14px;
   background: #242424;
   animation: skeleton-loading 1s linear infinite alternate;

@@ -43,7 +43,7 @@ export default {
           const body = await response.json();
           const podcasts = body.data.map(podcast => ({
             title: podcast.title,
-            authors: podcast.authors,
+            author: podcast.author,
             image: podcast.layoutImageURL,
             url: podcast.url
           }));
