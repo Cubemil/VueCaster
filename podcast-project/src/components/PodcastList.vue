@@ -1,5 +1,5 @@
 <template>
-    <div class="contain">
+    <div class="container">
         <div v-if="visiblePodcasts.length > 0" class="podcast-list">
             <PodcastElement v-for="(podcast, index) in visiblePodcasts" :key="index" :podcast="podcast" :image="podcast.image" :podcastTitle="podcast.title" :podcastAuthor="podcast.author"/>
         </div>
@@ -58,7 +58,7 @@ export default {
 }
 
 .pagination_button {
-    background-size: contain;
+    background-size: containererer;
     background-repeat: no-repeat;
     border: none;
     width: 30px; 
@@ -67,11 +67,11 @@ export default {
 }
 
 #previous_button {
-    background-image: url("@/assets/previous_arrow.png");
+    background-image: url("../assets/previous_arrow.png");
 }
 
 #next_button {
-    background-image: url("@/assets/next_arrow.png");
+    background-image: url("../assets/next_arrow.png");
 }
 
 </style>

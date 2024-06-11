@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Homepage from '@/components/Homepage.vue';
-import Categories from '@/components/Categories.vue';
+import SearchView from '@/views/SearchView.vue';
+import CategoryView from '@/views/CategoryView.vue';
 
 const routes = [
     {
-        path: '/',
-        name: 'Homepage',
-        component: Homepage
+        path: '/searchview',
+        name: 'SearchView',
+        component: SearchView
     },
     {
-        path: '/categories',
-        name: 'Categories',
-        component: Categories
+        path: '/categoryview',
+        name: 'CategoryView',
+        component: CategoryView
     },
 ];
 

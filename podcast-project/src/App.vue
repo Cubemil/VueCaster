@@ -1,18 +1,22 @@
 // Vue file (component) = HTML (template) + JavaScript (script) + CSS (style)
 
 <template>
-  <Homepage/>
+  <div class="app">
+    <Navbar/>
+    <Background/>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import Homepage from "/src/components/Homepage.vue";
+import Navbar from './components/Navbar.vue';
+import Background from './components/Background.vue';
 
 export default {
   name: 'App',
-  components: {Homepage}
+  components: {Navbar, Background}
 }
 </script>
-
 
 <style>
 #app {
@@ -22,7 +26,7 @@ export default {
   text-align: center;
   /*color: #2c3e50;*/
   color: #fdfdfd;
-  margin-top: 60px;
+  margin-top: 5%;
 }
 </style>
 

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <Background/>
     <h1>{{ title }}</h1>
     <SearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     <PodcastList :podcasts="podcasts"/>
@@ -8,13 +7,12 @@
 </template>
 
 <script>
-import Background from './Background.vue'
-import SearchBar from './SearchBar.vue'
-import PodcastList from './PodcastList.vue';
+import SearchBar from '../components/SearchBar.vue'
+import PodcastList from '../components/PodcastList.vue';
 
 export default {
-  name: 'Homepage',
-  components: {Background, SearchBar, PodcastList},
+  name: 'SearchView',
+  components: {SearchBar, PodcastList},
   data() {
     return {
       title: 'VueCaster Pro',
@@ -33,5 +31,13 @@ export default {
 </script>
 
 <style>
-
+.navbar {
+  position: fixed;
+  top: 0;
+  z-index: 100%;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
 </style>
