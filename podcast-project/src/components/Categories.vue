@@ -1,15 +1,54 @@
 <template>
   <div class="container">
-    <div class="categoriesTitle">Categories</div>
+    <div class="categoriesTitle">{{Categories}}</div>
     <div class="cards_container">
-      <div class="card" style="background: rgb(13, 114, 235)"><h2>Podcast-Charts</h2></div>
-      <div class="card" style="background: rgb(141,102,171)"><h2>Podcast New Releases</h2></div>
-      <div class="card" style="background: rgb(232,20,41)"><h2>Video-Podcasts</h2></div>
-      <div class="card" style="background: rgb(39,132,106)"><h2>News & Politics</h2></div>
-      <div class="card" style="background: rgb(224,51,0)"><h2>True Crime</h2></div>
+      <div class="card" style="background: rgb(13, 114, 235)" @click="getPodcastsInCategory(1)"><h2>Arts</h2></div>
+      <div class="card" style="background: rgb(141,102,171)" @click="getPodcastsInCategory(4)"><h2>Food</h2></div>
+      <div class="card" style="background: rgb(232,20,41)" @click="getPodcastsInCategory(5)"><h2>Literature</h2></div>
+      <div class="card" style="background: rgb(39,132,106)" @click="getPodcastsInCategory(8)"><h2>Business</h2></div>
+      <div class="card" style="background: rgb(224,51,0)" @click="getPodcastsInCategory(14)"><h2>Comedy</h2></div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Categories',
+  data() {
+    return {}
+  },
+  methods: {
+    async getPodcastsInCategory(id) {
+      let url = new URL('https://api.fyyd.de/0.2/category/');
+      const response = await fetch(url);
+
+      // Check if the response was successful
+      if (!response.ok) {
+          throw new Error('HTTP error! Status: ${response.status}');
+      }
+
+      const body = await response.json();
+      console.log("id", id);
+      console.log("url", url);
+      console.log("response", body);
+
+      if (body.status !== 0) { 
+          const podcasts = body.data.podcasts.map(podcast => ({
+              id: podcast.id,
+              title: podcast.title,
+              author: podcast.author,
+              image: podcast.layoutImageURL,
+              url: podcast.url
+          }));
+          this.$emit('search-performed', podcasts);
+      } else {
+          console.error('API returned an error:', body.errors.message);
+      }
+
+    }
+  }
+}
+</script>
 
 <style>
 .categoriesTitle {

@@ -31,13 +31,4 @@ export default {
 </script>
 
 <style>
-.navbar {
-  position: fixed;
-  top: 0;
-  z-index: 100%;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
 </style>
