@@ -1,12 +1,17 @@
 <template>
     <div class="container" v-if="data && data.title">
+        <img :src="data.imgURL" alt="Podcast Image" />
         <h1>{{ data.title }}</h1>
         <h2>{{ data.author || 'Author Unknown' }}</h2>
-        <img :src="data.imgURL" alt="Podcast Image" />
+        <a href="{{ data.htmlURL }}">Link to Podcast: {{ data.htmlURL }}</a>
         <p v-html="data.description"></p>
         <div class="visualization">
-            <p>Episode Count: {{ data.episode_count }}</p>
             <p>Language: {{ data.language }}</p>
+            <p>Average episode length: {{ data.stats.medianduration_string }}</p>
+            <p>Episode count: {{ data.episode_count }}</p>
+            <p>Last publication: {{ data.lastpub }}</p>
+            <p>Publication interval: {{ data.stats.pubinterval_string }}</p>
+            <p>Complete duration: {{ data.stats.complete_duration_value }}</p>
         </div>
     </div>
     <div v-else>
@@ -55,17 +60,15 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.container h1, .container h2 {
     color: #333;
+    align-items: start;
 }
 
 .container img {
     width: 300px;
     height: auto;
     border-radius: 8px;
-    align-self: flex-start;
+    align-self: center;
 }
 
 .container p {
@@ -78,5 +81,6 @@ export default {
     margin-top: 20px;
     border-top: 1px solid #ccc;
     padding-top: 20px;
+    
 }
 </style>
