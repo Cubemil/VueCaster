@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h1>{{ title }}</h1>
     <SearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     <PodcastList :podcasts="podcasts"/>
   </div>
@@ -11,24 +10,28 @@ import SearchBar from '../components/SearchBar.vue'
 import PodcastList from '../components/PodcastList.vue';
 
 export default {
-	name: 'SearchView',
-	components: { SearchBar, PodcastList },
-	data() {
-		return {
-			title: 'Search for Podcasts',
-			podcasts: []
-		}
-	},
-	methods: {
-		updatePodcasts(podcasts) {
-			this.podcasts = podcasts;
-		},
-		clearPodcasts() {
-			this.podcasts = [];
-		}
-	}
+  name: 'SearchView',
+  components: {SearchBar, PodcastList},
+  data() {
+    return {
+      title: 'VueCaster Pro',
+      podcasts: []
+    }
+  },
+  methods: {
+    updatePodcasts(podcasts) {
+      this.podcasts = podcasts;
+    },
+    clearPodcasts() {
+      this.podcasts = [];
+    }
+  }
 }
 </script>
 
-<style scoped>
+<style>
+.container {
+  background: #121212;
+  border-radius: 10px;
+}
 </style>
