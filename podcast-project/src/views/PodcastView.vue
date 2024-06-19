@@ -5,6 +5,7 @@
         <h2>{{ data.author || 'Author Unknown' }}</h2>
         <a href="{{ data.htmlURL }}">Link to Podcast: {{ data.htmlURL }}</a>
         <p v-html="data.description"></p>
+        <AudioPlayer :feed-url="data.xmlURL"/>
         <div class="visualization">
             <p>Language: {{ data.language }}</p>
             <p>Average episode length: {{ data.stats.medianduration_string }}</p>
@@ -20,16 +21,19 @@
 </template>
 
 <script>
+import AudioPlayer from '../components/AudioPlayer.vue';
+
 export default {
-    mounted() {
-        this.data = this.$route.params.podcastId;
-        console.log("PodcastId received: ", this.data);
-        this.getPodcastDetails();
-    },
+    components: { AudioPlayer },
     data() {
         return {
             data: {},
         };
+    },
+    mounted() {
+        this.data = this.$route.params.podcastId;
+        console.log("PodcastId received: ", this.data);
+        this.getPodcastDetails();
     },
     methods: {
         async getPodcastDetails() {
@@ -48,6 +52,7 @@ export default {
         }
     }
 };
+
 </script>
 
 <style scoped>

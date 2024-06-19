@@ -19,7 +19,8 @@ export default {
   },
   methods: {
     async getPodcastsInCategory(id) {
-      let url = new URL('https://api.fyyd.de/0.2/category/');
+      let url = new URL(`https://api.fyyd.de/0.2/category/`);
+      url.searchParams.append('category_id', id);
       const response = await fetch(url);
 
       // Check if the response was successful
