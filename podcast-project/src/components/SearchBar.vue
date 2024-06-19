@@ -113,6 +113,6 @@ export default {
   position: relative;
   top: 16px;
   right: 30px;
-  visibility: visible;
+  visibility: hidden;
 }
 </style>

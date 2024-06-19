@@ -1,15 +1,15 @@
 <template>
-    <nav class="navbar">
-        <h1 class="navbar-title">VueCaster Pro</h1>
-        <ul class="navbar-list">
-            <li class="navbar-item"><router-link class="router-link" to="/searchview">Search</router-link></li>
-            <li class="navbar-item"><router-link class="router-link" to="/categoryview">Categories</router-link></li>
+    <nav class="sidenav">
+        <h1 class="sidenav-title">VueCaster Pro</h1>
+        <ul class="sidenav-list">
+            <li class="sidenav-item"><router-link class="router-link" to="/searchview">Search</router-link></li>
+            <li class="sidenav-item"><router-link class="router-link" to="/categoryview">Categories</router-link></li>
         </ul>
     </nav>
 </template>
 
 <style scoped>
-.navbar {
+.sidenav {
     background-color: #333;
     color: #fff;
     padding: 5px;
@@ -18,18 +18,18 @@
     align-items: center;
 }
 
-.navbar-title {
+.sidenav-title {
     margin-left: 20px;
 }
 
-.navbar-list {
+.sidenav-list {
     display: flex;
     list-style-type: none;
     justify-content: flex-end;
     align-items: center;
 }
 
-.navbar-item {
+.sidenav-item {
     margin-right: 50px;
     cursor: pointer;
 }
@@ -38,5 +38,4 @@
     color: #fff;
     text-decoration: none;
 }
-
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h1>{{ title }}</h1>
     <SearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     <PodcastList :podcasts="podcasts"/>
   </div>
@@ -31,4 +30,8 @@ export default {
 </script>
 
 <style>
+.container {
+  background: #121212;
+  border-radius: 12px;
+}
 </style>

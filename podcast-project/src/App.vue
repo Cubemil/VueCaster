@@ -1,20 +1,18 @@
 // Vue file (component) = HTML (template) + JavaScript (script) + CSS (style)
 
 <template>
-  <div class="app">
-    <div class="navbar"><Navbar/></div>
-    <Background/>
+  <div id="app">
+    <Sidenav/>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Navbar from './components/Navbar.vue';
-import Background from './components/Background.vue';
+import Sidenav from "@/components/Sidenav.vue";
 
 export default {
   name: 'App',
-  components: {Navbar, Background}
+  components: {Sidenav}
 }
 </script>
 
@@ -24,20 +22,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  /*color: #2c3e50;*/
   color: #fdfdfd;
-  margin-top: 15%;
 }
 
-
-.navbar {
-  position: fixed;
-  top: 0;
-  z-index: 100%;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+body {
+  background: #000000;
+  margin: 0;
+  padding: 0;
 }
 </style>
 
