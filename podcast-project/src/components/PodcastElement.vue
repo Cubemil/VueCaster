@@ -43,7 +43,6 @@ export default {
 .podcastContainer {
   background: #121212;
   width: fit-content;
-  margin: auto;
   padding: 22px;
 }
 

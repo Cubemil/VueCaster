@@ -57,9 +57,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
-  max-width: 600px;
+  max-width: 600px;/*war 600px??? */
   margin: auto;
   padding: 20px;
   text-align: center;
