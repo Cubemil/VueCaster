@@ -12,17 +12,20 @@ import PodcastList from '../components/PodcastList.vue'
 
 export default {
     name: 'CategoryView',
+    components: { Categories, PodcastList},
     data() {
         return {
             title: 'Category Search',
             podcasts: []
         }
     },
-    components: { Categories, PodcastList},
     methods: {
         updatePodcasts(podcasts) {
             this.podcasts = podcasts;
-        }
+        },
+        clearPodcasts() {
+			this.podcasts = [];
+		}
     }
 }
 </script>
