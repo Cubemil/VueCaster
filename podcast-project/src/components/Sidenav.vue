@@ -1,41 +1,117 @@
 <template>
-    <nav class="sidenav">
-        <h1 class="sidenav-title">VueCaster Pro</h1>
-        <ul class="sidenav-list">
-            <li class="sidenav-item"><router-link class="router-link" to="/searchview">Search</router-link></li>
-            <li class="sidenav-item"><router-link class="router-link" to="/categoryview">Categories</router-link></li>
-        </ul>
-    </nav>
+  <nav class="sidenav">
+    <div class="sidenav-part-one">
+      <ul class="sidenav-list">
+        <li class="sidenav-item">
+          <router-link class="router-link-home" to="/home">
+            <div id="home-icon"></div>
+            Home
+          </router-link>
+        </li>
+        <li class="sidenav-item">
+          <router-link class="router-link-search" to="/search">
+            <div id="search-icon"></div>
+            Search
+          </router-link>
+        </li>
+      </ul>
+    </div>
+    <div class="sidenav-part-two">
+      <ul class="sidenav-sub-list">
+        <li class="sidenav-sub-item"><div id="bookmarks-icon"></div>Subs</li>
+      </ul>
+    </div>
+  </nav>
 </template>
 
 <style scoped>
-.sidenav {
-    background-color: #333;
-    color: #fff;
-    padding: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.sidenav-part-one {
+  height: 110px;
+  width: 260px;
+  background-color: #121212;
+  border-radius: 10px;
 }
 
-.sidenav-title {
-    margin-left: 20px;
+.sidenav-part-two {
+  position: relative;
+  top: 8px;
+  height: 1040px;
+  width: 260px;
+  background-color: #121212;
+  border-radius: 10px;
+  overflow-y: scroll;
 }
 
 .sidenav-list {
-    display: flex;
-    list-style-type: none;
-    justify-content: flex-end;
-    align-items: center;
+  text-align: left;
+  list-style-type: none;
+  padding-left: 12px;
 }
 
 .sidenav-item {
-    margin-right: 50px;
-    cursor: pointer;
+  padding: 10px;
+  display: flex;
 }
 
-.router-link {
-    color: #fff;
-    text-decoration: none;
+.router-link-home {
+  color: #B3B3B3;
+  text-decoration: none;
+}
+
+.router-link-search {
+  color: #B3B3B3;
+  text-decoration: none;
+  padding-left: 5px;
+}
+
+#home-icon {
+  background-image: url("@/assets/home-icon.svg");
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 8px;
+  padding-right: 12px;
+}
+
+#search-icon {
+  background-image: url("@/assets/search-icon.png");
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 4px;
+  padding-right: 16px;
+}
+
+#bookmarks-icon {
+  background-image: url("@/assets/bookmarks-icon.svg");
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 7px;
+  padding-right: 18px;
+  cursor: pointer;
+}
+
+.sidenav-sub-list {
+  list-style-type: none;
+  color: #B3B3B3;
+  padding-left: 26px;
+  text-align: left;
+}
+
+.sidenav-sub-item {
+  cursor: pointer;
 }
 </style>
+
+<script setup>
+</script>

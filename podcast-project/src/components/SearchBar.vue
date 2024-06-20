@@ -60,9 +60,7 @@ export default {
 
 <style scoped>
 .searchbar {
-  display: flex;
-  justify-content: center;
-  padding-top: 10px;
+  width: 100%;
 }
 
 .searchbar_input {
@@ -75,7 +73,7 @@ export default {
   font-size: 14px;
   padding-left: 38px;
   padding-right: 38px;
-  background-image: url('../assets/search_icon.png'); /* icon image */
+  background-image: url('../assets/search-icon.png'); /* icon image */
   background-size: 15px; /* icon size */
   background-position: 14px 50%; /* icon position */
   background-repeat: no-repeat;
@@ -87,7 +85,7 @@ export default {
 }
 
 .searchbar_input:focus {
-  background-image: url('../assets/hovered_search_icon.png'); /* icon image */
+  background-image: url('../assets/search-icon-hovered.png'); /* icon image */
   background-size: 15px; /* icon size */
   background-position: 14px 50%; /* icon position */
   background-repeat: no-repeat;
@@ -96,7 +94,7 @@ export default {
 .searchbar_input:hover {
   border: 1px solid #434343;
   background: #292929;
-  background-image: url('../assets/hovered_search_icon.png'); /* icon image */
+  background-image: url('../assets/search-icon-hovered.png'); /* icon image */
   background-size: 15px; /* icon size */
   background-position: 14px 50%; /* icon position */
   background-repeat: no-repeat;
@@ -111,7 +109,7 @@ export default {
 
 .delete_icon {
   position: relative;
-  top: 16px;
+  top: 4px;
   right: 30px;
   visibility: hidden;
 }

@@ -1,19 +1,17 @@
 <template>
   <div class="podcastContainer">
     <div class="containerTitle"></div>
-    <div class="podcastCards">
-      <div class="podcastCard" @click="sendPodcastId">
-        <div class="podcastImageContainer">
-          <img :src="image" class="podcastImage" v-if="image"/>
-        </div>
-        <div class="podcastTitle">
-          <template v-if="podcastTitle">{{ podcastTitle }}</template>
-          <div class="skeleton-title" v-else></div>
-        </div>
-        <div class="podcastAuthor">
-          <template v-if="podcastAuthor">{{ podcastAuthor }}</template>
-          <div class="skeleton-author" v-else></div>
-        </div>
+    <div class="podcastCard" @click="sendPodcastId">
+      <div class="podcastImageContainer">
+        <img :src="image" class="podcastImage" v-if="image"/>
+      </div>
+      <div class="podcastTitle">
+        <template v-if="podcastTitle">{{ podcastTitle }}</template>
+        <div class="skeleton-title" v-else></div>
+      </div>
+      <div class="podcastAuthor">
+        <template v-if="podcastAuthor">{{ podcastAuthor }}</template>
+        <div class="skeleton-author" v-else></div>
       </div>
     </div>
   </div>
@@ -22,10 +20,10 @@
 <script>
 export default {
   name: 'PodcastElement',
-  props: ['image', 'podcastTitle', 'podcastAuthor', 'podcastId'], 
+  props: ['image', 'podcastTitle', 'podcastAuthor', 'podcastId'],
   methods: {
     sendPodcastId() {
-      this.$router.push({ name: 'PodcastView', params: { podcastId: this.podcastId } });
+      this.$router.push({name: 'PodcastView', params: {podcastId: this.podcastId}});
     }
   }
 }
@@ -38,21 +36,6 @@ export default {
   font-weight: bold;
   font-size: 20px;
   padding-left: 12px;
-}
-
-.podcastContainer {
-  background: #121212;
-  width: fit-content;
-  padding: 22px;
-}
-
-.podcastCards {
-  display: flex;
-  flex-wrap: wrap;
-  background: rgb(18, 18, 18);
-  width: fit-content;
-  margin: auto;
-  border-radius: 8px;
 }
 
 .podcastCard {

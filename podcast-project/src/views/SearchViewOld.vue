@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <div id="searchbar">
-      <SearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
-    </div>
+    <SearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     <PodcastList :podcasts="podcasts"/>
   </div>
 </template>
@@ -30,20 +28,5 @@ export default {
 }
 </script>
 
-<style scoped>
-.container {
-  position: fixed;
-  top: 10px;
-  left: 274px;
-  width: 1186px;
-  height: 100%;
-  border-radius: 10px;
-}
-
-#searchbar {
-  position: absolute;
-  left: 0;
-  top: 10px;
-  z-index: 1;
-}
+<style>
 </style>
