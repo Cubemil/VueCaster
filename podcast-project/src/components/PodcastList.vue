@@ -27,31 +27,31 @@
 import PodcastElement from './PodcastElement.vue'
 
 export default {
-  name: 'PodcastList',
-  components: {PodcastElement},
-  props: ['podcasts'],
-  data() {
-    return {
-      visiblePodcasts: [],
-      currentPage: 0
-    }
-  },
-  watch: {
-    podcasts() {
-      this.currentPage = 0;
-      this.visiblePodcasts = this.podcasts.slice(0, 10);
-    }
-  },
-  methods: {
-    nextPage() {
-      this.currentPage++;
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 10, (this.currentPage + 1) * 10);
+    name: 'PodcastList',
+    components: {PodcastElement},
+    props: ['podcasts'],
+    data() {
+        return {
+            visiblePodcasts: [],
+            currentPage: 0
+        }
     },
-    previousPage() {
-      this.currentPage--;
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 10, (this.currentPage + 1) * 10);
+    watch: {
+        podcasts() {
+            this.currentPage = 0;
+            this.visiblePodcasts = this.podcasts.slice(0, 10);
+        }
     },
-  }
+    methods: {
+        nextPage() {
+            this.currentPage++;
+            this.visiblePodcasts = this.podcasts.slice(this.currentPage * 10, (this.currentPage + 1) * 10);
+        },
+        previousPage() {
+            this.currentPage--;
+            this.visiblePodcasts = this.podcasts.slice(this.currentPage * 10, (this.currentPage + 1) * 10);
+        },
+    }
 }
 
 </script>
@@ -87,7 +87,6 @@ export default {
   cursor: pointer;
 }
 
-
 #previous_button {
   background-image: url("../assets/previous_arrow.png");
 }
@@ -95,5 +94,4 @@ export default {
 #next_button {
   background-image: url("../assets/next_arrow.png");
 }
-
 </style>

@@ -3,9 +3,7 @@
     <div id="sidenav">
       <Sidenav/>
     </div>
-    <div class="main-screen">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 

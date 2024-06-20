@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .containerTitle {
   color: #fdfdfd;
   text-align: start;

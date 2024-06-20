@@ -12,7 +12,7 @@ import SearchBar from '../components/SearchBar.vue';
 import PodcastList from '../components/PodcastList.vue';
 
 export default {
-  name: 'SearchViewOld',
+  name: 'SearchView',
   components: {SearchBar, PodcastList},
   data() {
     return {
