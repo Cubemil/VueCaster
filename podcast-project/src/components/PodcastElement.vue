@@ -46,6 +46,7 @@ export default {
   background: rgb(24, 24, 24);
   text-align: left;
   padding: 20px;
+  cursor: pointer;
 }
 
 .podcastCard:hover {

@@ -56,19 +56,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    max-width: 80%;
-    margin: auto;
-    padding: 20px;
-    background: #f5f5f5;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #333;
-    align-items: start;
-}
-
 .container img {
     width: 300px;
     height: auto;
@@ -79,7 +66,7 @@ export default {
 .container p {
     text-align: justify;
     line-height: 1.6;
-    color: #333;
+    color: white;
 }
 
 .visualization {
