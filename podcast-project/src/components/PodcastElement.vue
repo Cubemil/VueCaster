@@ -40,7 +40,7 @@ export default {
 
 .podcastCard {
   border-radius: 8px;
-  width: 375px;
+  width: 250px;
   height: 190px;
   margin: 10px;
   background: rgb(24, 24, 24);
@@ -77,6 +77,9 @@ export default {
   font-size: 14px;
   position: relative;
   top: 35px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border-radius: 6px;
 }
 
