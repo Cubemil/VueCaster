@@ -33,7 +33,7 @@
   height: 110px;
   width: 260px;
   background-color: #121212;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .sidenav-part-two {
@@ -42,7 +42,7 @@
   width: calc(100%); /* 274px left margin + 10px right margin */
   height: calc(100% - 138px); /* 10px top + 10px bottom */
   background-color: #121212;
-  border-radius: 10px;
+  border-radius: 5px;
   overflow-y: scroll;
 }
 
@@ -123,12 +123,14 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(18, 18, 18, 0);
+  background: #121212;
+  border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #5a5959;
+  border-radius: 10px;
 }
 
 /* Handle on hover */

@@ -12,11 +12,11 @@
   position: fixed;
   top: 10px;
   left: 274px;
-  width: calc(100% - 284px); /* 274px left margin + 10px right margin */
+  width: calc(100% - 280px); /* 274px left margin + 10px right margin */
   height: calc(100% - 20px); /* 10px top + 10px bottom */
   padding-right: 10px;
   box-sizing: border-box; /* Include padding in the width calculation */
   overflow-y: auto; /* Allows scrolling if content overflows */
-  border-radius: 10px;
+  border-radius: 5px;
 }
 </style>

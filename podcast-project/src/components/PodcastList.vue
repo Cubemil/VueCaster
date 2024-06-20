@@ -87,7 +87,6 @@ export default {
   cursor: pointer;
 }
 
-
 #previous_button {
   background-image: url("../assets/previous_arrow.png");
 }
@@ -95,5 +94,4 @@ export default {
 #next_button {
   background-image: url("../assets/next_arrow.png");
 }
-
 </style>
