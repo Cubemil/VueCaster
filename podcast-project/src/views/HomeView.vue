@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <h1>Welcome back! We have some recommended podcasts for you!</h1>
-    <div id="refresh">
-      <button id="refresh-button">Refresh</button>
+    <h1 class="welcome-message">Welcome back! Here are some recommended podcasts for you!</h1>
+    
+    <div class="head">
+      <h1 class="subheading">These are the top 30 hot podcasts right now:</h1>
+      <button id="refresh-button" @click="getPodcastData">Refresh</button>
     </div>
-    <!--<PodcastList :podcasts="podcasts"/>-->
+    
+    <PodcastList :podcasts="podcasts"/>
   </div>
 </template>
 
@@ -13,18 +16,44 @@ import PodcastList from '../components/PodcastList.vue';
 
 export default {
   name: 'HomeView',
-  components: {PodcastList},
+  components: { PodcastList },
   data() {
     return {
       podcasts: []
     }
   },
+  mounted() {
+    this.getPodcastData()
+  },
   methods: {
-    updatePodcasts(podcasts) {
-      this.podcasts = podcasts;
-    },
-    clearPodcasts() {
-      this.podcasts = [];
+    async getPodcastData() {
+      try {
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=30'
+        const response = await fetch(url)
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok', response.statusText)
+        }
+
+        const body = await response.json()
+
+        if (!body.data) {
+          throw new Error('No data found in response body')
+        }
+
+        const fetchedPods = body.data.map(podcast => ({
+          id: podcast.id,
+          title: podcast.title,
+          author: podcast.author,
+          image: podcast.layoutImageURL,
+          url: podcast.url
+        }))
+
+        this.podcasts = fetchedPods
+        console.log("Podcasts fetched: ", this.podcasts)
+      } catch (err) {
+        console.error('Podcast could not be fetched.', err)
+      }
     }
   }
 }
@@ -33,6 +62,8 @@ export default {
 <style scoped>
 .container {
   position: fixed;
+  display: flex;
+  flex-direction: column;
   top: 10px;
   left: 274px;
   width: calc(100% - 284px); /* 274px left margin + 10px right margin */
@@ -41,18 +72,37 @@ export default {
   box-sizing: border-box; /* Include padding in the width calculation */
   overflow-y: auto; /* Allows scrolling if content overflows */
   border-radius: 10px;
+  background-color: #121212;
+  color: #ffffff;
+  align-items: flex-start;
 }
 
-.container h1 {
-  text-align: left;
-  font-size: 2em;
+.welcome-message {
+  font-size: 2.2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1DB954; /* Spotify Green */
+}
+
+.subheading {
+  font-size: 1.5em;
+  font-weight: normal;
+  margin-top: 2em;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  max-width: 90%;
+  align-items: center;
+  width: 100%;
 }
 
 #refresh-button {
-  position: absolute;
-  left: 20px;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #1DB954; /* Spotify Green */
+  color: #ffffff;
   border: none;
   padding: 10px 20px;
   font-size: 1em;
@@ -62,8 +112,10 @@ export default {
 }
 
 #refresh-button:hover {
-  background-color: #f2f2f2;
+  background-color: #1aa34a;
 }
 
-
+.pod-list {
+  border: 1px solid red; /* Temporary border to see if the list container is rendered */
+}
 </style>

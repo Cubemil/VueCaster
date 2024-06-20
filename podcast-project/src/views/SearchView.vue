@@ -48,8 +48,7 @@ export default {
   left: 0;
   top: 0;
   z-index: 1;
-  background: #121212;
-  padding: 10px 0;
+  padding: 15px 0;
   width: calc(100% - 12px);
 }
 

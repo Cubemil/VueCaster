@@ -53,7 +53,7 @@ export default {
       } catch (err) {
         console.error('Podcast could not be found.', err);
       }
-    },
+    }
   }
 }
 </script>
