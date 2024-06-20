@@ -11,17 +11,14 @@
           :image="podcast.image"
           :podcastTitle="podcast.title"
           :podcastAuthor="podcast.author"/>
-
-      <div class="pagination">
-        <div v-if="podcasts.length > currentPage * 10 && currentPage > 0" @click="previousPage" class="pagination_button"
-             id="previous_button"></div>
-        <div v-if="podcasts.length > (currentPage + 1) * 10" @click="nextPage" class="pagination_button"
-             id="next_button"></div>
-      </div>
-
     </div>
 
-
+    <div class="pagination">
+      <div v-if="podcasts.length > currentPage * 10 && currentPage > 0" @click="previousPage" class="pagination_button"
+           id="previous_button"></div>
+      <div v-if="podcasts.length > (currentPage + 1) * 10" @click="nextPage" class="pagination_button"
+           id="next_button"></div>
+    </div>
 
   </div>
 </template>
@@ -62,7 +59,7 @@ export default {
 <style scoped>
 .container {
   overflow-y: scroll;
-  background: #5f6c7e;
+  background: #121212;
   margin: auto;
   border-radius: 10px;
 }
@@ -72,12 +69,13 @@ export default {
   flex-wrap: wrap;
   justify-content: space-evenly;
   margin-top: 50px;
-  background: #8f1d1d;
+  background: #121212;
 }
 
 .pagination {
   position: relative;
   display: flex;
+  justify-content: center;
 }
 
 .pagination_button {
