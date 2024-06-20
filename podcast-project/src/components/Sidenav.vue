@@ -25,20 +25,24 @@
 </template>
 
 <style scoped>
+.sidenav {
+  height: 100vh;
+}
+
 .sidenav-part-one {
   height: 110px;
   width: 260px;
   background-color: #121212;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .sidenav-part-two {
   position: relative;
   top: 8px;
-  height: 1040px;
-  width: 260px;
+  width: calc(100%); /* 274px left margin + 10px right margin */
+  height: calc(100% - 138px); /* 10px top + 10px bottom */
   background-color: #121212;
-  border-radius: 10px;
+  border-radius: 5px;
   overflow-y: scroll;
 }
 
@@ -120,11 +124,13 @@
 /* Track */
 ::-webkit-scrollbar-track {
   background: #121212;
+  border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #5a5959;
+  border-radius: 10px;
 }
 
 /* Handle on hover */

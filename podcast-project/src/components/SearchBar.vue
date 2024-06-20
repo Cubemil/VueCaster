@@ -109,8 +109,8 @@ export default {
 
 .delete_icon {
   position: relative;
-  top: 4px;
   right: 30px;
+  top: 3px;
   visibility: hidden;
 }
 </style>

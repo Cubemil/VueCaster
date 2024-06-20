@@ -35,19 +35,22 @@ export default {
   position: fixed;
   top: 10px;
   left: 274px;
-  width: calc(100% - 284px); /* 274px left margin + 10px right margin */
+  width: calc(100% - 280px); /* 274px left margin + 10px right margin */
   height: calc(100% - 20px); /* 10px top + 10px bottom */
   padding-right: 10px;
   box-sizing: border-box; /* Include padding in the width calculation */
   overflow-y: auto; /* Allows scrolling if content overflows */
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #searchbar {
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 0;
   z-index: 1;
+  background: #121212;
+  padding: 10px 0;
+  width: calc(100% - 12px);
 }
 
 /* width */
@@ -58,11 +61,13 @@ export default {
 /* Track */
 ::-webkit-scrollbar-track {
   background: #121212;
+  border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #5a5959;
+  border-radius: 10px;
 }
 
 /* Handle on hover */
