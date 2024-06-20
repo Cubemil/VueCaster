@@ -13,7 +13,7 @@
 
     <div class="pagination">
       <div v-if="currentPage > 0" @click="previousPage" class="pagination_button" id="previous_button"></div>
-      <div v-if="podcasts.length > (currentPage + 1) * 12" @click="nextPage" class="pagination_button" id="next_button"></div>
+      <div v-if="podcasts.length > (currentPage + 1) * 15" @click="nextPage" class="pagination_button" id="next_button"></div>
     </div>
   </div>
 </template>
@@ -34,17 +34,17 @@ export default {
   watch: {
     podcasts() {
       this.currentPage = 0;
-      this.visiblePodcasts = this.podcasts.slice(0, 12);
+      this.visiblePodcasts = this.podcasts.slice(0, 15);
     }
   },
   methods: {
     nextPage() {
       this.currentPage++;
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 12, (this.currentPage + 1) * 12);
+      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15);
     },
     previousPage() {
       this.currentPage--;
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 12, (this.currentPage + 1) * 12);
+      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15);
     },
   }
 }
@@ -52,6 +52,7 @@ export default {
 
 <style scoped>
 .podcast-container {
+  width: 90%;
   overflow-y: scroll;
   background: #121212;
   margin: auto;

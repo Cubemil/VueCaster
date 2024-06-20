@@ -87,8 +87,6 @@ export default {
 .subheading {
   font-size: 1.5em;
   font-weight: normal;
-  margin-top: 2em;
-  margin-bottom: 20px;
   color: #ffffff;
 }
 
@@ -115,7 +113,4 @@ export default {
   background-color: #1aa34a;
 }
 
-.pod-list {
-  border: 1px solid red; /* Temporary border to see if the list container is rendered */
-}
 </style>
