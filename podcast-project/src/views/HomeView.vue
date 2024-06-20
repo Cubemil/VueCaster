@@ -4,7 +4,7 @@
     <div id="refresh">
       <button id="refresh-button">Refresh</button>
     </div>
-    <PodcastList :podcasts="podcasts"/>    
+    <!--<PodcastList :podcasts="podcasts"/>-->
   </div>
 </template>
 

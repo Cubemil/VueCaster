@@ -139,5 +139,5 @@
 }
 </style>
 
-<script setup>
+<script>
 </script>
