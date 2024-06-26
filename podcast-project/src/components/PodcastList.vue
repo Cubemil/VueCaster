@@ -52,7 +52,7 @@ export default {
 
 <style scoped>
 .podcast-container {
-  width: 90%;
+  width: 100%;
   overflow-y: scroll;
   background: #121212;
   margin: auto;

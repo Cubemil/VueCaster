@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .podcastCard {
   border-radius: 8px;
-  width: 250px;
+  width: 325px;
   height: 190px;
   margin: 0.7em;
   background: rgb(24, 24, 24);
