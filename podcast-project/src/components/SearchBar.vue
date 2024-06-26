@@ -1,8 +1,8 @@
 <template>
   <div class="searchbar">
     <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
-    <input  class="searchbar_input" type="text" placeholder="What do you want to play?" size="40"
-            ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress" @click="onClick">
+    <input class="searchbar_input" type="text" placeholder="What do you want to play?" size="40"
+           ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress" @click="onClick">
     <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
   </div>
 </template>
@@ -59,10 +59,6 @@ export default {
 </script>
 
 <style scoped>
-.searchbar {
-  width: 100%;
-}
-
 .searchbar_input {
   background: #242424;
   height: 45px;

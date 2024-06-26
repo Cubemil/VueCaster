@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div id="searchbar">
-      <SearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
+    <div class="search-bar-container">
+      <SearchBar id="search-bar" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     </div>
     <PodcastList :podcasts="podcasts"/>
   </div>
@@ -12,7 +12,7 @@ import SearchBar from '../components/SearchBar.vue';
 import PodcastList from '../components/PodcastList.vue';
 
 export default {
-  name: 'SearchView',
+  name: 'SearchViewOld',
   components: {SearchBar, PodcastList},
   data() {
     return {
@@ -41,15 +41,25 @@ export default {
   box-sizing: border-box; /* Include padding in the width calculation */
   overflow-y: auto; /* Allows scrolling if content overflows */
   border-radius: 5px;
+  margin: 0;
 }
 
-#searchbar {
+#search-bar {
+  background-color: #121212;
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  padding: 15px 0;
-  width: calc(100% - 12px);
+  left: -7px;
 }
 
+.search-bar-container {
+  z-index: 1;
+  background: #121212;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  top: 1.2%;
+  width: 78%;
+  padding: 14px 0;
+  height: 6%;
+}
 </style>
+
