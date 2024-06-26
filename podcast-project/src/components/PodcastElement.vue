@@ -1,14 +1,27 @@
 <template>
   <div class="podcastContainer">
-    <div class="containerTitle"></div>
     <div class="podcastCard" @click="sendPodcastId">
-      <div class="podcastImageContainer">
-        <img :src="image" class="podcastImage" v-if="image"/>
+      <div class="image-and-like">
+        <div class="podcastImageContainer">
+          <img :src="image" class="podcastImage" v-if="image"/>
+          <div class="skeleton-image" v-else></div>
+        </div>
+        
+        <div class="likeButton" @click.stop="liked = !liked">
+          <div v-if="!liked">
+            <img src="../assets/heartEmptyWhite.svg" height="35em" class="like_icon"/>
+          </div>
+          <div v-else-if="liked">
+            <img src="../assets/heartFullWhite.svg" height="35em" class="like_icon"/>
+          </div>
+        </div>
       </div>
+      
       <div class="podcastTitle">
         <template v-if="podcastTitle">{{ podcastTitle }}</template>
         <div class="skeleton-title" v-else></div>
       </div>
+
       <div class="podcastAuthor">
         <template v-if="podcastAuthor">{{ podcastAuthor }}</template>
         <div class="skeleton-author" v-else></div>
@@ -20,29 +33,26 @@
 <script>
 export default {
   name: 'PodcastElement',
+  data() {
+    return {
+      liked: false
+    }
+  },
   props: ['image', 'podcastTitle', 'podcastAuthor', 'podcastId'],
   methods: {
     sendPodcastId() {
-      this.$router.push({name: 'PodcastView', params: {podcastId: this.podcastId}});
+      this.$router.push({ name: 'PodcastView', params: { podcastId: this.podcastId } });
     }
   }
 }
 </script>
 
 <style scoped>
-.containerTitle {
-  color: #fdfdfd;
-  text-align: start;
-  font-weight: bold;
-  font-size: 20px;
-  padding-left: 12px;
-}
-
 .podcastCard {
   border-radius: 8px;
   width: 250px;
   height: 190px;
-  margin: 10px;
+  margin: 0.7em;
   background: rgb(24, 24, 24);
   text-align: left;
   padding: 20px;
@@ -51,6 +61,13 @@ export default {
 
 .podcastCard:hover {
   background: rgb(28, 28, 28);
+}
+
+.image-and-like {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10%;
 }
 
 .podcastImage {
@@ -89,6 +106,13 @@ export default {
   box-shadow: #121212 0 0 14px;
   border-radius: 6px;
   background: #242424;
+}
+
+.skeleton-image {
+  width: 100px;
+  height: auto;
+  box-shadow: #121212 0 0 14px;
+  border-radius: 6px;
   animation: skeleton-loading 1s linear infinite alternate;
 }
 
