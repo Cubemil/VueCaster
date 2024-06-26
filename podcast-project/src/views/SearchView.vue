@@ -4,16 +4,20 @@
       <SearchBar id="search-bar" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     </div>
     <PodcastList :podcasts="podcasts"/>
+    <div ref="categories">
+      <Categories id="categories"/>
+    </div>
   </div>
 </template>
 
 <script>
 import SearchBar from '../components/SearchBar.vue';
 import PodcastList from '../components/PodcastList.vue';
+import Categories from "@/components/Categories.vue";
 
 export default {
   name: 'SearchViewOld',
-  components: {SearchBar, PodcastList},
+  components: {Categories, SearchBar, PodcastList},
   data() {
     return {
       podcasts: []
@@ -22,9 +26,11 @@ export default {
   methods: {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts;
+      this.$refs.categories.style.display = 'none';
     },
     clearPodcasts() {
       this.podcasts = [];
+      this.$refs.categories.style.display = 'block';
     }
   }
 }
@@ -60,6 +66,12 @@ export default {
   width: 78%;
   padding: 14px 0;
   height: 6%;
+}
+
+#categories {
+  position: relative;
+  top: 50px;
+  left: -7px;
 }
 </style>
 

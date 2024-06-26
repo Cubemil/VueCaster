@@ -64,7 +64,6 @@ export default {
   text-align: start;
   font-weight: bold;
   font-size: 20px;
-  padding-left: 12px;
 }
 
 .container {
@@ -78,7 +77,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   background: rgb(18, 18, 18);
-  width: fit-content;
   margin: auto;
   border-radius: 8px;
 }
@@ -87,7 +85,8 @@ export default {
   border-radius: 8px;
   width: 150px;
   height: 150px;
-  margin: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
   cursor: pointer;
 }
 
