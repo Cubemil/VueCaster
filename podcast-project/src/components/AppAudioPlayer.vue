@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import '@fortawesome/fontawesome-free/css/all.css';
+
 export default {
   props: {
     feedUrl: {
@@ -113,7 +115,7 @@ export default {
       return `${minutes}:${seconds}`;
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -122,9 +124,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1% 4%;
-  box-sizing: border-box;
-  background-color: #000000;
+  padding: 1% 3%;
+  background-color: #121212;
 }
 
 #album-artwork img {

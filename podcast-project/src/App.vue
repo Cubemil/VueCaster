@@ -33,6 +33,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #000000;
+  height: 100vh;
 }
 
 #app-container {
@@ -48,18 +49,19 @@ body {
 #content {
   display: flex;
   flex-direction: row;
-  flex: 0 0 90%;
+  flex: 90%;
+  overflow: hidden;
 }
 
 #sidenav-area {
-  flex: 0 0 10%;
+  flex: 10%;
   background: #121212;
   border-radius: 15px;
   display: flex;
 }
 
 #main-area {
-  flex-grow: 1;
+  flex: 90%;
   border-radius: 10px;
   overflow-y: auto;
 }
@@ -71,10 +73,10 @@ body {
 }
 
 #footer-area {
-  z-index: 10000;
-  flex: 0 0 auto;
+  flex: 10%;
   display: flex;
   justify-content: center;
+  background-color: #121212;
 }
 
 /************* scrollbar *************/
