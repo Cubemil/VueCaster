@@ -7,13 +7,8 @@
           <div class="skeleton-image" v-else></div>
         </div>
         
-        <div class="likeButton" @click.stop="liked = !liked">
-          <div v-if="!liked">
-            <img src="../assets/heartEmptyWhite.svg" height="35em" class="like_icon"/>
-          </div>
-          <div v-else-if="liked">
-            <img src="../assets/heartFullWhite.svg" height="35em" class="like_icon"/>
-          </div>
+        <div class="likeButton" @click.stop="toggleLike">
+          <img :src="liked ? require('../assets/heartFullWhite.svg') : require('../assets/heartEmptyWhite.svg')" height="35em" class="like_icon"/>
         </div>
       </div>
       
@@ -33,15 +28,23 @@
 <script>
 export default {
   name: 'PodcastCard',
+  props: {
+    image: String,
+    podcastTitle: String,
+    podcastAuthor: String,
+    podcastId: [String, Number]
+  },
   data() {
     return {
       liked: false
     }
   },
-  props: ['image', 'podcastTitle', 'podcastAuthor', 'podcastId'],
   methods: {
     sendPodcastId() {
       this.$router.push({ name: 'PodcastView', params: { podcastId: this.podcastId } });
+    },
+    toggleLike() {
+      this.liked = !this.liked;
     }
   }
 }

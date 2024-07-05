@@ -32,7 +32,7 @@ export default {
 body {
   margin: 0;
   padding: 0;
-  background-color: #000000;
+  background: #000000;
   height: 100vh;
 }
 
@@ -55,7 +55,6 @@ body {
 
 #sidenav-area {
   flex: 10%;
-  background: #121212;
   border-radius: 15px;
   display: flex;
 }

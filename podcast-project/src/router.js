@@ -25,7 +25,7 @@ const routes = [
         component: CategoryView
     },
     {
-        path: '/podcast',
+        path: '/podcast/:podcastId',
         name: 'PodcastView',
         component: PodcastView,
         props: true
