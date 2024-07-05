@@ -1,20 +1,20 @@
 <template>
-  <div class="container">
-    <div class="categoriesTitle">Categories</div>
-    <div class="cards_container">
-      <div class="card" style="background: rgb(13, 114, 235)" @click="getPodcastsInCategory(1)"><h2>Arts</h2></div>
-      <div class="card" style="background: rgb(141, 102, 171)" @click="getPodcastsInCategory(4)"><h2>Food</h2></div>
-      <div class="card" style="background: rgb(232, 20, 41)" @click="getPodcastsInCategory(5)"><h2>Literature</h2></div>
-      <div class="card" style="background: rgb(39, 132, 106)" @click="getPodcastsInCategory(8)"><h2>Business</h2></div>
-      <div class="card" style="background: rgb(224, 51, 0)" @click="getPodcastsInCategory(14)"><h2>Comedy</h2></div>
+  <div id="categories-container">
+    <div id="categoriesTitle">Categories</div>
+    <div id="category-cards-container">
+      <div class="cards" style="background: rgb(13, 114, 235)" @click="getPodcastsInCategory(1)"><h2>Arts</h2></div>
+      <div class="cards" style="background: rgb(141, 102, 171)" @click="getPodcastsInCategory(4)"><h2>Food</h2></div>
+      <div class="cards" style="background: rgb(232, 20, 41)" @click="getPodcastsInCategory(5)"><h2>Literature</h2></div>
+      <div class="cards" style="background: rgb(39, 132, 106)" @click="getPodcastsInCategory(8)"><h2>Business</h2></div>
+      <div class="cards" style="background: rgb(224, 51, 0)" @click="getPodcastsInCategory(14)"><h2>Comedy</h2></div>
     </div>
-    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+    <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Categories',
+  name: 'CategorySearchList',
   data() {
     return {
       errorMessage: null,
@@ -58,22 +58,22 @@ export default {
 };
 </script>
 
-<style>
-.categoriesTitle {
+<style scoped>
+#categoriesTitle {
   color: #fbfbfb;
   text-align: start;
   font-weight: bold;
   font-size: 20px;
 }
 
-.container {
+#categories-container {
   background: #121212;
   width: fit-content;
   margin: auto;
   padding: 22px;
 }
 
-.cards_container {
+#category-cards-container {
   display: flex;
   flex-wrap: wrap;
   background: rgb(18, 18, 18);
@@ -81,7 +81,7 @@ export default {
   border-radius: 8px;
 }
 
-.card {
+.cards {
   border-radius: 8px;
   width: 150px;
   height: 150px;
@@ -90,14 +90,14 @@ export default {
   cursor: pointer;
 }
 
-.card h2 {
+.cards h2 {
   margin-left: 14px;
   margin-right: 14px;
   text-align: left;
   font-size: 20px;
 }
 
-.error {
+#error-message {
   color: red;
   text-align: center;
   margin-top: 10px;

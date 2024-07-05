@@ -1,18 +1,18 @@
 <template>
-    <div class="container">
+    <div id="category-view-container">
         <h1>{{ title }}</h1>
-        <Categories/>
+        <CategorySearchList/>
         <PodcastList :podcasts="podcasts" @search-performed="updatePodcasts"/>
     </div>
 </template>
 
 <script>
-import Categories from '../components/Categories.vue'
+import CategorySearchList from '../components/CategorySearchList.vue';
 import PodcastList from '../components/PodcastList.vue'
 
 export default {
     name: 'CategoryView',
-    components: { Categories, PodcastList},
+    components: { CategorySearchList, PodcastList},
     data() {
         return {
             title: 'Category Search',

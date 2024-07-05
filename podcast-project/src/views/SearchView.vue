@@ -1,23 +1,23 @@
 <template>
-  <div class="container">
-    <div class="search-bar-container">
-      <SearchBar id="search-bar" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
+  <div id="search-view-container">
+    <div id="search-bar-container">
+      <AppSearchBar id="search-bar" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     </div>
     <PodcastList :podcasts="podcasts"/>
     <div ref="categories">
-      <Categories id="categories"/>
+      <CategorySearchList/>
     </div>
   </div>
 </template>
 
 <script>
-import SearchBar from '../components/SearchBar.vue';
+import AppSearchBar from '../components/AppSearchBar.vue';
 import PodcastList from '../components/PodcastList.vue';
-import Categories from "@/components/Categories.vue";
+import CategorySearchList from "@/components/CategorySearchList.vue";
 
 export default {
-  name: 'SearchViewOld',
-  components: {Categories, SearchBar, PodcastList},
+  name: 'SearchView',
+  components: {CategorySearchList, AppSearchBar, PodcastList},
   data() {
     return {
       podcasts: []
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+#search-view-container {
   position: fixed;
   top: 10px;
   left: 274px;
@@ -56,7 +56,7 @@ export default {
   left: -7px;
 }
 
-.search-bar-container {
+#search-bar-container {
   z-index: 1;
   background: #121212;
   position: fixed;

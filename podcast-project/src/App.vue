@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
+  <div id="app-container">
     <div id="content">
-      <div id="sidenav">
-        <Sidenav/>
+      <div id="app-sidenav">
+        <AppSidenav/>
       </div>
 
       <div id="main-content">
@@ -11,7 +11,7 @@
     </div>
 
     <div id="footer">
-      <AudioPlayer/>
+      <AppAudioPlayer/>
     </div>
   </div>
 </template>
@@ -19,23 +19,17 @@
 <script>
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import Sidenav from "@/components/Sidenav.vue";
-import AudioPlayer from "./components/AudioPlayer.vue";
+import AppSidenav from "@/components/AppSidenav.vue";
+import AppAudioPlayer from "./components/AppAudioPlayer.vue";
 
 export default {
   name: 'App',
-  components: { Sidenav, AudioPlayer }
+  components: { AppSidenav, AppAudioPlayer }
 }
 </script>
 
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-}
-
-#app {
+#app-container {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -54,7 +48,7 @@ body {
   align-items: stretch;
 }
 
-#sidenav {
+#app-sidenav {
   width: 15%;
   background: #121212;
   border-radius: 0 10px 0 0;

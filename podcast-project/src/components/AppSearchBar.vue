@@ -1,15 +1,15 @@
 <template>
-  <div class="searchbar">
-    <img src="../assets/cross_icon.png" height="16" class="placeholder_icon_left"/>
-    <input class="searchbar_input" type="text" placeholder="What do you want to play?" size="40"
+  <div id="searchbar-container">
+    <img src="../assets/cross_icon.png" height="16" id="placeholder_icon_left"/>
+    <input id="searchbar-input" type="text" placeholder="What do you want to play?" size="40"
            ref="inputField" @input="inputNotEmpty" @keydown.enter="onEnterPress" @click="onClick">
-    <img src="../assets/cross_icon.png" height="16" class="delete_icon" ref="deleteIcon" @click="clearInput"/>
+    <img src="../assets/cross_icon.png" height="16" id="delete-icon" ref="deleteIcon" @click="clearInput"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SearchBar',
+  name: 'AppSearchBar',
   data() {
     return {}
   },
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style scoped>
-.searchbar_input {
+#searchbar-input {
   background: #242424;
   height: 45px;
   border: 1px solid transparent;
@@ -76,18 +76,18 @@ export default {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.searchbar_input::placeholder {
+#searchbar-input::placeholder {
   color: #747474;
 }
 
-.searchbar_input:focus {
+#searchbar-input:focus {
   background-image: url('../assets/search-icon-hovered.png'); /* icon image */
   background-size: 15px; /* icon size */
   background-position: 14px 50%; /* icon position */
   background-repeat: no-repeat;
 }
 
-.searchbar_input:hover {
+#searchbar-input:hover {
   border: 1px solid #434343;
   background: #292929;
   background-image: url('../assets/search-icon-hovered.png'); /* icon image */
@@ -96,14 +96,14 @@ export default {
   background-repeat: no-repeat;
 }
 
-.placeholder_icon_left {
+#placeholder_icon_left {
   position: relative;
   top: 16px;
   left: 30px;
   visibility: hidden;
 }
 
-.delete_icon {
+#delete_icon {
   position: relative;
   right: 30px;
   top: 3px;

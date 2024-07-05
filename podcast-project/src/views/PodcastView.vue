@@ -1,13 +1,13 @@
 <template>
-	<div class="container" v-if="data && data.title">
+	<div id="podcast-detailed-view-container" v-if="data && data.title">
 		<img :src="data.imgURL" alt="Podcast Image" />
 		<h1>{{ data.title }}</h1>
 		<h2>{{ data.author || 'Author Unknown' }}</h2>
 		<a href="{{ data.htmlURL }}">Link to Podcast: {{ data.htmlURL }}</a>
 		<p v-html="data.description"></p>
-		<AudioPlayer :feed-url="data.xmlURL"/>
+		<!--<AudioPlayer :feed-url="data.xmlURL"/>-->
 		
-		<div class="visualization">
+		<div id="visualization">
 			<p>Language: {{ data.language }}</p>
 			<p>Average episode length: {{ data.stats.medianduration_string }}</p>
 			<p>Episode count: {{ data.episode_count }}</p>
@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import AudioPlayer from '../components/AudioPlayer.vue';
+//import AppAudioPlayer from '../components/AppAudioPlayer.vue';
 
 export default {
-	components: { AudioPlayer },
+	//components: { AppAudioPlayer },
 	data() {
 		return {
 			data: {},
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+#podcast-detailed-view-container {
 	position: fixed;
 	top: 10px;
 	left: 274px;
@@ -68,25 +68,25 @@ export default {
 	border-radius: 10px;
 }
 
-.container img {
+#container img {
 	width: 20em;
 	height: auto;
 	border-radius: 8px;
 	align-self: center;
 }
 
-.container p {
+#container p {
 	text-align: justify;
 	line-height: 1.6;
 	color: white;
 }
 
-.container a {
+#container a {
 	text-decoration: none;
 	color: palegreen;
 }
 
-.visualization {
+#visualization {
 	margin-top: 20px;
 	border-top: 1px solid #ccc;
 	padding-top: 20px;

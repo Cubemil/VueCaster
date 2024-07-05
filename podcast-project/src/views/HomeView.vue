@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <h1 class="welcome-message">Welcome back! Here are some recommended podcasts for you!</h1>
+  <div id="home-view-container">
+    <h1 id="welcome-message">Welcome back! Here are some recommended podcasts for you!</h1>
     
-    <div class="head">
-      <h1 class="subheading">These are the top 30 hot podcasts right now:</h1>
+    <div id="head-area">
+      <h1 id="subheading">These are the top 30 hot podcasts right now:</h1>
       <button id="refresh-button" @click="getPodcastData">Refresh</button>
     </div>
     
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+#home-view-container {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -77,20 +77,20 @@ export default {
   align-items: flex-start;
 }
 
-.welcome-message {
+#welcome-message {
   font-size: 2.2em;
   font-weight: bold;
   margin-bottom: 20px;
   color: #1DB954; /* Spotify Green */
 }
 
-.subheading {
+#subheading {
   font-size: 1.5em;
   font-weight: normal;
   color: #ffffff;
 }
 
-.head {
+#head-area {
   display: flex;
   justify-content: space-between;
   max-width: 90%;

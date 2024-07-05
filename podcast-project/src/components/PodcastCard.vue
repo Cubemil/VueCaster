@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'PodcastElement',
+  name: 'PodcastCard',
   data() {
     return {
       liked: false

@@ -1,20 +1,20 @@
 <template>
-  <nav id="sidenav">
-    <ul id="sidenav-item-list">
-      <li class="sidenav-item">
-        <router-link id="router-link-home" to="/home" class="nav-link">
+  <nav id="app-sidenav">
+    <ul id="app-sidenav-item-list">
+      <li class="app-sidenav-item">
+        <router-link id="router-link-home" to="/home" class="router-link">
           <i class="fas fa-home nav-icon"></i>
           Home
         </router-link>
       </li>
-      <li class="sidenav-item">
-        <router-link id="router-link-search" to="/search" class="nav-link">
+      <li class="app-sidenav-item">
+        <router-link id="router-link-search" to="/search" class="router-link">
           <i class="fas fa-search nav-icon"></i>
           Search
         </router-link>
       </li>
-      <li class="sidenav-item">
-        <router-link id="router-link-saved" to="/saved" class="nav-link">
+      <li class="app-sidenav-item">
+        <router-link id="router-link-saved" to="/saved" class="router-link">
           <i class="fas fa-bookmark nav-icon"></i>
           Saved Podcasts
         </router-link>
@@ -24,11 +24,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'AppSidenav',
+};
 </script>
 
 <style scoped>
-#sidenav {
+#app-sidenav {
   height: 100vh;
   width: 240px;
   background-color: #121212;
@@ -38,17 +40,17 @@ export default {};
   overflow-y: auto;
 }
 
-#sidenav-item-list {
+#app-sidenav-item-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.sidenav-item {
+.app-sidenav-item {
   margin-bottom: 20px;
 }
 
-.nav-link {
+.router-link {
   display: flex;
   align-items: center;
   color: #B3B3B3;
@@ -61,30 +63,30 @@ export default {};
   font-size: 20px;
 }
 
-.nav-link:hover {
+.router-link:hover {
   color: #ffffff;
 }
 
-.nav-link.active {
+.router-link.active {
   color: #1db954;
 }
 
 /* Custom scrollbar styles */
-#sidenav::-webkit-scrollbar {
+#app-sidenav::-webkit-scrollbar {
   width: 12px;
 }
 
-#sidenav::-webkit-scrollbar-track {
+#app-sidenav::-webkit-scrollbar-track {
   background: #121212;
   border-radius: 10px;
 }
 
-#sidenav::-webkit-scrollbar-thumb {
+#app-sidenav::-webkit-scrollbar-thumb {
   background: #5a5959;
   border-radius: 10px;
 }
 
-#sidenav::-webkit-scrollbar-thumb:hover {
+#app-sidenav::-webkit-scrollbar-thumb:hover {
   background: #6e6d6d;
 }
 </style>

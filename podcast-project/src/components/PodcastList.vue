@@ -1,7 +1,7 @@
 <template>
-  <div class="podcast-container">
+  <div id="podcast-container">
     <div v-if="visiblePodcasts.length > 0" class="podcast-list">
-      <PodcastElement
+      <PodcastCard
         v-for="(podcast, index) in visiblePodcasts"
         :key="index"
         :podcast="podcast"
@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import PodcastElement from './PodcastElement.vue'
+import PodcastCard from './PodcastCard.vue'
 
 export default {
   name: 'PodcastList',
-  components: { PodcastElement },
+  components: { PodcastCard },
   props: ['podcasts'],
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style scoped>
-.podcast-container {
+#podcast-container {
   width: 100%;
   overflow-y: scroll;
   background: #121212;

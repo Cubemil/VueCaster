@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div id="audio-player-container">
     <div class="album-artwork">
       <img :src="albumArtworkUrl" alt="Album Artwork">
     </div>
@@ -117,7 +117,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+#audio-player-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
