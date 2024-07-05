@@ -1,30 +1,36 @@
 <template>
   <div id="audio-player-container">
-    <div id="album-artwork">
-      <img :src="albumArtworkUrl" alt="Album Artwork">
+    <div id="player-left">
+      <img :src="albumArtworkUrl" alt="Album Artwork" id="album-cover">
+      <div id="podcast-info">
+        <div id="podcast-title">{{ podcastTitle }}</div>
+        <div id="podcast-artist">{{ podcastArtist }}</div>
+      </div>
     </div>
-    <div id="controls">
-      <button @click="previousTrack" id="control-button">
-        <i id="fas fa-step-backward"></i>
-      </button>
-      <button @click="togglePlayPause" id="control-button">
-        <i :id="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
-      </button>
-      <button @click="nextTrack" id="control-button">
-        <i id="fas fa-step-forward"></i>
-      </button>
+    <div id="player-center">
+      <div id="controls">
+        <button @click="previouspodcast" id="control-button">
+          <i class="fas fa-step-backward"></i>
+        </button>
+        <button @click="togglePlayPause" id="control-button">
+          <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+        </button>
+        <button @click="nextpodcast" id="control-button">
+          <i class="fas fa-step-forward"></i>
+        </button>
+      </div>
+      <div id="playbar">
+        <span>{{ formatTime(currentTime) }}</span>
+        <input type="range" min="0" :max="duration" v-model="currentTime" @input="seek">
+        <span>{{ formatTime(duration) }}</span>
+      </div>
     </div>
-    <div id="progress-bar">
-      <span>{{ formatTime(currentTime) }}</span>
-      <input type="range" min="0" :max="duration" v-model="currentTime" @input="seek">
-      <span>{{ formatTime(duration) }}</span>
-    </div>
-    <div id="actions">
+    <div id="player-right">
       <button @click="toggleLike" id="action-button">
-        <i :id="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
+        <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
       <button id="action-button">
-        <i id="fas fa-list"></i>
+        <i class="fas fa-list"></i>
       </button>
     </div>
     <audio ref="audio" :src="audioUrl" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
@@ -45,6 +51,8 @@ export default {
     return {
       audioUrl: null,
       albumArtworkUrl: 'https://via.placeholder.com/50', // Placeholder image URL
+      podcastTitle: 'podcast Title', // Placeholder podcast title
+      podcastArtist: 'podcast Artist', // Placeholder podcast artist
       isPlaying: false,
       currentTime: 0,
       duration: 0,
@@ -88,11 +96,11 @@ export default {
       }
       this.isPlaying = !this.isPlaying;
     },
-    previousTrack() {
+    previouspodcast() {
       this.currentTime = Math.max(0, this.currentTime - 10); // Skip back 10 seconds
       this.seek();
     },
-    nextTrack() {
+    nextpodcast() {
       this.currentTime = Math.min(this.duration, this.currentTime + 10); // Skip forward 10 seconds
       this.seek();
     },
@@ -124,14 +132,43 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1% 3%;
-  background-color: #121212;
+  padding: 1% 2%;
+  background-color: #000000;
+  color: #fff;
 }
 
-#album-artwork img {
+#player-left {
+  display: flex;
+  align-items: center;
+}
+
+#album-cover {
   width: 50px;
   height: 50px;
   border-radius: 4px;
+  margin-right: 10px;
+}
+
+#podcast-info {
+  display: flex;
+  flex-direction: column;
+}
+
+#podcast-title {
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+#podcast-artist {
+  font-size: 0.8em;
+  color: #b3b3b3;
+}
+
+#player-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
 }
 
 #controls {
@@ -148,18 +185,19 @@ export default {
   cursor: pointer;
 }
 
-#progress-bar {
+#playbar {
   display: flex;
   align-items: center;
-  width: 40%;
+  width: 80%;
+  margin-top: 5px;
 }
 
-#progress-bar input[type="range"] {
+#playbar input[type="range"] {
   width: 100%;
   margin: 0 10px;
 }
 
-#actions {
+#player-right {
   display: flex;
   align-items: center;
 }

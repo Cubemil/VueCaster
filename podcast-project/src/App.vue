@@ -63,7 +63,6 @@ body {
 #main-area {
   flex: 90%;
   border-radius: 10px;
-  overflow-y: auto;
 }
 
 #sidenav-area, #main-area {
@@ -76,7 +75,6 @@ body {
   flex: 10%;
   display: flex;
   justify-content: center;
-  background-color: #121212;
 }
 
 /************* scrollbar *************/

@@ -32,6 +32,7 @@ export default {
 <style scoped>
 #app-sidenav {
   padding: 20px;
+  background: transparent;
 }
 
 #app-sidenav-item-list {
@@ -41,14 +42,15 @@ export default {
 }
 
 .app-sidenav-item {
-  margin-bottom: 20px;
+  margin-bottom: 20%;
 }
 
 .router-link {
   display: flex;
-  align-items: center;
+  align-items: left;
   color: #B3B3B3;
   text-decoration: none;
+  font-weight: bold;
   font-size: 16px;
 }
 

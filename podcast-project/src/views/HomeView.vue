@@ -67,9 +67,9 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto; /* Allows scrolling if content overflows */
-  background-color: #121212;
   color: #ffffff;
   align-items: flex-start;
+  background: transparent;
 }
 
 #welcome-message {
