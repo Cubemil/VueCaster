@@ -1,16 +1,16 @@
 <template>
-  <div id="app-container">
-    <div id="content">
-      <div id="app-sidenav">
+  <div id="app-container">  <!-- flex container for the meta layout (content and footer)-->
+    <div id="content">      <!-- flex container for the upper area layout (sidebar and main window)-->
+      <div id="sidenav-area">
         <AppSidenav/>
       </div>
 
-      <div id="main-content">
+      <div id="main-area">
         <router-view></router-view>
       </div>
     </div>
 
-    <div id="footer">
+    <div id="footer-area">
       <AppAudioPlayer/>
     </div>
   </div>
@@ -29,12 +29,17 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+}
+
 #app-container {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #fdfdfd;
-  background: #000000;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -42,44 +47,41 @@ export default {
 
 #content {
   display: flex;
-  flex: 1 0 80%;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: stretch;
+  flex: 0 0 90%;
 }
 
-#app-sidenav {
-  width: 15%;
+#sidenav-area {
+  flex: 0 0 10%;
   background: #121212;
-  border-radius: 0 10px 0 0;
-  padding: 20px;
-  box-sizing: border-box;
+  border-radius: 15px;
+  display: flex;
+}
+
+#main-area {
+  flex-grow: 1;
+  border-radius: 10px;
   overflow-y: auto;
 }
 
-#main-content {
-  width: 85%;
-  background: #181818;
-  border-radius: 10px 0 0 0;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;
+#sidenav-area, #main-area {
+  padding: 1%;
+  margin: 0.5%;
+  background-color: #121212;
 }
 
-#footer {
-  flex: 0 0 20%;
-  background: #282828;
+#footer-area {
+  z-index: 10000;
+  flex: 0 0 auto;
   display: flex;
   justify-content: center;
-  align-items: center;
-  border-radius: 0 0 10px 10px;
 }
 
 /************* scrollbar *************/
 
 /* width */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 1em;
 }
 
 /* Track */
@@ -98,4 +100,5 @@ export default {
 ::-webkit-scrollbar-thumb:hover {
   background: #6e6d6d;
 }
+
 </style>

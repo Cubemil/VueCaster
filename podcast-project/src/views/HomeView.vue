@@ -61,17 +61,12 @@ export default {
 
 <style scoped>
 #home-view-container {
-  position: fixed;
   display: flex;
   flex-direction: column;
-  top: 10px;
-  left: 274px;
-  width: calc(100% - 284px); /* 274px left margin + 10px right margin */
-  height: calc(100% - 20px); /* 10px top + 10px bottom */
-  padding-right: 10px;
-  box-sizing: border-box; /* Include padding in the width calculation */
+  align-items: center;
+  width: 100%;
+  height: 100%;
   overflow-y: auto; /* Allows scrolling if content overflows */
-  border-radius: 10px;
   background-color: #121212;
   color: #ffffff;
   align-items: flex-start;

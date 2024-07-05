@@ -38,13 +38,7 @@ export default {
 
 <style scoped>
 #search-view-container {
-  position: fixed;
-  top: 10px;
-  left: 274px;
-  width: calc(100% - 280px); /* 274px left margin + 10px right margin */
-  height: calc(100% - 20px); /* 10px top + 10px bottom */
   padding-right: 10px;
-  box-sizing: border-box; /* Include padding in the width calculation */
   overflow-y: auto; /* Allows scrolling if content overflows */
   border-radius: 5px;
   margin: 0;
@@ -52,7 +46,6 @@ export default {
 
 #search-bar {
   background-color: #121212;
-  position: absolute;
   left: -7px;
 }
 

@@ -1,30 +1,30 @@
 <template>
   <div id="audio-player-container">
-    <div class="album-artwork">
+    <div id="album-artwork">
       <img :src="albumArtworkUrl" alt="Album Artwork">
     </div>
-    <div class="controls">
-      <button @click="previousTrack" class="control-button">
-        <i class="fas fa-step-backward"></i>
+    <div id="controls">
+      <button @click="previousTrack" id="control-button">
+        <i id="fas fa-step-backward"></i>
       </button>
-      <button @click="togglePlayPause" class="control-button">
-        <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+      <button @click="togglePlayPause" id="control-button">
+        <i :id="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
       </button>
-      <button @click="nextTrack" class="control-button">
-        <i class="fas fa-step-forward"></i>
+      <button @click="nextTrack" id="control-button">
+        <i id="fas fa-step-forward"></i>
       </button>
     </div>
-    <div class="progress-bar">
+    <div id="progress-bar">
       <span>{{ formatTime(currentTime) }}</span>
       <input type="range" min="0" :max="duration" v-model="currentTime" @input="seek">
       <span>{{ formatTime(duration) }}</span>
     </div>
-    <div class="actions">
-      <button @click="toggleLike" class="action-button">
-        <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
+    <div id="actions">
+      <button @click="toggleLike" id="action-button">
+        <i :id="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
-      <button class="action-button">
-        <i class="fas fa-list"></i>
+      <button id="action-button">
+        <i id="fas fa-list"></i>
       </button>
     </div>
     <audio ref="audio" :src="audioUrl" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
@@ -122,23 +122,23 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 1% 4%;
   box-sizing: border-box;
   background-color: #000000;
 }
 
-.album-artwork img {
+#album-artwork img {
   width: 50px;
   height: 50px;
   border-radius: 4px;
 }
 
-.controls {
+#controls {
   display: flex;
   align-items: center;
 }
 
-.control-button {
+#control-button {
   background: none;
   border: none;
   color: #fff;
@@ -147,23 +147,23 @@ export default {
   cursor: pointer;
 }
 
-.progress-bar {
+#progress-bar {
   display: flex;
   align-items: center;
   width: 40%;
 }
 
-.progress-bar input[type="range"] {
+#progress-bar input[type="range"] {
   width: 100%;
   margin: 0 10px;
 }
 
-.actions {
+#actions {
   display: flex;
   align-items: center;
 }
 
-.action-button {
+#action-button {
   background: none;
   border: none;
   color: #fff;

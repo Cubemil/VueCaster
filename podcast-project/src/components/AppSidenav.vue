@@ -31,13 +31,7 @@ export default {
 
 <style scoped>
 #app-sidenav {
-  height: 100vh;
-  width: 240px;
-  background-color: #121212;
   padding: 20px;
-  box-sizing: border-box;
-  border-radius: 15px 0 0 15px;
-  overflow-y: auto;
 }
 
 #app-sidenav-item-list {
@@ -67,26 +61,4 @@ export default {
   color: #ffffff;
 }
 
-.router-link.active {
-  color: #1db954;
-}
-
-/* Custom scrollbar styles */
-#app-sidenav::-webkit-scrollbar {
-  width: 12px;
-}
-
-#app-sidenav::-webkit-scrollbar-track {
-  background: #121212;
-  border-radius: 10px;
-}
-
-#app-sidenav::-webkit-scrollbar-thumb {
-  background: #5a5959;
-  border-radius: 10px;
-}
-
-#app-sidenav::-webkit-scrollbar-thumb:hover {
-  background: #6e6d6d;
-}
 </style>
