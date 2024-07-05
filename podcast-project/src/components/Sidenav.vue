@@ -1,121 +1,90 @@
 <template>
-  <nav class="sidenav">
-    <div class="sidenav-part-one">
-      <ul class="sidenav-list">
-        <li class="sidenav-item">
-          <router-link class="router-link-home" to="/home">
-            <div id="home-icon"></div>
-            Home
-          </router-link>
-        </li>
-        <li class="sidenav-item">
-          <router-link class="router-link-search" to="/search">
-            <div id="search-icon"></div>
-            Search
-          </router-link>
-        </li>
-      </ul>
-    </div>
-    <div class="sidenav-part-two">
-      <ul class="sidenav-sub-list">
-        <li class="sidenav-sub-item"><div id="bookmarks-icon"></div>Subs</li>
-      </ul>
-    </div>
+  <nav id="sidenav">
+    <ul id="sidenav-item-list">
+      <li class="sidenav-item">
+        <router-link id="router-link-home" to="/home" class="nav-link">
+          <i class="fas fa-home nav-icon"></i>
+          Home
+        </router-link>
+      </li>
+      <li class="sidenav-item">
+        <router-link id="router-link-search" to="/search" class="nav-link">
+          <i class="fas fa-search nav-icon"></i>
+          Search
+        </router-link>
+      </li>
+      <li class="sidenav-item">
+        <router-link id="router-link-saved" to="/saved" class="nav-link">
+          <i class="fas fa-bookmark nav-icon"></i>
+          Saved Podcasts
+        </router-link>
+      </li>
+    </ul>
   </nav>
 </template>
 
+<script>
+export default {};
+</script>
+
 <style scoped>
-.sidenav {
+#sidenav {
   height: 100vh;
-}
-
-.sidenav-part-one {
-  height: 110px;
-  width: 260px;
+  width: 240px;
   background-color: #121212;
-  border-radius: 5px;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 15px 0 0 15px;
+  overflow-y: auto;
 }
 
-.sidenav-part-two {
-  position: relative;
-  top: 8px;
-  width: calc(100%); /* 274px left margin + 10px right margin */
-  height: calc(100% - 138px); /* 10px top + 10px bottom */
-  background-color: #121212;
-  border-radius: 5px;
-  overflow-y: scroll;
-}
-
-.sidenav-list {
-  text-align: left;
+#sidenav-item-list {
   list-style-type: none;
-  padding-left: 12px;
+  padding: 0;
+  margin: 0;
 }
 
 .sidenav-item {
-  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.nav-link {
   display: flex;
-}
-
-.router-link-home {
+  align-items: center;
   color: #B3B3B3;
   text-decoration: none;
+  font-size: 16px;
 }
 
-.router-link-search {
-  color: #B3B3B3;
-  text-decoration: none;
-  padding-left: 5px;
+.nav-icon {
+  margin-right: 16px;
+  font-size: 20px;
 }
 
-#home-icon {
-  background-image: url("@/assets/home-icon.svg");
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: relative;
-  top: 8px;
-  padding-right: 12px;
+.nav-link:hover {
+  color: #ffffff;
 }
 
-#search-icon {
-  background-image: url("@/assets/search-icon.png");
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: relative;
-  top: 4px;
-  padding-right: 16px;
+.nav-link.active {
+  color: #1db954;
 }
 
-#bookmarks-icon {
-  background-image: url("@/assets/bookmarks-icon.svg");
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: relative;
-  top: 7px;
-  padding-right: 18px;
-  cursor: pointer;
+/* Custom scrollbar styles */
+#sidenav::-webkit-scrollbar {
+  width: 12px;
 }
 
-.sidenav-sub-list {
-  list-style-type: none;
-  color: #B3B3B3;
-  padding-left: 26px;
-  text-align: left;
+#sidenav::-webkit-scrollbar-track {
+  background: #121212;
+  border-radius: 10px;
 }
 
-.sidenav-sub-item {
-  cursor: pointer;
+#sidenav::-webkit-scrollbar-thumb {
+  background: #5a5959;
+  border-radius: 10px;
+}
+
+#sidenav::-webkit-scrollbar-thumb:hover {
+  background: #6e6d6d;
 }
 </style>
-
-<script>
-</script>

@@ -1,11 +1,33 @@
 <template>
-  <div class="container" v-if="audioUrl">
-    <audio controls :src="audioUrl" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-  </div>
-  <div v-else>
-    Loading Audio Source...
+  <div class="container">
+    <div class="album-artwork">
+      <img :src="albumArtworkUrl" alt="Album Artwork">
+    </div>
+    <div class="controls">
+      <button @click="previousTrack" class="control-button">
+        <i class="fas fa-step-backward"></i>
+      </button>
+      <button @click="togglePlayPause" class="control-button">
+        <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+      </button>
+      <button @click="nextTrack" class="control-button">
+        <i class="fas fa-step-forward"></i>
+      </button>
+    </div>
+    <div class="progress-bar">
+      <span>{{ formatTime(currentTime) }}</span>
+      <input type="range" min="0" :max="duration" v-model="currentTime" @input="seek">
+      <span>{{ formatTime(duration) }}</span>
+    </div>
+    <div class="actions">
+      <button @click="toggleLike" class="action-button">
+        <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
+      </button>
+      <button class="action-button">
+        <i class="fas fa-list"></i>
+      </button>
+    </div>
+    <audio ref="audio" :src="audioUrl" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
   </div>
 </template>
 
@@ -20,6 +42,11 @@ export default {
   data() {
     return {
       audioUrl: null,
+      albumArtworkUrl: 'https://via.placeholder.com/50', // Placeholder image URL
+      isPlaying: false,
+      currentTime: 0,
+      duration: 0,
+      isLiked: false
     };
   },
   watch: {
@@ -35,10 +62,8 @@ export default {
   methods: {
     async loadPodcast(feedUrl) {
       try {
-        console.log('RSS url:', feedUrl);
         const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`);
         const data = await response.json();
-        console.log('RSS:', data);
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(data.contents, "text/xml");
         const items = xmlDoc.getElementsByTagName("item");
@@ -46,12 +71,46 @@ export default {
           const enclosures = items[0].getElementsByTagName("enclosure");
           if (enclosures.length > 0) {
             this.audioUrl = enclosures[0].getAttribute("url");
-            console.log('Audio URL:', this.audioUrl);
           }
         }
       } catch (error) {
         console.error('Failed to load podcast:', error);
       }
+    },
+    togglePlayPause() {
+      const audio = this.$refs.audio;
+      if (this.isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      this.isPlaying = !this.isPlaying;
+    },
+    previousTrack() {
+      this.currentTime = Math.max(0, this.currentTime - 10); // Skip back 10 seconds
+      this.seek();
+    },
+    nextTrack() {
+      this.currentTime = Math.min(this.duration, this.currentTime + 10); // Skip forward 10 seconds
+      this.seek();
+    },
+    seek() {
+      this.$refs.audio.currentTime = this.currentTime;
+    },
+    updateTime() {
+      this.currentTime = this.$refs.audio.currentTime;
+      this.duration = this.$refs.audio.duration;
+    },
+    loadMetadata() {
+      this.duration = this.$refs.audio.duration;
+    },
+    toggleLike() {
+      this.isLiked = !this.isLiked;
+    },
+    formatTime(time) {
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
     }
   }
 };
@@ -59,9 +118,57 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 600px;/*war 600px??? */
-  margin: auto;
-  padding: 20px;
-  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  background-color: #000000;
+}
+
+.album-artwork img {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+}
+
+.control-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  width: 40%;
+}
+
+.progress-bar input[type="range"] {
+  width: 100%;
+  margin: 0 10px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  margin: 0 10px;
+  cursor: pointer;
 }
 </style>
