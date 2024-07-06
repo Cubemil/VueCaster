@@ -1,10 +1,13 @@
 <template>
-  <div id="app-container">  <!-- flex container for the meta layout (content and footer)-->
-    <div id="content">      <!-- flex container for the upper area layout (sidebar and main window)-->
+  <div id="app-container">  <!-- column flex container for the meta layout (top bar, main content and footer)-->
+    <div class="top-bar">
+      <AppTopBar/>
+    </div>
+
+    <div id="content">      <!-- row flex container for the inner area layout (sidebar and main window)-->
       <div id="sidenav-area">
         <AppSidenav/>
       </div>
-
       <div id="main-area">
         <router-view></router-view>
       </div>
@@ -19,12 +22,13 @@
 <script>
 import '@fortawesome/fontawesome-free/css/all.css';
 
+import AppTopBar from "@/components/AppTopBar.vue";
 import AppSidenav from "@/components/AppSidenav.vue";
-import AppAudioPlayer from "./components/AppAudioPlayer.vue";
+import AppAudioPlayer from "@/components/AppAudioPlayer.vue";
 
 export default {
   name: 'App',
-  components: { AppSidenav, AppAudioPlayer }
+  components: { AppTopBar, AppSidenav, AppAudioPlayer }
 }
 </script>
 
@@ -34,6 +38,10 @@ body {
   padding: 0;
   background: #000000;
   height: 100vh;
+}
+
+.top-bar {
+  flex: 5%;
 }
 
 #app-container {
@@ -49,7 +57,7 @@ body {
 #content {
   display: flex;
   flex-direction: row;
-  flex: 90%;
+  flex: 85%;
   overflow: hidden;
 }
 
@@ -67,7 +75,7 @@ body {
 #sidenav-area, #main-area {
   padding: 1%;
   margin: 0.5%;
-  background-color: #121212;
+  background: linear-gradient(#121212, #000000);
 }
 
 #footer-area {

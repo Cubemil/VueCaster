@@ -1,6 +1,6 @@
 <template>
-  <div id="podcast-container">
-    <div v-if="visiblePodcasts.length > 0" class="podcast-list">
+  <div id="podcast-list-container">
+    <div v-if="visiblePodcasts.length > 0" id="podcast-list">
       <PodcastCard
         v-for="(podcast, index) in visiblePodcasts"
         :key="index"
@@ -51,20 +51,20 @@ export default {
 </script>
 
 <style scoped>
-#podcast-container {
+#podcast-list-container {
   width: 100%;
   overflow-y: scroll;
-  background: #121212;
+  background: transparent;
   margin: auto;
   border-radius: 10px;
 }
 
-.podcast-list {
+#podcast-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-top: 50px;
-  background: #121212;
+  background: transparent;
 }
 
 .pagination {

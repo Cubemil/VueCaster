@@ -15,5 +15,34 @@ import PodcastEpisodeList from '../components/PodcastEpisodeList.vue';
 
 export default {
 	name: 'PodcastView',
+	components: {PodcastDetails, PodcastEpisodeList},
+	
 }
 </script>
+
+<style scoped>
+#podcast-view-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	width: 100%;
+	height: 100%;
+	color: white;
+}
+
+#podcast-details {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+#podcast-episodes {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+</style>

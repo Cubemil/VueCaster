@@ -1,0 +1,39 @@
+<template>
+<div id="top-bar-container">
+    <div id="left-section">
+			<i class="fas fa-ellipsis-h"></i>
+		</div>
+		<div id="right-section">
+			<i class="fas fa-user-circle"></i>
+    </div>
+</div>
+</template>
+
+<script>
+import '@fortawesome/fontawesome-free/css/all.css';
+
+export default {
+	name: 'AppTopBar'	
+}
+</script>
+
+<style scoped>
+#top-bar-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 2%;
+	height: 100%;
+}
+
+#left-section, #right-section {
+	display: flex;
+	align-items: center;
+	color: #fdfdfd;
+}
+
+.fa-ellipsis-h, .fa-user-circle {
+	font-size: 200%;
+}
+
+</style>
