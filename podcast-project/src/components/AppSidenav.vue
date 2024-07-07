@@ -15,7 +15,7 @@
       </li>
       
       <li class="app-sidenav-item">
-        <router-link id="router-link-saved" to="/saved" class="router-link">
+        <router-link id="router-link-saved" to="/home" class="router-link"> <!-- Update to /saved later -->
           <i class="fas fa-bookmark nav-icon"></i>
           Saved Podcasts
         </router-link>
