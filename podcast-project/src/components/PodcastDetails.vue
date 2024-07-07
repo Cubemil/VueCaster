@@ -16,28 +16,24 @@
 		</div>
 	</div>
 	
-	<div v-else>
-		Loading podcast details...
+	<div v-else id="loading-area">
+		<i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
+		Loading podcast details
 	</div>
 
 </template>
 
 <script>
 export default {
-	name: 'Podcastdetails',
 	data() {
-		return {
-			data: {},
-		}
+		return { data: {} }
 	},
-	mounted() {
-		this.getPodcastDetails();
-	},
+	mounted() { this.getPodcastDetails() },
 	methods: {
 		async getPodcastDetails() {
 			try {
 				const podcastId = this.$route.params.podcastId;
-				let url = new URL('https://api.fyyd.de/0.2/podcast/');
+				const url = new URL('http://api.fyyd.de/0.2/podcast/episodes');
 				url.searchParams.append('podcast_id', podcastId);
 				const response = await fetch(url);
 				const body = await response.json();
@@ -57,9 +53,8 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: left;
-	padding: 20px;
-	width: 100%;
-	height: 100%;
+	padding: 2%;
+	height: 100vh;
 	color: white;
 	background-color: transparent;
 }
@@ -91,7 +86,6 @@ a {
 }
 
 p {
-	max-width: 800px;
 	text-align: left;
 	line-height: 1.6;
 }
@@ -105,8 +99,11 @@ p {
 }
 
 #visualization p {
-	margin: 10px 0;
 	color: #b3b3b3;
+}
+
+#loading-area {
+	font-size: 300%;
 }
 
 </style>

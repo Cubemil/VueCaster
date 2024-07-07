@@ -1,49 +1,41 @@
 <template>
-	<div id="podcast-view-container">
-		<div id="podcast-details">
-			<PodcastDetails/>
-		</div>
-		<div id="podcast-episodes">
-			<PodcastEpisodeList/>
-		</div>
-	</div>
+  <div id="podcast-view-container">
+    <div id="details-area">
+      <PodcastDetails/>
+    </div>
+    <div id="episodes-area">
+      <h2>Episodes</h2>
+      <PodcastEpisodeList/>
+    </div>
+  </div>
 </template>
 
-<script>
+<script setup>
 import PodcastDetails from '../components/PodcastDetails.vue';
 import PodcastEpisodeList from '../components/PodcastEpisodeList.vue';
-
-export default {
-	name: 'PodcastView',
-	components: {PodcastDetails, PodcastEpisodeList},
-	
-}
 </script>
 
 <style scoped>
 #podcast-view-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 20px;
-	overflow-y: auto;
-	width: 100%;
-	height: 100%;
-	color: white;
+  display: flex;
+  flex-direction: row;
+  padding: 1%;
 }
 
-#podcast-details {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
+#details-area {
+  flex: 50%;
+  display: flex;
+  align-items: center;
+  overflow-y: auto; /* scrollbar is always visible */
 }
 
-#podcast-episodes {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
+#episodes-area {
+  flex: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 10px;
+  overflow-y: auto; /* scrollbar is always visible */
+  padding-left: 10px; /* avoid details touching scrollbar */
 }
-
 </style>

@@ -1,16 +1,21 @@
 <template>
-    <div>
-        <!-- Your component's HTML template goes here -->
-    </div>
+	<div id="episode-list-container">
+	</div>
 </template>
+
+<script setup>
+</script>
 
 <script>
 export default {
-    name: 'PodcastEpisodeList',
-    // Your component's JavaScript logic goes here
+    
 }
 </script>
 
 <style scoped>
-/* Your component's CSS styles go here */
+#episode-list-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 </style>

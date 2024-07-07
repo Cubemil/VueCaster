@@ -53,7 +53,7 @@ export default {
 <style scoped>
 #podcast-list-container {
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   background: transparent;
   margin: auto;
   border-radius: 10px;

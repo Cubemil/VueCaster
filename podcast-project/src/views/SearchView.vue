@@ -1,52 +1,38 @@
 <template>
-  <div id="search-view-container">
-    <div id="search-bar-area">
-      <AppSearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
+  <div id="podcast-view-container">
+    <div id="details-area">
+      <PodcastDetails/>
     </div>
-    
-    <div id="categories">
-      <CategorySearchList/>
+    <div id="episodes-area">
+      <h2>Episodes</h2>
+      <PodcastEpisodeList/>
     </div>
-
-    <PodcastList :podcasts="podcasts"/>
   </div>
 </template>
 
 <script setup>
-import AppSearchBar from '../components/AppSearchBar.vue';
-import PodcastList from '../components/PodcastList.vue';
-import CategorySearchList from "@/components/CategorySearchList.vue";
-</script>
-
-<script>
-export default {
-  data() {
-    return { podcasts:[] }
-  },
-  methods: {
-    updatePodcasts(podcasts) {
-      this.podcasts = podcasts;
-      this.$refs.categories.style.display = 'none';
-    },
-    clearPodcasts() {
-      this.podcasts = [];
-      this.$refs.categories.style.display = 'block';
-    }
-  }
-}
+import PodcastDetails from '../components/PodcastDetails.vue';
+import PodcastEpisodeList from '../components/PodcastEpisodeList.vue';
 </script>
 
 <style scoped>
-#search-view-container {
+#podcast-view-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  color: #ffffff;
-  background: transparent;
+  flex-direction: row;
+  padding: 1%;
 }
 
-</style>
+#details-area {
+  flex: 50%;
+  overflow-y: auto;
+}
 
+#episodes-area {
+  flex: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-y: auto;
+  padding-left: 1%; /* avoid details touching scrollbar */
+}
+</style>
