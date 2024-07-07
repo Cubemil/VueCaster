@@ -19,21 +19,30 @@ export default {
   },
   methods: {
     inputNotEmpty() {
-      if (this.$refs.inputField.value !== '') {
-        this.$refs.deleteIcon.style.visibility = 'visible';
-      } else {
-        this.$refs.deleteIcon.style.visibility = 'hidden';
+      const inputField = this.$refs.inputField;
+      const deleteIcon = this.$refs.deleteIcon;
+      if (inputField && deleteIcon) {
+        if (inputField.value !== '') {
+          deleteIcon.style.visibility = 'visible';
+        } else {
+          deleteIcon.style.visibility = 'hidden';
+        }
       }
     },
     clearInput() {
-      this.$refs.inputField.value = '';
-      this.$refs.deleteIcon.style.visibility = 'hidden';
-      this.$emit('clear-search');  // Emit an event to clear the search results in the parent component
+      const inputField = this.$refs.inputField;
+      const deleteIcon = this.$refs.deleteIcon;
+      if (inputField && deleteIcon) {
+        inputField.value = '';
+        deleteIcon.style.visibility = 'hidden';
+        this.$emit('clear-search');  // Emit an event to clear the search results in the parent component
+      }
     },
     async fetchPodcasts() {
-      if (this.$refs.inputField.value !== '') {
-        this.$refs.inputField.style.outlineWidth = '0px';
-        this.$refs.inputField.blur();
+      const inputField = this.$refs.inputField;
+      if (inputField && inputField.value !== '') {
+        inputField.style.outlineWidth = '0px';
+        inputField.blur();
         await this.getPodcastData();
       }
     },
@@ -41,8 +50,9 @@ export default {
       this.isLoading = true;
       this.errorMessage = '';
       try {
-        if (this.$refs.inputField.value !== '') {
-          const podcastName = this.$refs.inputField.value.trim().toLowerCase();
+        const inputField = this.$refs.inputField;
+        if (inputField && inputField.value !== '') {
+          const podcastName = inputField.value.trim().toLowerCase();
           let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
           url.searchParams.append('title', podcastName);
           const response = await fetch(url);
@@ -65,6 +75,9 @@ export default {
       } finally {
         this.isLoading = false;
       }
+    },
+    onClick() {
+      // This method is currently empty, but you can add logic if needed
     }
   }
 }
@@ -82,7 +95,7 @@ export default {
   max-width: 600px;
 }
 
-#searchbar-container:focus-within { /*focus-within: matches an element if the element or any of its descendants are focused.*/
+#searchbar-container:focus-within {
   border: 1px solid #fdfdfd;
 }
 
