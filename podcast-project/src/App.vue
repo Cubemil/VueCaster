@@ -9,12 +9,12 @@
         <AppSidenav/>
       </div>
       <div id="main-area">
-        <router-view></router-view>
+        <router-view @playEpisode="setCurrentEpisode"></router-view>
       </div>
     </div>
 
     <div id="footer-area">
-      <AppAudioPlayer/>
+      <AppAudioPlayer :episode="currentEpisode"/>
     </div>
   </div>
 </template>
@@ -29,6 +29,9 @@ import AppAudioPlayer from "@/components/AppAudioPlayer.vue";
 
 <script>
 export default {
+  data() {
+    return { currentEpisode: null }
+  },
   mounted() {
     if (localStorage.getItem('categories') === null) {
       this.getCategories();
@@ -48,7 +51,11 @@ export default {
 			} catch (error) {
 				console.error('Failed to fetch categories:', error.message);
 			}
-		}
+		},
+    setCurrentEpisode(episode) {
+      console.log('Setting current episode:', episode);
+      this.currentEpisode = episode;
+    }
 	}
 }
 </script>

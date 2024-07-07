@@ -1,15 +1,13 @@
 <template>
   <div id="podcast-view-container">
-    
-		<div id="details-area">
+    <div id="details-area">
       <PodcastDetails :data="podcastDetails" />
     </div>
 
     <div id="episodes-area">
       <h2>Episodes</h2>
-      <PodcastEpisodeList :episodes="podcastEpisodes" :podcastImage="podcastDetails?.imgURL"/>
+      <PodcastEpisodeList :episodes="podcastEpisodes" :podcastImage="podcastDetails?.imgURL" @playEpisode="playEpisode"/>
     </div>
-
   </div>
 </template>
 
@@ -20,32 +18,35 @@ import PodcastEpisodeList from '../components/PodcastEpisodeList.vue';
 
 <script>
 export default {
-	data() {
-		return {
-			podcastDetails: null,
-			podcastEpisodes: [],
-		}
-	},
-	methods: {
-		async getPodcastData() {
-			try {
-				const podcastId = this.$route.params.podcastId;
-				
-				const url = new URL('http://api.fyyd.de/0.2/podcast/episodes');
-				url.searchParams.append('podcast_id', podcastId);
+  data() {
+    return {
+      podcastDetails: null,
+      podcastEpisodes: [],
+    }
+  },
+  methods: {
+    async getPodcastData() {
+      try {
+        const podcastId = this.$route.params.podcastId;
+        const url = new URL('http://api.fyyd.de/0.2/podcast/episodes');
+        url.searchParams.append('podcast_id', podcastId);
 
-				const response = await fetch(url).then(response => response.json());
+        const response = await fetch(url).then(response => response.json());
 
-				this.podcastDetails = response.data;
-				this.podcastEpisodes = response.data.episodes;
-			} catch (err) {
-				console.error('Error fetching podcast details:', err);
-			}
-		}
-	},
-	mounted() {
-		this.getPodcastData();
-	},
+        this.podcastDetails = response.data;
+        this.podcastEpisodes = response.data.episodes;
+      } catch (err) {
+        console.error('Error fetching podcast details:', err);
+      }
+    },
+    playEpisode(episode) {
+      console.log('Emitting episode:', episode);
+      this.$emit('playEpisode', episode); // Emit the event to app
+    }
+  },
+  mounted() {
+    this.getPodcastData();
+  }
 }
 </script>
 

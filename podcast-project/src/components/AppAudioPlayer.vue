@@ -1,21 +1,21 @@
 <template>
   <div id="audio-player-container">
     <div id="player-left">
-      <img :src="albumArtworkUrl" alt="Album Artwork" id="album-cover">
+      <img :src="currentEpisode?.imgURL || albumArtworkUrl" alt="Album Artwork" id="album-cover">
       <div id="podcast-info">
-        <div id="podcast-title">{{ podcastTitle }}</div>
-        <div id="podcast-artist">{{ podcastArtist }}</div>
+        <div id="podcast-title">{{ currentEpisode?.title || podcastTitle }}</div>
+        <div id="podcast-artist">{{ currentEpisode?.author || podcastArtist }}</div>
       </div>
     </div>
     <div id="player-center">
       <div id="controls">
-        <button @click="previouspodcast" id="control-button">
+        <button @click="previousPodcast" id="control-button">
           <i class="fas fa-step-backward"></i>
         </button>
         <button @click="togglePlayPause" id="control-button">
           <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
         </button>
-        <button @click="nextpodcast" id="control-button">
+        <button @click="nextPodcast" id="control-button">
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
@@ -33,7 +33,7 @@
         <i class="fas fa-list"></i>
       </button>
     </div>
-    <audio ref="audio" :src="audioUrl" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
+    <audio ref="audio" :src="currentEpisode?.enclosure || audioUrl" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
   </div>
 </template>
 
@@ -42,77 +42,94 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 export default {
   props: {
-    feedUrl: {
-      type: String,
-      required: true
-    }
+    episode: { type: Object, default: null }
   },
   data() {
     return {
+      currentEpisode: this.episode,
+      albumArtworkUrl: 'https://via.placeholder.com/50',
+      podcastTitle: 'Podcast Title',
+      podcastArtist: 'Podcast Artist',
       audioUrl: null,
-      albumArtworkUrl: 'https://via.placeholder.com/50', // Placeholder image URL
-      podcastTitle: 'podcast Title', // Placeholder podcast title
-      podcastArtist: 'podcast Artist', // Placeholder podcast artist
       isPlaying: false,
       currentTime: 0,
       duration: 0,
       isLiked: false
-    };
+    }
   },
   watch: {
-    feedUrl: {
+    episode: {
       handler(newValue) {
         if (newValue) {
-          this.loadPodcast(newValue);
+          console.log('New episode received:', newValue);
+          this.currentEpisode = newValue;
+          this.loadEpisode(newValue);
         }
       },
       immediate: true
     }
   },
   methods: {
-    async loadPodcast(feedUrl) {
-      try {
-        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`);
-        const data = await response.json();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-        const items = xmlDoc.getElementsByTagName("item");
-        if (items.length > 0) {
-          const enclosures = items[0].getElementsByTagName("enclosure");
-          if (enclosures.length > 0) {
-            this.audioUrl = enclosures[0].getAttribute("url");
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load podcast:', error);
+    loadEpisode(episode) {
+      const audio = this.$refs.audio;
+      if (audio) {
+        console.log('Loading episode:', episode);
+        audio.src = episode.enclosure;
+        audio.load();
+        this.isPlaying = false;
+        this.currentTime = 0;
+        this.duration = 0;
+      } else {
+        console.error('Audio element not found');
       }
     },
     togglePlayPause() {
       const audio = this.$refs.audio;
-      if (this.isPlaying) {
-        audio.pause();
+      if (audio) {
+        if (this.isPlaying) {
+          console.log('Pausing audio');
+          audio.pause();
+        } else {
+          console.log('Playing audio');
+          audio.play();
+        }
+        this.isPlaying = !this.isPlaying;
       } else {
-        audio.play();
+        console.error('Audio element not found');
       }
-      this.isPlaying = !this.isPlaying;
     },
-    previouspodcast() {
+    previousPodcast() {
       this.currentTime = Math.max(0, this.currentTime - 10); // Skip back 10 seconds
       this.seek();
     },
-    nextpodcast() {
+    nextPodcast() {
       this.currentTime = Math.min(this.duration, this.currentTime + 10); // Skip forward 10 seconds
       this.seek();
     },
     seek() {
-      this.$refs.audio.currentTime = this.currentTime;
+      const audio = this.$refs.audio;
+      if (audio) {
+        audio.currentTime = this.currentTime;
+      } else {
+        console.error('Audio element not found');
+      }
     },
     updateTime() {
-      this.currentTime = this.$refs.audio.currentTime;
-      this.duration = this.$refs.audio.duration;
+      const audio = this.$refs.audio;
+      if (audio) {
+        this.currentTime = audio.currentTime;
+        this.duration = audio.duration;
+      } else {
+        console.error('Audio element not found');
+      }
     },
     loadMetadata() {
-      this.duration = this.$refs.audio.duration;
+      const audio = this.$refs.audio;
+      if (audio) {
+        this.duration = audio.duration;
+      } else {
+        console.error('Audio element not found');
+      }
     },
     toggleLike() {
       this.isLiked = !this.isLiked;

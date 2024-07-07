@@ -6,6 +6,9 @@
         <h3>{{ episode.title }}</h3>
         <p>{{ episode.description }}</p>
       </div>
+      <button @click="playEpisode(episode)" class="play-button">
+        <i class="fas fa-play"></i>
+      </button>
     </div>
   </div>
 </template>
@@ -15,6 +18,12 @@ export default {
   props: {
     episodes: { type: Array, required: true },
     podcastImage: { type: String, required: true }
+  },
+  methods: {
+    playEpisode(episode) {
+      console.log('Selected Episode: ', episode);
+      this.$emit('playEpisode', episode);
+    }
   }
 }
 </script>
@@ -33,6 +42,7 @@ export default {
   padding: 10px;
   width: 100%;
   max-width: 800px;
+  cursor: pointer;
 }
 
 .episode-image {
@@ -61,5 +71,15 @@ export default {
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.play-button {
+  align-self: center;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  margin-left: 10px;
+  cursor: pointer;
 }
 </style>

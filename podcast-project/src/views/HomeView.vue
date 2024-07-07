@@ -11,20 +11,16 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import PodcastList from '../components/PodcastList.vue';
+</script>
 
+<script>
 export default {
-  name: 'HomeView',
-  components: { PodcastList },
   data() {
-    return {
-      podcasts: []
-    }
+    return { podcasts: [] }
   },
-  mounted() {
-    this.getPodcastData()
-  },
+  mounted() { this.getPodcastData() },
   methods: {
     async getPodcastData() {
       try {
