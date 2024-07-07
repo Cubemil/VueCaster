@@ -63,10 +63,9 @@ export default {
 #home-view-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
   height: 100%;
-  overflow-y: auto; /* Allows scrolling if content overflows */
+  overflow-y: auto;
   color: #ffffff;
   align-items: flex-start;
   background: transparent;

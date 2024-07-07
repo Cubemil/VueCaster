@@ -63,6 +63,7 @@ body {
 
 .top-bar {
   flex: 5%;
+  margin-bottom: -0.5%;
 }
 
 #app-container {

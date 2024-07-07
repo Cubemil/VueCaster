@@ -91,15 +91,6 @@ export default {
 #category-cards-container {
   display: flex;
   flex-wrap: wrap;
-  background: rgb(18, 18, 18);
-  margin: auto;
-  border-radius: 8px;
-}
-
-#category-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  background: rgb(18, 18, 18);
   margin: auto;
   border-radius: 8px;
 }

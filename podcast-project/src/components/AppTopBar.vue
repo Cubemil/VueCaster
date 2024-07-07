@@ -1,11 +1,11 @@
 <template>
 <div id="top-bar-container">
-    <div id="left-section">
-			<i class="fas fa-ellipsis-h"></i>
-		</div>
-		<div id="right-section">
-			<i class="fas fa-user-circle"></i>
-    </div>
+	<div id="left-section">
+		<i class="fas fa-ellipsis-h"></i>
+	</div>
+	<div id="right-section">
+		<i class="fas fa-user-circle"></i>
+	</div>
 </div>
 </template>
 
@@ -17,8 +17,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 2%;
-	height: 100%;
+	padding: 1% 2%;
 }
 
 #left-section, #right-section {
@@ -28,7 +27,7 @@
 }
 
 .fa-ellipsis-h, .fa-user-circle {
-	font-size: 200%;
+	font-size: 250%;
 }
 
 </style>

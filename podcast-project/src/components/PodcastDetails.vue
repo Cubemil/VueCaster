@@ -36,16 +36,16 @@ export default {
 	methods: {
 		async getPodcastDetails() {
 			try {
-					const podcastId = this.$route.params.podcastId;
-					let url = new URL('https://api.fyyd.de/0.2/podcast/');
-					url.searchParams.append('podcast_id', podcastId);
-					const response = await fetch(url);
-					const body = await response.json();
+				const podcastId = this.$route.params.podcastId;
+				let url = new URL('https://api.fyyd.de/0.2/podcast/');
+				url.searchParams.append('podcast_id', podcastId);
+				const response = await fetch(url);
+				const body = await response.json();
 
-					this.data = body.data;
-					console.log("Podcast details fetched: ", this.data);
+				this.data = body.data;
+				console.log("Podcast details fetched: ", this.data);
 			} catch (err) {
-					console.error('Error fetching podcast details:', err);
+				console.error('Error fetching podcast details:', err);
 			}
 		}
 	}
