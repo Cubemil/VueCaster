@@ -19,16 +19,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppSidenav from "@/components/AppSidenav.vue";
 import AppAudioPlayer from "@/components/AppAudioPlayer.vue";
+</script>
 
+<script>
 export default {
-  name: 'App',
-  components: { AppTopBar, AppSidenav, AppAudioPlayer }
+  mounted() {
+    if (localStorage.getItem('categories') === null) {
+      this.getCategories();
+    }
+		if (localStorage.getItem('favourites') === null) {
+			localStorage.setItem('favourites', JSON.stringify([]));
+		}
+  },
+  methods: {
+    async getCategories() {
+      try {
+        const response = await fetch('https://api.fyyd.de/0.2/categories').then(response => response.json());
+
+				if (response) {
+					localStorage.setItem('categories', JSON.stringify(response.data));
+				}
+			} catch (error) {
+				console.error('Failed to fetch categories:', error.message);
+			}
+		}
+	}
 }
 </script>
 
