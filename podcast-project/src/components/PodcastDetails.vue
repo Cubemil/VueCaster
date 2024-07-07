@@ -1,109 +1,93 @@
 <template>
-	<div id="podcast-detailed-view-container" v-if="data && data.title">
-		<img :src="data.imgURL" alt="Podcast Image" id="podcast-image" />
-		<h1>{{ data.title }}</h1>
-		<h2>{{ data.author || 'Author Unknown' }}</h2>
-		<a :href="data.htmlURL" target="_blank">Link to Podcast: {{ data.htmlURL }}</a>
-		<p v-html="data.description"></p>
+  <div id="podcast-detailed-view-container" v-if="data && data.title">
+    <img :src="data.imgURL" alt="Podcast Image" id="podcast-image" />
+    <h1>{{ data.title }}</h1>
+    <h2>{{ data.author || 'Author Unknown' }}</h2>
+    <a :href="data.htmlURL" target="_blank">Link to Podcast: {{ data.htmlURL }}</a>
+    <p v-html="data.description"></p>
 
-		<div id="visualization">
-			<p>Language: {{ data.language }}</p>
-			<p>Average episode length: {{ data.stats.medianduration_string }}</p>
-			<p>Episode count: {{ data.episode_count }}</p>
-			<p>Last publication: {{ data.lastpub }}</p>
-			<p>Publication interval: {{ data.stats.pubinterval_string }}</p>
-			<p>Complete duration: {{ data.stats.complete_duration_value }}</p>
-		</div>
-	</div>
-	
-	<div v-else id="loading-area">
-		<i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
-		Loading podcast details
-	</div>
+    <div id="visualization">
+      <p>Language: {{ data.language }}</p>
+      <p>Average episode length: {{ data.stats.medianduration_string }}</p>
+      <p>Episode count: {{ data.episode_count }}</p>
+      <p>Last publication: {{ data.lastpub }}</p>
+      <p>Publication interval: {{ data.stats.pubinterval_string }}</p>
+      <p>Complete duration: {{ data.stats.complete_duration_value }}</p>
+    </div>
+  </div>
 
+  <div v-else id="loading-area">
+    <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
+    Loading podcast details
+  </div>
 </template>
 
 <script>
 export default {
-	data() {
-		return { data: {} }
-	},
-	mounted() { this.getPodcastDetails() },
-	methods: {
-		async getPodcastDetails() {
-			try {
-				const podcastId = this.$route.params.podcastId;
-				const url = new URL('http://api.fyyd.de/0.2/podcast/episodes');
-				url.searchParams.append('podcast_id', podcastId);
-				const response = await fetch(url);
-				const body = await response.json();
-
-				this.data = body.data;
-				console.log("Podcast details fetched: ", this.data);
-			} catch (err) {
-				console.error('Error fetching podcast details:', err);
-			}
-		}
-	}
+  props: {
+    data: {}
+  },
+  mounted() {
+    console.log('PodcastDetails mounted with data:', this.data);
+  }
 }
 </script>
 
 <style scoped>
 #podcast-detailed-view-container {
-	display: flex;
-	flex-direction: column;
-	align-items: left;
-	padding: 2%;
-	height: 100vh;
-	color: white;
-	background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 2%;
+  height: 100vh;
+  color: white;
+  background-color: transparent;
 }
 
 #podcast-image {
-	width: 200px;
-	height: 200px;
-	border-radius: 10px;
-	object-fit: cover;
-	margin-bottom: 20px;
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
 
 h1 {
-	font-size: 2em;
-	font-weight: bold;
+  font-size: 2em;
+  font-weight: bold;
 }
 
 h2 {
-	font-size: 1.2em;
-	font-weight: normal;
-	color: #b3b3b3;
+  font-size: 1.2em;
+  font-weight: normal;
+  color: #b3b3b3;
 }
 
 a {
-	text-decoration: none;
-	color: palegreen;
-	margin-bottom: 20px;
-	display: block;
+  text-decoration: none;
+  color: palegreen;
+  margin-bottom: 20px;
+  display: block;
 }
 
 p {
-	text-align: left;
-	line-height: 1.6;
+  text-align: left;
+  line-height: 1.6;
 }
 
 #visualization {
-	margin-top: 20px;
-	width: 100%;
-	max-width: 800px;
-	text-align: left;
-	padding-top: 20px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+  padding-top: 20px;
 }
 
 #visualization p {
-	color: #b3b3b3;
+  color: #b3b3b3;
 }
 
 #loading-area {
-	font-size: 300%;
+  font-size: 300%;
 }
-
 </style>
