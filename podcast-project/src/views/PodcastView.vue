@@ -7,7 +7,7 @@
 
     <div id="episodes-area">
       <h2>Episodes</h2>
-      <PodcastEpisodeList :episodes="podcastEpisodes" />
+      <PodcastEpisodeList :episodes="podcastEpisodes" :podcastImage="podcastDetails?.imgURL"/>
     </div>
 
   </div>
@@ -59,7 +59,7 @@ export default {
 #details-area {
   flex: 50%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 	height: 100vh;
   overflow-y: auto;
 }

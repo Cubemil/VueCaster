@@ -37,9 +37,8 @@ export default {
 #podcast-detailed-view-container {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   padding: 2%;
-  height: 100vh;
   color: white;
   background-color: transparent;
 }
@@ -78,7 +77,6 @@ p {
 #visualization {
   margin-top: 20px;
   width: 100%;
-  max-width: 800px;
   text-align: left;
   padding-top: 20px;
 }
