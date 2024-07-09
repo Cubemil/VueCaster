@@ -1,54 +1,76 @@
 <template>
-  <div id="app-container">  <!-- column flex container for the meta layout (top bar, main content and footer)-->
+  <div id="app-container">
     <div class="top-bar">
       <AppTopBar/>
     </div>
-
-    <div id="content">      <!-- row flex container for the inner area layout (sidebar and main window)-->
+    <div id="content">
       <div id="sidenav-area">
         <AppSidenav ref="sidenav"/>
       </div>
       <div id="main-area">
-        <router-view @playEpisode="setCurrentEpisode"></router-view>
+        <router-view @playEpisode="setCurrentEpisode" @addToQueue="addToQueue"></router-view>
       </div>
     </div>
-
     <div id="footer-area">
-      <AppAudioPlayer :episode="currentEpisode"/>
+      <AppAudioPlayer :episode="currentEpisode" @toggleQueue="toggleQueue"/>
+      <QueueController v-if="showQueue" :queue="queue" @playEpisode="setCurrentEpisode" @removeFromQueue="removeFromQueue" @closeQueue="toggleQueue"/>
     </div>
   </div>
 </template>
 
 <script setup>
 import '@fortawesome/fontawesome-free/css/all.css';
-
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppSidenav from "@/components/AppSidenav.vue";
 import AppAudioPlayer from "@/components/AppAudioPlayer.vue";
+import QueueController from "@/components/QueueController.vue";
 </script>
 
 <script>
 export default {
-  data() { return { currentEpisode: null }},
-  mounted() {
-    if (localStorage.getItem('categories') === null) this.getCategories()
-		if (localStorage.getItem('favourites') === null) localStorage.setItem('favourites', JSON.stringify([]))
+  data() {
+    return {
+      currentEpisode: null,
+      queue: JSON.parse(localStorage.getItem('queue') || '[]'),
+      showQueue: false
+    }
   },
   methods: {
-    async getCategories() {
-      try {
-        const response = await fetch('https://api.fyyd.de/0.2/categories').then(response => response.json());
-
-				if (response) localStorage.setItem('categories', JSON.stringify(response.data));
-			} catch (error) {
-				console.error('Failed to fetch categories:', error.message);
-			}
-		},
     setCurrentEpisode(episode) {
       console.log('Setting current episode:', episode);
       this.currentEpisode = episode;
+    },
+    addToQueue(episode) {
+      this.queue.push(episode);
+      localStorage.setItem('queue', JSON.stringify(this.queue));
+      console.log('Added to queue:', episode);
+    },
+    removeFromQueue(index) {
+      this.queue.splice(index, 1);
+      localStorage.setItem('queue', JSON.stringify(this.queue));
+    },
+    toggleQueue() {
+      this.showQueue = !this.showQueue;
+    },
+    async getCategories() {
+      try {
+        const response = await fetch('https://api.fyyd.de/0.2/categories');
+        const data = await response.json();
+        localStorage.setItem('categories', JSON.stringify(data.data));
+      } catch (error) {
+        console.error('Failed to fetch categories:', error.message);
+      }
     }
-	}
+  },
+  mounted() {
+    if (localStorage.getItem('categories') === null) this.getCategories();
+    if (localStorage.getItem('favourites') === null) localStorage.setItem('favourites', JSON.stringify([]));
+  },
+  watch: {
+    queue(newQueue) {
+      localStorage.setItem('queue', JSON.stringify(newQueue));
+    }
+  }
 }
 </script>
 
@@ -107,7 +129,6 @@ body {
 }
 
 /************* scrollbar *************/
-
 /* width */
 ::-webkit-scrollbar {
   width: 1em;
@@ -136,5 +157,4 @@ body {
     justify-content: center;
   }
 }
-
 </style>

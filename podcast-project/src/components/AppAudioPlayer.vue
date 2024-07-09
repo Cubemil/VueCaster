@@ -29,7 +29,7 @@
       <button @click="toggleLike" id="action-button">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
-      <button id="action-button">
+      <button @click="$emit('toggleQueue')" id="action-button">
         <i class="fas fa-list"></i>
       </button>
     </div>
@@ -239,5 +239,4 @@ export default {
     height: 50px;
   }
 }
-
 </style>

@@ -9,6 +9,9 @@
       <button @click="playEpisode(episode)" class="play-button">
         <i class="fas fa-play"></i>
       </button>
+      <button @click="addToQueue(episode)" class="queue-button">
+        <i class="fas fa-plus"></i>
+      </button>
     </div>
   </div>
 </template>
@@ -23,6 +26,10 @@ export default {
     playEpisode(episode) {
       console.log('Selected Episode: ', episode);
       this.$emit('playEpisode', episode);
+    },
+    addToQueue(episode) {
+      console.log('Added to queue: ', episode);
+      this.$emit('addToQueue', episode);
     }
   }
 }
@@ -73,7 +80,7 @@ export default {
   overflow: hidden;
 }
 
-.play-button {
+.play-button, .queue-button {
   align-self: center;
   background: none;
   border: none;
