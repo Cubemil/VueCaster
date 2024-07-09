@@ -1,7 +1,7 @@
 <template>
   <div id="podcast-view-container">
     <div id="details-area">
-      <PodcastDetails :data="podcastDetails" />
+      <PodcastDetails :data="podcastDetails"/>
     </div>
 
     <div id="episodes-area">
@@ -55,14 +55,15 @@ export default {
   display: flex;
   flex-direction: row;
   padding: 1%;
+  font-size: 100%;
+  height: 100vh;
+  overflow: auto;
 }
 
 #details-area {
   flex: 50%;
   display: flex;
   align-items: flex-start;
-	height: 100vh;
-  overflow-y: auto;
 }
 
 #episodes-area {
@@ -70,8 +71,21 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-	height: 100vh;
-  overflow-y: auto;
   padding-left: 10px;
 }
+
+@media screen and (max-width: 768px) {
+  #podcast-view-container {
+    flex-direction: column;
+    font-size: 150%;
+    max-width: 80vw;
+  }
+
+  #details-area, #episodes-area {
+    flex: none;
+    width: 100%;
+  }
+  
+}
+
 </style>
