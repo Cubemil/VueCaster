@@ -6,7 +6,7 @@
 
     <div id="content">      <!-- row flex container for the inner area layout (sidebar and main window)-->
       <div id="sidenav-area">
-        <AppSidenav/>
+        <AppSidenav ref="sidenav"/>
       </div>
       <div id="main-area">
         <router-view @playEpisode="setCurrentEpisode"></router-view>
@@ -39,9 +39,7 @@ export default {
       try {
         const response = await fetch('https://api.fyyd.de/0.2/categories').then(response => response.json());
 
-				if (response) {
-					localStorage.setItem('categories', JSON.stringify(response.data));
-				}
+				if (response) localStorage.setItem('categories', JSON.stringify(response.data));
 			} catch (error) {
 				console.error('Failed to fetch categories:', error.message);
 			}
@@ -88,6 +86,7 @@ body {
   flex: 10%;
   border-radius: 15px;
   display: flex;
+  justify-content: left;
 }
 
 #main-area {
@@ -129,6 +128,13 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #6e6d6d;
+}
+
+@media screen and (max-width: 768px) {
+  #sidenav-area {
+    width: 10%;
+    justify-content: center;
+  }
 }
 
 </style>
