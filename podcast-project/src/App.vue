@@ -29,16 +29,10 @@ import AppAudioPlayer from "@/components/AppAudioPlayer.vue";
 
 <script>
 export default {
-  data() {
-    return { currentEpisode: null }
-  },
+  data() { return { currentEpisode: null }},
   mounted() {
-    if (localStorage.getItem('categories') === null) {
-      this.getCategories();
-    }
-		if (localStorage.getItem('favourites') === null) {
-			localStorage.setItem('favourites', JSON.stringify([]));
-		}
+    if (localStorage.getItem('categories') === null) this.getCategories()
+		if (localStorage.getItem('favourites') === null) localStorage.setItem('favourites', JSON.stringify([]))
   },
   methods: {
     async getCategories() {

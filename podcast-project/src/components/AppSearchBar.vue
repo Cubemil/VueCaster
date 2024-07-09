@@ -2,7 +2,7 @@
   <div id="searchbar-container">
     <i class="fas fa-search" id="search-icon" @click="fetchPodcasts"></i>
     <input id="searchbar-input" type="text" placeholder="What do you want to play?" size="40"
-           ref="inputField" @input="inputNotEmpty" @keydown.enter="fetchPodcasts" @click="onClick">
+           ref="inputField" @input="inputNotEmpty" @keydown.enter="fetchPodcasts">
     <i class="fas fa-times" id="delete-icon" ref="deleteIcon" @click="clearInput"></i>
     <i v-if="isLoading" class="fas fa-spinner fa-spin" id="loading-indicator"></i>
   </div>
@@ -10,7 +10,6 @@
 
 <script>
 export default {
-  name: 'AppSearchBar',
   data() {
     return {
       isLoading: false,
@@ -76,9 +75,6 @@ export default {
         this.isLoading = false;
       }
     },
-    onClick() {
-      // This method is currently empty, but you can add logic if needed
-    }
   }
 }
 </script>

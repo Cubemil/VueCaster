@@ -4,8 +4,8 @@
       <AppSearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     </div>
     
-    <div id="categories">
-      <CategorySearchList/>
+    <div id="categories" ref="categories">
+      <CategorySearchList @search-performed="updatePodcasts"/>
     </div>
 
     <PodcastList :podcasts="podcasts"/>
@@ -20,9 +20,7 @@ import CategorySearchList from "@/components/CategorySearchList.vue";
 
 <script>
 export default {
-  data() {
-    return { podcasts:[] }
-  },
+  data() { return { podcasts:[] }},
   methods: {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts;

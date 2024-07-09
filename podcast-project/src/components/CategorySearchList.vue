@@ -2,24 +2,24 @@
   <div id="categories-container">
     <div id="categoriesTitle">Categories</div>
     <div id="category-cards-container">
-      <div class="cards" style="background: rgb(13, 114, 235)" @click="getPodcastsInCategory(1)">
+      <div class="cards" style="background: rgb(13, 114, 235)" @click="getPodcastsInCategory('Arts')">
         <h2>Arts</h2>
       </div>
-      <div class="cards" style="background: rgb(141, 102, 171)" @click="getPodcastsInCategory(4)">
+      <div class="cards" style="background: rgb(141, 102, 171)" @click="getPodcastsInCategory('Food')">
         <h2>Food</h2>
       </div>
-      <div class="cards" style="background: rgb(232, 20, 41)" @click="getPodcastsInCategory(5)">
+      <div class="cards" style="background: rgb(232, 20, 41)" @click="getPodcastsInCategory('Literature')">
         <h2>Literature</h2>
       </div>
-      <div class="cards" style="background: rgb(39, 132, 106)" @click="getPodcastsInCategory(8)">
+      <div class="cards" style="background: rgb(39, 132, 106)" @click="getPodcastsInCategory('Business')">
         <h2>Business</h2>
       </div>
-      <div class="cards" style="background: rgb(224, 51, 0)" @click="getPodcastsInCategory(14)">
+      <div class="cards" style="background: rgb(224, 51, 0)" @click="getPodcastsInCategory('Comedy')">
         <h2>Comedy</h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
-    <div v-if="isLoading" id="loading-message">Loading...</div>
+    <i v-if="isLoading" class="fas fa-spinner fa-spin" id="loading-indicator"></i>
   </div>
 </template>
 
@@ -33,10 +33,21 @@ export default {
     };
   },
   methods: {
-    async getPodcastsInCategory(categoryId) {
+    async getPodcastsInCategory(categoryName) {
       this.errorMessage = null;
       this.isLoading = true;
+
       try {
+        // Retrieve categories from local storage
+        const categories = JSON.parse(localStorage.getItem('categories'));
+
+        // Find the category ID that matches the category name
+        const category = categories.find(cat => cat.name === categoryName);
+        
+        if (!category) throw new Error('Category not found');
+
+        const categoryId = category.id;
+        
         const url = new URL('https://api.fyyd.de/0.2/category');
         url.searchParams.append('category_id', categoryId);
 
@@ -117,8 +128,9 @@ export default {
   margin-top: 10px;
 }
 
-#loading-message {
+#loading-indicator {
   color: #fbfbfb;
+  font-size: 300%;
   text-align: center;
   margin-top: 10px;
 }

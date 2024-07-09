@@ -10,34 +10,36 @@
         :podcastTitle="podcast.title"
         :podcastAuthor="podcast.author"/>
     </div>
+    <div v-else id="no-podcasts-message">No podcasts found</div>
 
     <div class="pagination">
-      <div v-if="currentPage > 0" @click="previousPage" class="pagination_button" id="previous_button"></div>
-      <div v-if="podcasts.length > (currentPage + 1) * 15" @click="nextPage" class="pagination_button" id="next_button"></div>
+      <div v-if="currentPage > 0" @click="previousPage" class="pagination-button" id="previous-button"></div>
+      <div v-if="podcasts.length > (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button"></div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import PodcastCard from './PodcastCard.vue'
+</script>
 
+<script>
 export default {
-  name: 'PodcastList',
-  components: { PodcastCard },
-  props: ['podcasts'],
-  data() {
-    return {
-      visiblePodcasts: [],
-      currentPage: 0
-    }
-  },
+  props: { podcasts:  { type: Array, required: true }},
+  data() { return     { visiblePodcasts: [], currentPage: 0}},
   watch: {
     podcasts() {
       this.currentPage = 0;
-      this.visiblePodcasts = this.podcasts.slice(0, 15);
+      this.updateVisiblePodcasts();
     }
   },
+  mounted() {
+    this.updateVisiblePodcasts();
+  },
   methods: {
+    updateVisiblePodcasts() {
+      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15);
+    },
     nextPage() {
       this.currentPage++;
       this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15);
@@ -73,7 +75,7 @@ export default {
   justify-content: center;
 }
 
-.pagination_button {
+.pagination-button {
   background-size: contain;
   background-repeat: no-repeat;
   border: none;
@@ -82,11 +84,18 @@ export default {
   cursor: pointer;
 }
 
-#previous_button {
+#previous-button {
   background-image: url("../assets/previous_arrow.png");
 }
 
-#next_button {
+#next-button {
   background-image: url("../assets/next_arrow.png");
 }
+
+#no-podcasts-message {
+  color: #242424;
+  font-size: 300%;
+  text-align: center;
+}
+
 </style>
