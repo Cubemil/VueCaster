@@ -152,6 +152,7 @@ export default {
   padding: 1% 2%;
   background-color: #000000;
   color: #fff;
+  font-size: 200%;
 }
 
 #player-left {
@@ -160,8 +161,8 @@ export default {
 }
 
 #album-cover {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   border-radius: 4px;
   margin-right: 10px;
 }
@@ -227,4 +228,16 @@ export default {
   margin: 0 10px;
   cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+  #audio-player-container {
+    font-size: 100%;
+  }
+
+  #album-cover {
+    width: 50px;
+    height: 50px;
+  }
+}
+
 </style>
