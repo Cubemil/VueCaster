@@ -2,20 +2,20 @@
   <div id="categories-container">
     <div id="categoriesTitle">Categories</div>
     <div id="category-cards-container">
-      <div class="cards" style="background: rgb(13, 114, 235)" @click="getPodcastsInCategory('Arts')">
+      <div class="cards" style="background: rgb(13, 114, 235)" @click="getPodcastsInCategory('arts')">
         <h2>Arts</h2>
       </div>
-      <div class="cards" style="background: rgb(141, 102, 171)" @click="getPodcastsInCategory('Food')">
+      <div class="cards" style="background: rgb(141, 102, 171)" @click="getPodcastsInCategory('food')">
         <h2>Food</h2>
       </div>
-      <div class="cards" style="background: rgb(232, 20, 41)" @click="getPodcastsInCategory('Literature')">
-        <h2>Literature</h2>
+      <div class="cards" style="background: rgb(232, 20, 41)" @click="getPodcastsInCategory('science')">
+        <h2>Science</h2>
       </div>
-      <div class="cards" style="background: rgb(39, 132, 106)" @click="getPodcastsInCategory('Business')">
+      <div class="cards" style="background: rgb(39, 132, 106)" @click="getPodcastsInCategory('technology')">
+        <h2>Technology</h2>
+      </div>
+      <div class="cards" style="background: rgb(224, 51, 0)" @click="getPodcastsInCategory('business')">
         <h2>Business</h2>
-      </div>
-      <div class="cards" style="background: rgb(224, 51, 0)" @click="getPodcastsInCategory('Comedy')">
-        <h2>Comedy</h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
@@ -25,7 +25,6 @@
 
 <script>
 export default {
-  name: 'CategorySearchList',
   data() {
     return {
       errorMessage: null,
@@ -38,12 +37,18 @@ export default {
       this.isLoading = true;
 
       try {
-        // Retrieve categories from local storage
+        // retrieve categories from local storage
         const categories = JSON.parse(localStorage.getItem('categories'));
+        let category = null;
 
-        // Find the category ID that matches the category name
-        const category = categories.find(cat => cat.name === categoryName);
-        
+        // find id that matches category name
+        for (let i = 0; i < categories.length; i++) {
+          if (categories[i].name.toLowerCase() === categoryName.toLowerCase()) {
+            category = categories[i];
+            break;
+          }
+        }
+
         if (!category) throw new Error('Category not found');
 
         const categoryId = category.id;
@@ -74,14 +79,14 @@ export default {
 
         this.$emit('search-performed', podcasts);
       } catch (error) {
-        console.error('Failed to fetch podcasts:', error.message);
+        console.error('Failed to fetch podcasts:', error.message)
         this.errorMessage = error.message;
       } finally {
         this.isLoading = false;
       }
     },
   },
-};
+}
 </script>
 
 <style scoped>
