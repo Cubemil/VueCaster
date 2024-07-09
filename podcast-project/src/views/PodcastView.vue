@@ -3,10 +3,9 @@
     <div id="details-area">
       <PodcastDetails :data="podcastDetails"/>
     </div>
-
     <div id="episodes-area">
       <h2>Episodes</h2>
-      <PodcastEpisodeList :episodes="podcastEpisodes" :podcastImage="podcastDetails?.imgURL" @playEpisode="playEpisode"/>
+      <PodcastEpisodeList :episodes="podcastEpisodes" :podcastImage="podcastDetails?.imgURL" @playEpisode="playEpisode" @addToQueue="addToQueue"/>
     </div>
   </div>
 </template>
@@ -21,8 +20,8 @@ export default {
   data() {
     return {
       podcastDetails: null,
-      podcastEpisodes: [],
-    }
+      podcastEpisodes: []
+    };
   },
   methods: {
     async getPodcastData() {
@@ -42,6 +41,10 @@ export default {
     playEpisode(episode) {
       console.log('Emitting episode:', episode);
       this.$emit('playEpisode', episode); // Emit the event to app
+    },
+    addToQueue(episode) {
+      console.log('Adding episode to queue:', episode);
+      this.$emit('addToQueue', episode); // Emit the event to app
     }
   },
   mounted() {
@@ -85,7 +88,5 @@ export default {
     flex: none;
     width: 100%;
   }
-  
 }
-
 </style>

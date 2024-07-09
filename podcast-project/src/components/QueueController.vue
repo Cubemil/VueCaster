@@ -1,5 +1,5 @@
 <template>
-  <div id="queue-modal">
+  <div id="queue-controller">
     <div class="queue-header">
       <h2>Queue</h2>
       <button @click="closeQueue" class="close-button">
@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style scoped>
-#queue-QueueController {
+#queue-controller {
   position: fixed;
   bottom: 100px;
   right: 20px;

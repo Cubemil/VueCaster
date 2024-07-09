@@ -33,7 +33,7 @@ export default {
       currentEpisode: null,
       queue: JSON.parse(localStorage.getItem('queue') || '[]'),
       showQueue: false
-    }
+    };
   },
   methods: {
     setCurrentEpisode(episode) {

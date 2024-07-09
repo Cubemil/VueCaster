@@ -28,7 +28,7 @@ export default {
       this.$emit('playEpisode', episode);
     },
     addToQueue(episode) {
-      console.log('Added to queue: ', episode);
+      console.log('Adding to queue: ', episode);
       this.$emit('addToQueue', episode);
     }
   }
