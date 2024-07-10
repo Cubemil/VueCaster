@@ -10,7 +10,7 @@
         :podcastTitle="podcast.title"
         :podcastAuthor="podcast.author"/>
     </div>
-    <div v-else id="no-podcasts-message">No podcasts found</div>
+    <!--<div v-else id="no-podcasts-message">No podcasts found</div>-->
 
     <div class="pagination">
       <div v-if="currentPage > 0" @click="previousPage" class="pagination-button" id="previous-button"></div>

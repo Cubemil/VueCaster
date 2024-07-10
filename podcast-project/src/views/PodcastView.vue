@@ -27,13 +27,16 @@ export default {
     async getPodcastData() {
       try {
         const podcastId = this.$route.params.podcastId;
-        const url = new URL('http://api.fyyd.de/0.2/podcast/episodes');
+        const url = new URL('https://api.fyyd.de/0.2/podcast/episodes');
         url.searchParams.append('podcast_id', podcastId);
 
-        const response = await fetch(url).then(response => response.json());
+        const response = await fetch(url);
+        const body = await response.json();
 
-        this.podcastDetails = response.data;
-        this.podcastEpisodes = response.data.episodes;
+        this.podcastDetails = body.data;
+        this.podcastEpisodes = body.data.episodes;
+        console.log('Podcast details:', this.podcastDetails);
+        console.log('Podcast episodes:', this.podcastEpisodes);
       } catch (err) {
         console.error('Error fetching podcast details:', err);
       }
