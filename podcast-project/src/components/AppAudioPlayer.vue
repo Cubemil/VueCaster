@@ -162,8 +162,12 @@ export default {
       this.isLiked = !this.isLiked
     },
     formatTime(time) {
-      const minutes = Math.floor(time / 60)
+      const hours = Math.floor(time / 3600)
+      const minutes = Math.floor((time % 3600) / 60)
       const seconds = Math.floor(time % 60).toString().padStart(2, '0')
+      if (hours > 0) {
+        return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds}`
+      }
       return `${minutes}:${seconds}`
     }
   }
@@ -173,13 +177,14 @@ export default {
 <style scoped>
 #audio-player-container {
   width: 100%;
+  height: 10vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1% 2%;
-  background-color: #000000;
+  padding: 0.5em 1em;
+  background-color: black;
   color: #fff;
-  font-size: 200%;
+  font-size: 1.7em;
 }
 
 #player-left, #player-center, #player-right {
@@ -195,10 +200,10 @@ export default {
 }
 
 #album-cover {
-  width: 100px;
-  height: 100px;
+  width: 4em;
+  height: 4em;
   border-radius: 4px;
-  margin-right: 10px;
+  margin-right: 0.5em;
 }
 
 #podcast-info {
@@ -208,11 +213,10 @@ export default {
 }
 
 #podcast-title {
-  font-size: 0.9em;
+  font-size: 1em;
   font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
-  position: relative;
   animation: marquee 10s linear infinite;
 }
 
@@ -224,15 +228,16 @@ export default {
 }
 
 #podcast-artist {
-  font-size: 0.5em;
+  font-size: 0.8em;
   color: #b3b3b3;
 }
 
 #player-center {
   display: flex;
+  height: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   flex: 1 1 60%;
 }
 
@@ -245,8 +250,8 @@ export default {
   background: none;
   border: none;
   color: #fff;
-  font-size: 1.5em;
-  margin: 0 10px;
+  font-size: 1.2em;
+  margin: 0 0.5em;
   cursor: pointer;
 }
 
@@ -254,12 +259,11 @@ export default {
   display: flex;
   align-items: center;
   width: 80%;
-  margin-top: 5px;
 }
 
 #playbar input[type="range"] {
   width: 100%;
-  margin: 0 10px;
+  margin: 0 0.5em;
 }
 
 #player-right {
@@ -273,19 +277,19 @@ export default {
   background: none;
   border: none;
   color: #fff;
-  font-size: 1.5em;
-  margin: 0 10px;
+  font-size: 1.2em;
+  margin: 0 0.5em;
   cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
   #audio-player-container {
-    font-size: 100%;
+    font-size: 1em;
   }
 
   #album-cover {
-    width: 50px;
-    height: 50px;
+    width: 3em;
+    height: 3em;
   }
 }
 </style>
