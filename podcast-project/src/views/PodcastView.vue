@@ -26,32 +26,33 @@ export default {
   methods: {
     async getPodcastData() {
       try {
-        const podcastId = this.$route.params.podcastId;
-        const url = new URL('https://api.fyyd.de/0.2/podcast/episodes');
-        url.searchParams.append('podcast_id', podcastId);
+        const podcastId = this.$route.params.podcastId
+        const url = new URL('https://api.fyyd.de/0.2/podcast/episodes')
+        url.searchParams.append('podcast_id', podcastId)
 
-        const response = await fetch(url);
-        const body = await response.json();
+        const response = await fetch(url)
+        const body = await response.json()
 
-        this.podcastDetails = body.data;
-        this.podcastEpisodes = body.data.episodes;
-        console.log('Podcast details:', this.podcastDetails);
-        console.log('Podcast episodes:', this.podcastEpisodes);
+        this.podcastDetails = body.data
+        this.podcastEpisodes = body.data.episodes
+        console.log('Podcast details:', this.podcastDetails)
+        console.log('Podcast episodes:', this.podcastEpisodes)
       } catch (err) {
-        console.error('Error fetching podcast details:', err);
+        console.error('Error fetching podcast details:', err)
       }
     },
     playEpisode(episode) {
-      console.log('Emitting episode:', episode);
-      this.$emit('playEpisode', episode); // Emit the event to app
+      const episodeWithAuthor = { ...episode, author: this.podcastDetails.author }
+      console.log('Emitting episode with author:', episodeWithAuthor)
+      this.$emit('playEpisode', episodeWithAuthor)
     },
     addToQueue(episode) {
-      console.log('Adding episode to queue:', episode);
-      this.$emit('addToQueue', episode); // Emit the event to app
+      console.log('Adding episode to queue:', episode)
+      this.$emit('addToQueue', episode)
     }
   },
   mounted() {
-    this.getPodcastData();
+    this.getPodcastData()
   }
 }
 </script>

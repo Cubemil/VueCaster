@@ -9,13 +9,19 @@
     </div>
     <div id="player-center">
       <div id="controls">
-        <button @click="previousPodcast" id="control-button">
+        <button @click="previousPodcast" class="control-button">
           <i class="fas fa-step-backward"></i>
         </button>
-        <button @click="togglePlayPause" id="control-button">
+        <button @click="scrollBackwards" class="control-button">
+          <i class="fas fa-backward"></i>
+        </button>
+        <button @click="togglePlayPause" class="control-button">
           <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
         </button>
-        <button @click="nextPodcast" id="control-button">
+        <button @click="scrollForwards" class="control-button">
+          <i class="fas fa-forward"></i>
+        </button>
+        <button @click="nextPodcast" class="control-button">
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
@@ -37,9 +43,11 @@
   </div>
 </template>
 
-<script>
-import '@fortawesome/fontawesome-free/css/all.css';
+<script setup>
+import '@fortawesome/fontawesome-free/css/all.css'
+</script>
 
+<script>
 export default {
   props: {
     episode: { type: Object, default: null }
@@ -61,9 +69,9 @@ export default {
     episode: {
       handler(newValue) {
         if (newValue) {
-          console.log('New episode received:', newValue);
-          this.currentEpisode = newValue;
-          this.loadEpisode(newValue);
+          console.log('New episode received:', newValue)
+          this.currentEpisode = newValue
+          this.loadEpisode(newValue)
         }
       },
       immediate: true
@@ -71,73 +79,92 @@ export default {
   },
   methods: {
     loadEpisode(episode) {
-      const audio = this.$refs.audio;
+      const audio = this.$refs.audio
       if (audio) {
-        console.log('Loading episode:', episode);
-        audio.src = episode.enclosure;
-        audio.load();
-        this.isPlaying = false;
-        this.currentTime = 0;
-        this.duration = 0;
+        console.log('Loading episode:', episode)
+        audio.src = episode.enclosure
+        audio.load()
+        audio.onloadedmetadata = () => {
+          this.isPlaying = false
+          this.currentTime = 0
+          this.duration = audio.duration
+          this.playAudio()
+        }
       } else {
-        console.error('Audio element not found');
+        console.error('Audio element not found')
+      }
+    },
+    playAudio() {
+      const audio = this.$refs.audio
+      if (audio) {
+        console.log('Playing audio')
+        audio.play()
+        this.isPlaying = true
+      } else {
+        console.error('Audio element not found')
       }
     },
     togglePlayPause() {
-      const audio = this.$refs.audio;
+      const audio = this.$refs.audio
       if (audio) {
         if (this.isPlaying) {
-          console.log('Pausing audio');
-          audio.pause();
+          console.log('Pausing audio')
+          audio.pause()
         } else {
-          console.log('Playing audio');
-          audio.play();
+          console.log('Playing audio')
+          audio.play()
         }
-        this.isPlaying = !this.isPlaying;
+        this.isPlaying = !this.isPlaying
       } else {
-        console.error('Audio element not found');
+        console.error('Audio element not found')
       }
     },
     previousPodcast() {
-      this.currentTime = Math.max(0, this.currentTime - 10); // Skip back 10 seconds
-      this.seek();
+      console.log('Playing previous podcast')
     },
     nextPodcast() {
-      this.currentTime = Math.min(this.duration, this.currentTime + 10); // Skip forward 10 seconds
-      this.seek();
+      console.log('Playing next podcast')
+    },
+    scrollBackwards() {
+      this.currentTime = Math.max(0, this.currentTime - 30)
+      this.seek()
+    },
+    scrollForwards() {
+      this.currentTime = Math.min(this.duration, this.currentTime + 30)
+      this.seek()
     },
     seek() {
-      const audio = this.$refs.audio;
+      const audio = this.$refs.audio
       if (audio) {
-        audio.currentTime = this.currentTime;
+        audio.currentTime = this.currentTime
       } else {
-        console.error('Audio element not found');
+        console.error('Audio element not found')
       }
     },
     updateTime() {
-      const audio = this.$refs.audio;
+      const audio = this.$refs.audio
       if (audio) {
-        this.currentTime = audio.currentTime;
-        this.duration = audio.duration;
+        this.currentTime = audio.currentTime
+        this.duration = audio.duration
       } else {
-        console.error('Audio element not found');
+        console.error('Audio element not found')
       }
     },
     loadMetadata() {
-      const audio = this.$refs.audio;
+      const audio = this.$refs.audio
       if (audio) {
-        this.duration = audio.duration;
+        this.duration = audio.duration
       } else {
-        console.error('Audio element not found');
+        console.error('Audio element not found')
       }
     },
     toggleLike() {
-      this.isLiked = !this.isLiked;
+      this.isLiked = !this.isLiked
     },
     formatTime(time) {
-      const minutes = Math.floor(time / 60);
-      const seconds = Math.floor(time % 60).toString().padStart(2, '0');
-      return `${minutes}:${seconds}`;
+      const minutes = Math.floor(time / 60)
+      const seconds = Math.floor(time % 60).toString().padStart(2, '0')
+      return `${minutes}:${seconds}`
     }
   }
 }
@@ -155,9 +182,16 @@ export default {
   font-size: 200%;
 }
 
+#player-left, #player-center, #player-right {
+  flex: 1;
+}
+
 #player-left {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  flex: 1 1 20%;
+  overflow: hidden;
 }
 
 #album-cover {
@@ -170,15 +204,27 @@ export default {
 #podcast-info {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 #podcast-title {
   font-size: 0.9em;
   font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  position: relative;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  10% { transform: translateX(0); }
+  90% { transform: translateX(-100%); }
+  100% { transform: translateX(-100%); }
 }
 
 #podcast-artist {
-  font-size: 0.8em;
+  font-size: 0.5em;
   color: #b3b3b3;
 }
 
@@ -186,7 +232,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 1;
+  justify-content: center;
+  flex: 1 1 60%;
 }
 
 #controls {
@@ -194,7 +241,7 @@ export default {
   align-items: center;
 }
 
-#control-button {
+.control-button {
   background: none;
   border: none;
   color: #fff;
@@ -218,6 +265,8 @@ export default {
 #player-right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex: 1 1 20%;
 }
 
 #action-button {
