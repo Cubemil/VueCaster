@@ -21,7 +21,7 @@
       <li class="app-sidenav-item">
         <router-link id="router-link-saved" to="/home" class="router-link"> <!-- Update to /saved later -->
           <i class="fas fa-bookmark nav-icon"></i>
-          <span v-if="!isCollapsed" class="nav-text">Saved Podcasts</span>
+          <span v-if="!isCollapsed" class="nav-text">Saved</span>
         </router-link>
       </li>
     </ul>
@@ -55,9 +55,14 @@ export default {
 
 <style scoped>
 #app-sidenav {
-  padding: 20px;
+  width: 100%;
+  max-width: 200px;
+  padding: 20px 10px;
   background: transparent;
   transition: width 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #app-sidenav.collapsed {
@@ -71,16 +76,21 @@ export default {
   color: #B3B3B3;
   font-size: 20px;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 #app-sidenav-item-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .app-sidenav-item {
-  margin-bottom: 20%;
+  margin: 10px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .router-link {
@@ -89,12 +99,20 @@ export default {
   color: #B3B3B3;
   text-decoration: none;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 2em;
+  width: 100%;
+  padding: 10px 0;
 }
 
 .nav-icon {
-  margin-right: 16px;
-  font-size: 20px;
+  min-width: 2em;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.nav-text {
+  flex: 1;
+  text-align: left;
 }
 
 .router-link:hover {
@@ -103,7 +121,7 @@ export default {
 
 @media screen and (max-width: 768px) {
   #app-sidenav {
-    width: 60px;
+    max-width: 60px;
   }
 
   #toggle-button {
@@ -124,8 +142,13 @@ export default {
 
   #app-sidenav.collapsed .router-link {
     display: flex;
+    flex-direction: column; /* Stack icon and text vertically */
+    align-items: center; /* Center items */
   }
-  
-}
 
+  .nav-icon {
+    margin-right: 0; /* Remove right margin */
+    margin-bottom: 5px; /* Add bottom margin */
+  }
+}
 </style>

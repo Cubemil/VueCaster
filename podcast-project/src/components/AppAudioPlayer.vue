@@ -55,9 +55,9 @@ export default {
   data() {
     return {
       currentEpisode: this.episode,
-      albumArtworkUrl: 'https://via.placeholder.com/50',
-      podcastTitle: 'Podcast Title',
-      podcastArtist: 'Podcast Artist',
+      albumArtworkUrl: 'https://placehold.co/200/121212/121212',
+      podcastTitle: '',
+      podcastArtist: '',
       audioUrl: null,
       isPlaying: false,
       currentTime: 0,
@@ -201,7 +201,6 @@ export default {
 
 #album-cover {
   width: 4em;
-  height: 4em;
   border-radius: 4px;
   margin-right: 0.5em;
 }
