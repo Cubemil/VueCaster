@@ -1,13 +1,14 @@
 <template>
   <nav id="app-sidenav" :class="{ collapsed: isCollapsed }">
     
-    <button id="toggle-button" @click="toggleSidenav" aria-label="Toggle side navbar" >
+    <button id="toggle-button" @click="toggleSidenav" :aria-label="isCollapsed ? 'Expand side navbar' : 'Collapse side navbar'" 
+            :aria-expanded="!isCollapsed">
       <i class="fas fa-bars"></i>
     </button>
 
     <ul id="app-sidenav-item-list">
       <li class="app-sidenav-item">
-        <router-link id="router-link-home" to="/home" class="router-link">
+        <router-link id="router-link-home" to="/home" class="router-link" aria-current="page">
           <i class="fas fa-home nav-icon"></i>
           <span v-if="!isCollapsed" class="nav-text">Home</span>
         </router-link>
@@ -19,7 +20,7 @@
         </router-link>
       </li>
       <li class="app-sidenav-item">
-        <router-link id="router-link-saved" to="/home" class="router-link"> <!-- Update to /saved later -->
+        <router-link id="router-link-saved" to="/saved" class="router-link">
           <i class="fas fa-bookmark nav-icon"></i>
           <span v-if="!isCollapsed" class="nav-text">Saved</span>
         </router-link>

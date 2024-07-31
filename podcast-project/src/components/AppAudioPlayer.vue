@@ -12,7 +12,7 @@
         <button @click="previousPodcast" aria-label="Previous Podcast" class="control-button">
           <i class="fas fa-step-backward"></i>
         </button>
-        <button @click="scrollBackwards" aria-label="Forward 30 seconds" class="control-button">
+        <button @click="scrollBackwards" aria-label="Rewind 30 seconds" class="control-button">
           <i class="fas fa-backward"></i>
         </button>
         <button @click="togglePlayPause" :aria-label="isPlaying ? 'Pause' : 'Resume'" class="control-button">
@@ -27,7 +27,8 @@
       </div>
       <div id="playbar">
         <span>{{ formatTime(currentTime) }}</span>
-        <input type="range" min="0" :max="duration" v-model="currentTime" @input="seek">
+        <input type="range" min="0" :max="duration" v-model="currentTime" 
+       @input="seek" aria-label="Seek" :aria-valuemin="0" :aria-valuemax="duration" :aria-valuenow="currentTime">
         <span>{{ formatTime(duration) }}</span>
       </div>
     </div>

@@ -3,11 +3,11 @@
     <div class="podcastCard" @click="sendPodcastId">
       <div class="image-and-like">
         <div class="podcastImageContainer">
-          <img :src="image" class="podcastImage" v-if="image"/>
+          <img :src="image" class="podcastImage" v-if="image" alt="Podcast Image"/>
           <div class="skeleton-image" v-else></div>
         </div>
         
-        <div class="likeButton" @click.stop="toggleLike">
+        <div class="likeButton" @click.stop="toggleLike" :aria-label="liked ? 'Unlike' : 'Like'">
           <img :src="liked ? require('../assets/heartFullWhite.svg') : require('../assets/heartEmptyWhite.svg')" height="35em" class="like_icon"/>
         </div>
       </div>

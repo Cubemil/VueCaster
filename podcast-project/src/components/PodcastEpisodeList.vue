@@ -1,15 +1,15 @@
 <template>
   <div id="episode-list-container">
     <div v-for="episode in episodes" :key="episode.id" class="episode">
-      <img :src="podcastImage" alt="Podcast Image" class="episode-image" />
+      <img :src="podcastImage" alt="Podcast Image" class="episode-image"/>
       <div class="episode-content">
         <h3>{{ episode.title }}</h3>
         <p>{{ episode.description }}</p>
       </div>
-      <button @click="playEpisode(episode)" class="play-button">
+      <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
         <i class="fas fa-play"></i>
       </button>
-      <button @click="addToQueue(episode)" class="queue-button">
+      <button @click="addToQueue(episode)" class="queue-button" aria-label="Add episode to queue">
         <i class="fas fa-plus"></i>
       </button>
     </div>

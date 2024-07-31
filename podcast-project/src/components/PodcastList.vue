@@ -10,11 +10,11 @@
         :podcastTitle="podcast.title"
         :podcastAuthor="podcast.author"/>
     </div>
-    <!--<div v-else id="no-podcasts-message">No podcasts found</div>-->
 
-    <div class="pagination">
-      <div v-if="currentPage > 0" @click="previousPage" class="pagination-button" id="previous-button"></div>
-      <div v-if="podcasts.length > (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button"></div>
+    <div class="pagination" v-if="visiblePodcasts.length > 0">
+      <div v-if="currentPage > 0" @click="previousPage" class="pagination-button" id="previous-button" aria-label="Previous page"></div>
+      <p id="current-page-text">{{ currentPage }}</p>
+      <div v-if="podcasts.length > (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button" aria-label="Next page"></div>
     </div>
   </div>
 </template>
@@ -25,8 +25,12 @@ import PodcastCard from './PodcastCard.vue'
 
 <script>
 export default {
-  props: { podcasts:  { type: Array, required: true }},
-  data() { return     { visiblePodcasts: [], currentPage: 0}},
+  props: {
+    podcasts: { type: Array, required: true }
+  },
+  data() { 
+    return { visiblePodcasts: [], currentPage: 0}
+  },
   watch: {
     podcasts() {
       this.currentPage = 0;
@@ -88,14 +92,13 @@ export default {
   background-image: url("../assets/previous_arrow.png");
 }
 
+#current-page-text {
+  color: #fff;
+  font-size: 1.5em;
+  margin: 0 20px;
+}
+
 #next-button {
   background-image: url("../assets/next_arrow.png");
 }
-
-#no-podcasts-message {
-  color: #242424;
-  font-size: 300%;
-  text-align: center;
-}
-
 </style>
