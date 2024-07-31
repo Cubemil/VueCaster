@@ -9,19 +9,19 @@
     </div>
     <div id="player-center">
       <div id="controls">
-        <button @click="previousPodcast" class="control-button">
+        <button @click="previousPodcast" aria-label="Previous Podcast" class="control-button">
           <i class="fas fa-step-backward"></i>
         </button>
-        <button @click="scrollBackwards" class="control-button">
+        <button @click="scrollBackwards" aria-label="Forward 30 seconds" class="control-button">
           <i class="fas fa-backward"></i>
         </button>
-        <button @click="togglePlayPause" class="control-button">
+        <button @click="togglePlayPause" :aria-label="isPlaying ? 'Pause' : 'Resume'" class="control-button">
           <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
         </button>
-        <button @click="scrollForwards" class="control-button">
+        <button @click="scrollForwards" aria-label="Forward 30 seconds" class="control-button">
           <i class="fas fa-forward"></i>
         </button>
-        <button @click="nextPodcast" class="control-button">
+        <button @click="nextPodcast" aria-label="Next Podcast" class="control-button">
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
@@ -32,10 +32,10 @@
       </div>
     </div>
     <div id="player-right">
-      <button @click="toggleLike" id="action-button">
+      <button @click="toggleLike" id="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
-      <button @click="$emit('toggleQueue')" id="action-button">
+      <button @click="$emit('toggleQueue')" id="action-button" aria-label="Open Queue">
         <i class="fas fa-list"></i>
       </button>
     </div>

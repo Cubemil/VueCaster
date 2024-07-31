@@ -1,9 +1,9 @@
 <template>
   <div id="searchbar-container">
-    <i class="fas fa-search" id="search-icon" @click="fetchPodcasts"></i>
+    <i class="fas fa-search" id="search-icon" @click="fetchPodcasts" aria-label="Perform search"></i>
     <input id="searchbar-input" type="text" placeholder="What do you want to play?" size="40"
            ref="inputField" @input="inputNotEmpty" @keydown.enter="fetchPodcasts">
-    <i class="fas fa-times" id="delete-icon" ref="deleteIcon" @click="clearInput"></i>
+    <i class="fas fa-times" id="delete-icon" ref="deleteIcon" @click="clearInput" aria-label="Clear search input"></i>
     <i v-if="isLoading" class="fas fa-spinner fa-spin" id="loading-indicator"></i>
   </div>
 </template>

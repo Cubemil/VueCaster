@@ -24,7 +24,6 @@ export default {
   methods: {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts;
-      this.$refs.categories.style.display = 'none';
     },
     clearPodcasts() {
       this.podcasts = [];

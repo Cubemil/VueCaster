@@ -1,7 +1,7 @@
 <template>
   <nav id="app-sidenav" :class="{ collapsed: isCollapsed }">
     
-    <button id="toggle-button" @click="toggleSidenav">
+    <button id="toggle-button" @click="toggleSidenav" aria-label="Toggle side navbar" >
       <i class="fas fa-bars"></i>
     </button>
 
@@ -99,7 +99,7 @@ export default {
   color: #B3B3B3;
   text-decoration: none;
   font-weight: bold;
-  font-size: 2em;
+  font-size: 1.5em;
   width: 100%;
   padding: 10px 0;
 }
