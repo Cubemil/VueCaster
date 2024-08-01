@@ -2,7 +2,7 @@
   <div id="queue-controller">
     <div class="queue-header">
       <h2>Queue</h2>
-      <button @click="closeQueue" class="close-button">
+      <button @click="closeQueue" class="close-button" aria-label="Close queue">
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -11,10 +11,10 @@
         <h3>{{ episode.title }}</h3>
         <p>{{ episode.author }}</p>
       </div>
-      <button @click="playEpisode(episode)" class="queue-play-button">
+      <button @click="playEpisode(episode)" class="queue-play-button" aria-label="Play episode">
         <i class="fas fa-play"></i>
       </button>
-      <button @click="removeFromQueue(index)" class="queue-remove-button">
+      <button @click="removeFromQueue(index)" class="queue-remove-button" aria-label="Remove episode from queue">
         <i class="fas fa-trash"></i>
       </button>
     </div>

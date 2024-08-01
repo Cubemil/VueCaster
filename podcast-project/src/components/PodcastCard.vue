@@ -1,6 +1,6 @@
 <template>
   <div class="podcastContainer">
-    <div class="podcastCard" @click="sendPodcastId">
+    <div class="podcastCard" @click="sendPodcastId" aria-label="View podcast">
       <div class="image-and-like">
         <div class="podcastImageContainer">
           <img :src="image" class="podcastImage" v-if="image" alt="Podcast Image"/>

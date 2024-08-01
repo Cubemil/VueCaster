@@ -13,21 +13,22 @@
 </template>
 
 <script setup>
-import AppSearchBar from '../components/AppSearchBar.vue';
-import PodcastList from '../components/PodcastList.vue';
+import AppSearchBar from '@/components/AppSearchBar.vue';
+import PodcastList from '@/components/PodcastList.vue';
 import CategorySearchList from "@/components/CategorySearchList.vue";
 </script>
 
 <script>
 export default {
-  data() { return { podcasts:[] }},
+  data() { 
+    return { podcasts:[] }
+  },
   methods: {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts;
     },
     clearPodcasts() {
       this.podcasts = [];
-      this.$refs.categories.style.display = 'block';
     }
   }
 }

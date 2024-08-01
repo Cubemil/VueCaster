@@ -23,10 +23,10 @@
         <h2>History</h2>
       </div>
       <div class="cards" style="background: rgb(39, 133, 106)" @click="getPodcastsInCategory('health & fitness')">
-        <h2>Health & Fitness</h2>
+        <h2>Health & <br> Fitness</h2>
       </div>
       <div class="cards" style="background: rgb(165, 103, 82)" @click="getPodcastsInCategory('kids & family')">
-        <h2>Kids & Family</h2>
+        <h2>Kids & <br> Family</h2>
       </div>
       <div class="cards" style="background: rgb(30, 50, 100)" @click="getPodcastsInCategory('leisure')">
         <h2>Leisure</h2>
@@ -53,7 +53,7 @@
         <h2>True Crime</h2>
       </div>
       <div class="cards" style="background: rgb(30, 50, 100)" @click="getPodcastsInCategory('tv & film')">
-        <h2>TV & Film</h2>
+        <h2>TV & <br> Film</h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
@@ -145,7 +145,7 @@ export default {
 
 .cards {
   border-radius: 8px;
-  width: 12em;
+  width: 10em;
   height: 4em;
   margin: 0.25em;
   cursor: pointer;
