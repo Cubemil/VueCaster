@@ -10,7 +10,8 @@
       <div id="main-area">
         <router-view 
           @playEpisode="setCurrentEpisode" 
-          @addToQueue="addToQueue">
+          @addToQueue="addToQueue"
+          @updateQueue="updateQueue">
         </router-view>
       </div>
     </div>
@@ -50,46 +51,47 @@ export default {
   },
   methods: {
     setCurrentEpisode(episode) {
-      console.log('Setting current episode:', episode);
-      this.currentEpisode = episode;
+      console.log('Setting current episode:', episode)
+      this.currentEpisode = episode
     },
     addToQueue(episode) {
       this.queue.push(episode);
-      localStorage.setItem('queue', JSON.stringify(this.queue));
-      console.log('Added to queue:', episode);
+      localStorage.setItem('queue', JSON.stringify(this.queue))
+      console.log('Added to queue:', episode)
     },
     removeFromQueue(index) {
-      this.queue.splice(index, 1);
-      localStorage.setItem('queue', JSON.stringify(this.queue));
+      console.log('Removing from queue:', index)
+      this.queue.splice(index, 1)
+      localStorage.setItem('queue', JSON.stringify(this.queue))
     },
     removeAllFromQueue() {
       this.queue = [];
-      localStorage.setItem('queue', JSON.stringify(this.queue));
+      localStorage.setItem('queue', JSON.stringify(this.queue))
     },
     toggleQueue() {
-      this.showQueue = !this.showQueue;
+      this.showQueue = !this.showQueue
     },
     updateQueue(newQueue) {
-      this.queue = newQueue;
-      localStorage.setItem('queue', JSON.stringify(newQueue));
+      this.queue = newQueue
+      localStorage.setItem('queue', JSON.stringify(newQueue))
     },
     async getCategories() {
       try {
-        const response = await fetch('https://api.fyyd.de/0.2/categories');
-        const data = await response.json();
-        localStorage.setItem('categories', JSON.stringify(data.data));
+        const response = await fetch('https://api.fyyd.de/0.2/categories')
+        const data = await response.json()
+        localStorage.setItem('categories', JSON.stringify(data.data))
       } catch (error) {
-        console.error('Failed to fetch categories:', error.message);
+        console.error('Failed to fetch categories:', error.message)
       }
     }
   },
   mounted() {
-    if (localStorage.getItem('categories') === null) this.getCategories();
-    if (localStorage.getItem('favourites') === null) localStorage.setItem('favourites', JSON.stringify([]));
+    if (localStorage.getItem('categories') === null) this.getCategories()
+    if (localStorage.getItem('favourites') === null) localStorage.setItem('favourites', JSON.stringify([]))
   },
   watch: {
     queue(newQueue) {
-      localStorage.setItem('queue', JSON.stringify(newQueue));
+      localStorage.setItem('queue', JSON.stringify(newQueue))
     }
   }
 }

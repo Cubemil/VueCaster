@@ -16,8 +16,19 @@
       <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
         <i class="fas fa-play"></i>
       </button>
-      <button @click="addToQueue(episode)" class="queue-button" aria-label="Add episode to queue">
+      
+      <button v-if="!episode.addedToQueue"
+        @click="addToQueue(episode)"
+        id="queue-button"
+        aria-label="Add episode to queue">
         <i class="fas fa-plus"></i>
+      </button>
+
+      <button v-if="episode.addedToQueue"
+        @click="removeFromQueue(episode)"
+        id="queue-button" 
+        aria-label="Remove episode from queue">
+        <i class="fas fa-minus"></i>
       </button>
     </div>
   </div>
@@ -31,15 +42,32 @@ export default {
   },
   methods: {
     playEpisode(episode) {
-      console.log('Selected Episode: ', episode);
-      this.$emit('playEpisode', episode);
+      console.log('Selected Episode: ', episode)
+      this.$emit('playEpisode', episode)
     },
     addToQueue(episode) {
-      console.log('Adding to queue: ', episode);
-      this.$emit('addToQueue', episode);
+      console.log('Adding to queue: ', episode)
+      episode.addedToQueue = true // Mark episode as added to the queue
+      this.$emit('addToQueue', episode)
+    },
+    removeFromQueue(episode) {
+      console.log('Removing from queue: ', episode)
+
+      const queue = JSON.parse(localStorage.getItem('queue'))
+      const index = queue.findIndex(item => item.id === episode.id)
+      console.log('Index:', index)
+
+      if (index !== -1) {
+        queue.splice(index, 1)
+        localStorage.setItem('queue', JSON.stringify(queue))
+        this.$emit('updateQueue', queue)
+        episode.addedToQueue = false // Mark episode as removed from the queue
+      } else {
+        console.log('Episode not found in queue')
+      }
     },
     toggleDescription(episode) {
-      episode.expanded = !episode.expanded;
+      episode.expanded = !episode.expanded
     }
   }
 }
@@ -110,7 +138,7 @@ export default {
   color: #666;
 }
 
-.play-button, .queue-button {
+.play-button, #queue-button {
   align-self: center;
   background: none;
   border: none;

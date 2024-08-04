@@ -5,7 +5,13 @@
     </div>
     <div id="episodes-area" v-if="podcastDetails">
       <h2>Episodes</h2>
-      <PodcastEpisodeList :episodes="podcastEpisodes" :podcastImage="podcastDetails?.imgURL" @playEpisode="playEpisode" @addToQueue="addToQueue"/>
+      <PodcastEpisodeList
+        :episodes="podcastEpisodes"
+        :podcastImage="podcastDetails?.imgURL"
+        @playEpisode="playEpisode"
+        @addToQueue="addToQueue"
+        @updateQueue="updateQueue"
+      />
     </div>
   </div>
 </template>
@@ -50,6 +56,9 @@ export default {
       const episodeWithArtist = { ...episode, artist: this.podcastDetails.title }
       console.log('Adding episode to queue:', episodeWithArtist)
       this.$emit('addToQueue', episodeWithArtist)
+    },
+    updateQueue(newQueue) {
+      this.$emit('updateQueue', newQueue)
     }
   },
   mounted() {
