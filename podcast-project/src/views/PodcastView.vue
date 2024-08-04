@@ -64,7 +64,7 @@ export default {
   padding: 1%;
   font-size: 100%;
   height: 100vh;
-  overflow: hidden; /* idk if this is correct right now */
+  overflow: hidden;
 }
 
 #details-area {

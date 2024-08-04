@@ -33,7 +33,7 @@
       </div>
     </div>
     <div id="player-right">
-      <button @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'">
+      <button @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'" :class="{ 'active-button' : isLiked}">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
       <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }">

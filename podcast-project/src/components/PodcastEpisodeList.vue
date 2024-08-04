@@ -57,7 +57,8 @@ export default {
   border-bottom: 1px solid #ccc;
   padding: 10px;
   width: 100%;
-  max-width: 800px;
+  max-width: 35vw;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
@@ -72,16 +73,19 @@ export default {
 .episode-content {
   flex: 1;
   max-width: 100%;
+  overflow: hidden; /* This fixes the bug with long description text, whatever tf that was */
 }
 
 #episode-description {
   margin-top: 10px;
   max-height: 4.5em;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #episode-description.expanded {
   max-height: none;
+  white-space: normal;
   overflow: visible;
 }
 
