@@ -4,7 +4,13 @@
       <img :src="podcastImage" alt="Podcast Image" class="episode-image"/>
       <div class="episode-content">
         <h3>{{ episode.title }}</h3>
-        <p>{{ episode.description }}</p>
+        <i class="fas fa-clock" id="duration-in-seconds"></i> {{ Math.floor(episode.duration / 60) }} minutes
+        <p id="episode-description" :class="{ expanded: episode.expanded }">
+          {{ episode.description }}
+        </p>
+        <button @click="toggleDescription(episode)" id="toggle-description-button" :aria-label="episode.expanded ? 'Show less' : 'Show more'">
+          {{ episode.expanded ? 'Show less' : 'Show more' }}
+        </button>
       </div>
       <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
         <i class="fas fa-play"></i>
@@ -30,6 +36,9 @@ export default {
     addToQueue(episode) {
       console.log('Adding to queue: ', episode);
       this.$emit('addToQueue', episode);
+    },
+    toggleDescription(episode) {
+      episode.expanded = !episode.expanded;
     }
   }
 }
@@ -62,6 +71,27 @@ export default {
 
 .episode-content {
   flex: 1;
+  max-width: 100%;
+}
+
+#episode-description {
+  margin-top: 10px;
+  max-height: 4.5em;
+  overflow: hidden;
+}
+
+#episode-description.expanded {
+  max-height: none;
+  overflow: visible;
+}
+
+#toggle-description-button {
+  background: none;
+  border: none;
+  color: lime;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1em;
 }
 
 .episode h3 {
@@ -73,11 +103,6 @@ export default {
 .episode p {
   font-size: 1em;
   color: #666;
-  display: -webkit-box;
-	line-clamp: 5;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .play-button, .queue-button {
