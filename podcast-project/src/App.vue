@@ -18,11 +18,11 @@
       <AppAudioPlayer :episode="currentEpisode" 
           @toggleQueue="toggleQueue"
       />
-      <QueueController 
+      <QueueController v-if="showQueue" 
           :queue="queue"
           @playEpisode="setCurrentEpisode"
           @removeFromQueue="removeFromQueue"
-          @removeAllFromQueue="removeAllFromQueue"
+          @removeAllFromQueue="removeAllFromQueue" 
           @closeQueue="toggleQueue"
           @update:queue="updateQueue"
       />
@@ -145,6 +145,7 @@ body {
   padding: 1%;
   margin: 0.5%;
   background: linear-gradient(#121212, #000000);
+  background: #121212;
 }
 
 #footer-area {

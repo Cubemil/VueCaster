@@ -2,15 +2,10 @@
   <div id="queue-controller">
     <div id="queue-header">
       <h2>Queue</h2>
-      <button v-if="queue.length > 0" class="action-button" @click="removeAllFromQueue" id="remove-all-button" aria-label="Remove">
-        <i class="fas fa-trash"></i>
-        Remove all
-      </button>
       <button @click="closeQueue" class="action-button" aria-label="Close queue">
         <i class="fas fa-close"></i>
       </button>
     </div>
-
     <draggable :list="queue" @end="updateQueueOrder">
       <transition-group name="fade" tag="div">
         <div v-for="(episode, index) in queue" :key="episode.id" :class="{ 'queue-item': true, 'playing': episode.id === currentEpisode?.id }">
@@ -27,6 +22,11 @@
         </div>
       </transition-group>
     </draggable>
+
+    <button v-if="queue.length > 0" class="action-button" @click="removeAllFromQueue" id="remove-all-button" aria-label="Remove">
+      <i class="fas fa-trash"></i>
+      Remove all
+    </button>
   </div>
 </template>
 
@@ -68,6 +68,8 @@ export default {
 <style scoped>
 #queue-controller {
   position: fixed;
+  display: flex;
+  flex-direction: column;
   bottom: 100px;
   right: 20px;
   width: 300px;
@@ -125,4 +127,10 @@ export default {
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
+
+#remove-all-button {
+  cursor: pointer;
+  margin-top: 5%;
+}
+
 </style>
