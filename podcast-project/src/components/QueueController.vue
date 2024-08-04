@@ -6,32 +6,40 @@
         <i class="fas fa-close"></i>
       </button>
     </div>
-    <draggable :list="queue" @end="updateQueueOrder">
+    
+    <div v-if="queue.length > 0" id="visible-queue">
       <transition-group name="fade" tag="div">
-        <div v-for="(episode, index) in queue" :key="episode.id" :class="{ 'queue-item': true, 'playing': episode.id === currentEpisode?.id }">
-          <div class="queue-item-content">
-            <h3 id="episode-title">{{ episode.title }}</h3>
-            <p id="episode-artist">{{ episode.artist }}</p>
+        <draggable :list="queue" @end="updateQueueOrder">
+          <div v-for="(episode, index) in queue" :key="episode.id" :class="{ 'queue-item': true, 'playing': episode.id === currentEpisode?.id }">
+            <div class="queue-item-content">
+              <h3 id="episode-title">{{ episode.title }}</h3>
+              <p id="episode-artist">{{ episode.artist }}</p>
+            </div>
+            <button @click="playEpisode(episode)" class="action-button" aria-label="Play episode">
+              <i class="fas fa-play"></i>
+            </button>
+            <button @click="removeFromQueue(index)" class="action-button" aria-label="Remove episode from queue">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
-          <button @click="playEpisode(episode)" class="action-button" aria-label="Play episode">
-            <i class="fas fa-play"></i>
-          </button>
-          <button @click="removeFromQueue(index)" class="action-button" aria-label="Remove episode from queue">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
+        </draggable>
       </transition-group>
-    </draggable>
 
-    <button v-if="queue.length > 0" class="action-button" @click="removeAllFromQueue" id="remove-all-button" aria-label="Remove">
-      <i class="fas fa-trash"></i>
-      Remove all
-    </button>
+      <button class="action-button" @click="removeAllFromQueue" id="remove-all-button" aria-label="Remove">
+        <i class="fas fa-trash"></i>
+        Remove all
+      </button>
+    </div>
+
+    <div v-else id="empty-queue">
+      <p>Nothing in queue</p>
+    </div>
+
   </div>
 </template>
 
 <script>
-import { VueDraggableNext } from 'vue-draggable-next';
+import { VueDraggableNext } from 'vue-draggable-next'
 
 export default {
   components: {
@@ -43,23 +51,24 @@ export default {
   },
   methods: {
     playEpisode(episode) {
-      this.$emit('playEpisode', episode);
+      this.$emit('playEpisode', episode)
     },
     removeFromQueue(index) {
-      this.$emit('removeFromQueue', index);
+      this.$emit('removeFromQueue', index)
     },
     removeAllFromQueue() {
-      this.$emit('removeAllFromQueue');
+      this.$emit('removeAllFromQueue')
     },
     closeQueue() {
-      this.$emit('closeQueue');
+      this.$emit('closeQueue')
     },
     updateQueue() {
-      this.$emit('update:queue', this.queue);
+      this.$emit('update:queue', this.queue)
     },
     updateQueueOrder() {
       // Update local storage after reordering
-      localStorage.setItem('queue', JSON.stringify(this.queue));
+      this.$emit('update:queue', this.queue)
+      localStorage.setItem('queue', JSON.stringify(this.queue))
     }
   }
 }
@@ -81,6 +90,12 @@ export default {
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
   z-index: 1000;
   border-radius: 8px;
+}
+
+#visible-queue {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #queue-header {

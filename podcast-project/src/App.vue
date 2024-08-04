@@ -20,6 +20,7 @@
       />
       <QueueController v-if="showQueue" 
           :queue="queue"
+          :currentEpisode="currentEpisode"
           @playEpisode="setCurrentEpisode"
           @removeFromQueue="removeFromQueue"
           @removeAllFromQueue="removeAllFromQueue" 
