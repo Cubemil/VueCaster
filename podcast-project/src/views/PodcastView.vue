@@ -3,7 +3,7 @@
     <div id="details-area">
       <PodcastDetails :data="podcastDetails"/>
     </div>
-    <div id="episodes-area">
+    <div id="episodes-area" v-if="podcastDetails">
       <h2>Episodes</h2>
       <PodcastEpisodeList :episodes="podcastEpisodes" :podcastImage="podcastDetails?.imgURL" @playEpisode="playEpisode" @addToQueue="addToQueue"/>
     </div>
