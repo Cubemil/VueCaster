@@ -88,7 +88,7 @@ export default {
 #toggle-description-button {
   background: none;
   border: none;
-  color: lime;
+  color: #1DB954;
   cursor: pointer;
   padding: 0;
   font-size: 1em;
@@ -109,7 +109,7 @@ export default {
   align-self: center;
   background: none;
   border: none;
-  color: #fff;
+  color: #1DB954;
   font-size: 1.5em;
   margin-left: 10px;
   cursor: pointer;

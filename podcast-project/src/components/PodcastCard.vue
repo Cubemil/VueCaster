@@ -8,7 +8,8 @@
         </div>
         
         <div class="likeButton" @click.stop="toggleLike" :aria-label="liked ? 'Unlike' : 'Like'">
-          <img :src="liked ? require('../assets/heartFullWhite.svg') : require('../assets/heartEmptyWhite.svg')" height="35em" class="like_icon"/>
+          <!-- TODO we need fontawesome icons here -->
+          <img :src="liked ? require('../assets/heartFullWhite.svg') : require('../assets/heartEmptyWhite.svg')" height="35em" :class="{ 'liked-heart' : liked }"/>
         </div>
       </div>
       
@@ -71,6 +72,10 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-right: 10%;
+}
+
+.likeButton {
+  color: #1DB954;
 }
 
 .podcastImage {

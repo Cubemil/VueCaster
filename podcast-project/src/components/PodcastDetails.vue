@@ -64,7 +64,7 @@ h2 {
 
 a {
   text-decoration: none;
-  color: palegreen;
+  color: #1DB954;
   margin-bottom: 20px;
   display: block;
 }

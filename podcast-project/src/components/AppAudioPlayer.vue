@@ -33,10 +33,10 @@
       </div>
     </div>
     <div id="player-right">
-      <button @click="toggleLike" id="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'">
+      <button @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
-      <button @click="$emit('toggleQueue')" id="action-button" aria-label="Open Queue">
+      <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }">
         <i class="fas fa-list"></i>
       </button>
     </div>
@@ -63,7 +63,8 @@ export default {
       isPlaying: false,
       currentTime: 0,
       duration: 0,
-      isLiked: false
+      isLiked: false,
+      queueVisible: false
     }
   },
   watch: {
@@ -161,6 +162,10 @@ export default {
     },
     toggleLike() {
       this.isLiked = !this.isLiked
+    },
+    toggleQueue() {
+      this.queueVisible = !this.queueVisible
+      this.$emit('toggleQueue')
     },
     formatTime(time) {
       const hours = Math.floor(time / 3600)
@@ -273,13 +278,17 @@ export default {
   flex: 1 1 20%;
 }
 
-#action-button {
+.action-button {
   background: none;
   border: none;
   color: #fff;
   font-size: 1.2em;
   margin: 0 0.5em;
   cursor: pointer;
+}
+
+.active-button {
+  color: #1DB954;
 }
 
 @media screen and (max-width: 768px) {

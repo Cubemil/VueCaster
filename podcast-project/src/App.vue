@@ -114,6 +114,11 @@ body {
 #main-area {
   flex: 90%;
   border-radius: 10px;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #sidenav-area, #main-area {

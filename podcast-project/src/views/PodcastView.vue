@@ -64,21 +64,23 @@ export default {
   padding: 1%;
   font-size: 100%;
   height: 100vh;
-  overflow: auto;
+  overflow: hidden; /* idk if this is correct right now */
 }
 
 #details-area {
-  flex: 50%;
+  flex: 1 1 50%;
   display: flex;
   align-items: flex-start;
+  overflow-x: hidden;
 }
 
 #episodes-area {
-  flex: 50%;
+  flex: 1 1 50%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 10px;
+  padding-left: 2%;
+  overflow-x: hidden;
 }
 
 @media screen and (max-width: 768px) {
@@ -91,6 +93,7 @@ export default {
   #details-area, #episodes-area {
     flex: none;
     width: 100%;
+    overflow-x: hidden;
   }
 }
 </style>
