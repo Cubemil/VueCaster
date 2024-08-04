@@ -1,8 +1,8 @@
 <template>
   <div id="queue-controller">
-    <div class="queue-header">
+    <div id="queue-header">
       <h2>Queue</h2>
-      <button @click="closeQueue" class="close-button" aria-label="Close queue">
+      <button @click="closeQueue" id="close-button" aria-label="Close queue">
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -28,13 +28,13 @@ export default {
   },
   methods: {
     playEpisode(episode) {
-      this.$emit('playEpisode', episode);
+      this.$emit('playEpisode', episode)
     },
     removeFromQueue(index) {
-      this.$emit('removeFromQueue', index);
+      this.$emit('removeFromQueue', index)
     },
     closeQueue() {
-      this.$emit('closeQueue');
+      this.$emit('closeQueue')
     }
   }
 }
@@ -56,13 +56,13 @@ export default {
   border-radius: 8px;
 }
 
-.queue-header {
+#queue-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.close-button {
+#close-button {
   background: none;
   border: none;
   color: #fff;
@@ -79,6 +79,10 @@ export default {
 
 .queue-item-content {
   flex: 1;
+}
+
+.fas fa-clock {
+  font-size: 200%;
 }
 
 .queue-play-button, .queue-remove-button {
