@@ -11,10 +11,10 @@
         :podcastAuthor="podcast.author"/>
     </div>
 
-    <div class="pagination" v-if="visiblePodcasts.length > 0">
+    <div class="pagination" v-if="visiblePodcasts.length > 12">
       <div v-if="currentPage > 0" @click="previousPage" class="pagination-button" id="previous-button" aria-label="Previous page"></div>
       <p id="current-page-text">{{ currentPage }}</p>
-      <div v-if="podcasts.length > (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button" aria-label="Next page"></div>
+      <div v-if="podcasts.length > (currentPage + 1) * 12" @click="nextPage" class="pagination-button" id="next-button" aria-label="Next page"></div>
     </div>
   </div>
 </template>
@@ -42,15 +42,15 @@ export default {
   },
   methods: {
     updateVisiblePodcasts() {
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15);
+      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 12, (this.currentPage + 1) * 12);
     },
     nextPage() {
       this.currentPage++;
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15);
+      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 12, (this.currentPage + 1) * 12);
     },
     previousPage() {
       this.currentPage--;
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15);
+      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 12, (this.currentPage + 1) * 12);
     },
   }
 }

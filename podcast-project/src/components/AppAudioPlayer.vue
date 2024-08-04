@@ -4,7 +4,7 @@
       <img :src="currentEpisode?.imgURL || albumArtworkUrl" alt="Album Artwork" id="album-cover">
       <div id="podcast-info">
         <div id="podcast-title">{{ currentEpisode?.title || podcastTitle }}</div>
-        <div id="podcast-artist">{{ currentEpisode?.author || podcastArtist }}</div>
+        <div id="podcast-artist">{{ currentEpisode?.artist || podcastArtist }}</div>
       </div>
     </div>
     <div id="player-center">
@@ -74,6 +74,7 @@ export default {
           console.log('New episode received:', newValue)
           this.currentEpisode = newValue
           this.loadEpisode(newValue)
+          console.log('Current episode:', this.currentEpisode)
         }
       },
       immediate: true
@@ -99,7 +100,6 @@ export default {
     playAudio() {
       const audio = this.$refs.audio
       if (audio) {
-        console.log('Playing audio')
         audio.play()
         this.isPlaying = true
       } else {
@@ -110,10 +110,8 @@ export default {
       const audio = this.$refs.audio
       if (audio) {
         if (this.isPlaying) {
-          console.log('Pausing audio')
           audio.pause()
         } else {
-          console.log('Playing audio')
           audio.play()
         }
         this.isPlaying = !this.isPlaying

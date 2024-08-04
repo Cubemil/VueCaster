@@ -8,12 +8,24 @@
         <AppSidenav ref="sidenav"/>
       </div>
       <div id="main-area">
-        <router-view @playEpisode="setCurrentEpisode" @addToQueue="addToQueue"></router-view>
+        <router-view 
+          @playEpisode="setCurrentEpisode" 
+          @addToQueue="addToQueue">
+        </router-view>
       </div>
     </div>
     <div id="footer-area">
-      <AppAudioPlayer :episode="currentEpisode" @toggleQueue="toggleQueue"/>
-      <QueueController v-if="showQueue" :queue="queue" @playEpisode="setCurrentEpisode" @removeFromQueue="removeFromQueue" @closeQueue="toggleQueue"/>
+      <AppAudioPlayer :episode="currentEpisode" 
+          @toggleQueue="toggleQueue"
+      />
+      <QueueController 
+          :queue="queue"
+          @playEpisode="setCurrentEpisode"
+          @removeFromQueue="removeFromQueue"
+          @removeAllFromQueue="removeAllFromQueue"
+          @closeQueue="toggleQueue"
+          @update:queue="updateQueue"
+      />
     </div>
   </div>
 </template>
@@ -49,8 +61,16 @@ export default {
       this.queue.splice(index, 1);
       localStorage.setItem('queue', JSON.stringify(this.queue));
     },
+    removeAllFromQueue() {
+      this.queue = [];
+      localStorage.setItem('queue', JSON.stringify(this.queue));
+    },
     toggleQueue() {
       this.showQueue = !this.showQueue;
+    },
+    updateQueue(newQueue) {
+      this.queue = newQueue;
+      localStorage.setItem('queue', JSON.stringify(newQueue));
     },
     async getCategories() {
       try {
@@ -124,8 +144,7 @@ body {
 #sidenav-area, #main-area {
   padding: 1%;
   margin: 0.5%;
-  /*background: linear-gradient(#121212, #000000);*/
-  background: #121212;
+  background: linear-gradient(#121212, #000000);
 }
 
 #footer-area {

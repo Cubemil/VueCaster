@@ -5,6 +5,7 @@
       <div class="episode-content">
         <h3>{{ episode.title }}</h3>
         <i class="fas fa-clock" id="duration-in-seconds"></i> {{ Math.floor(episode.duration / 60) }} minutes
+        <p id="publication-date">Published on {{ new Date(episode.pubdate).toLocaleDateString() }}</p>
         <p id="episode-description" :class="{ expanded: episode.expanded }">
           {{ episode.description }}
         </p>

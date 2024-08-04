@@ -10,7 +10,7 @@
       <p>Language: {{ data.language }}</p>
       <p>Average episode length: {{ data.stats.medianduration_string }}</p>
       <p>Episode count: {{ data.episode_count }}</p>
-      <p>Last publication: {{ data.lastpub }}</p>
+      <p>Last publication: {{ new Date(data.lastpub).toLocaleDateString() }}</p>
       <p>Publication interval: {{ data.stats.pubinterval_string }}</p>
       <p>Complete duration: {{ data.stats.complete_duration_value }}</p>
     </div>

@@ -42,13 +42,14 @@ export default {
       }
     },
     playEpisode(episode) {
-      const episodeWithAuthor = { ...episode, author: this.podcastDetails.author }
-      console.log('Emitting episode with author:', episodeWithAuthor)
-      this.$emit('playEpisode', episodeWithAuthor)
+      const episodeWithArtist = { ...episode, artist: this.podcastDetails.title }
+      console.log('Emitting episode with artist:', episodeWithArtist)
+      this.$emit('playEpisode', episodeWithArtist)
     },
     addToQueue(episode) {
-      console.log('Adding episode to queue:', episode)
-      this.$emit('addToQueue', episode)
+      const episodeWithArtist = { ...episode, artist: this.podcastDetails.title }
+      console.log('Adding episode to queue:', episodeWithArtist)
+      this.$emit('addToQueue', episodeWithArtist)
     }
   },
   mounted() {
@@ -86,6 +87,7 @@ export default {
 @media screen and (max-width: 768px) {
   #podcast-view-container {
     flex-direction: column;
+    overflow: auto;
     font-size: 150%;
     max-width: 80vw;
   }
