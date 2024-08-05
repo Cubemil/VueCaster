@@ -54,7 +54,7 @@ export default {
   watch: {
     podcasts() {
       this.currentPage = 0;
-      totalPages: Math.ceil(this.podcasts.length / 15) - 1
+      this.totalPages = Math.ceil(this.podcasts.length / 15) - 1;
       this.updateVisiblePodcasts()
     }
   },

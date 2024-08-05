@@ -3,8 +3,11 @@
     <h1 id="welcome-message">Welcome back! Here are some recommended podcasts for you!</h1>
     
     <div id="head-area">
-      <h1 id="subheading">These are the top 30 hot podcasts right now:</h1>
-      <button id="refresh-button" @click="getPodcastData">Refresh</button>
+      <h1 id="subheading">These are the top 50 hot podcasts right now:</h1>
+      <button id="refresh-button" @click="getPodcastData">
+        <i class="fas fa-refresh"></i>
+        Refresh
+      </button>
     </div>
     
     <PodcastList :podcasts="podcasts"/>
@@ -24,7 +27,7 @@ export default {
   methods: {
     async getPodcastData() {
       try {
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=30'
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=50'
         const response = await fetch(url)
 
         if (!response.ok) {
@@ -71,7 +74,7 @@ export default {
   font-size: 2.2em;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #1DB954; /* Spotify Green */
+  color: #1DB954;
 }
 
 #subheading {
@@ -89,7 +92,7 @@ export default {
 }
 
 #refresh-button {
-  background-color: #1DB954; /* Spotify Green */
+  background-color: #1DB954;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
