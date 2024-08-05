@@ -1,27 +1,26 @@
 <template>
   <div class="podcastContainer">
-    <div class="podcastCard" @click="sendPodcastId" aria-label="View podcast">
+    <div class="podcastCard" @click="sendPodcastId" aria-label="View podcast details">
+      
       <div class="image-and-like">
         <div class="podcastImageContainer">
           <img :src="image" class="podcastImage" v-if="image" alt="Podcast Image"/>
           <div class="skeleton-image" v-else></div>
         </div>
-        
-        <div class="likeButton" @click.stop="toggleLike" :aria-label="liked ? 'Unlike' : 'Like'">
-          <!-- TODO we need fontawesome icons here -->
-          <img :src="liked ? require('../assets/heartFullWhite.svg') : require('../assets/heartEmptyWhite.svg')" height="35em" :class="{ 'liked-heart' : liked }"/>
-        </div>
+        <button @click.stop="toggleLike" class="action-button" :aria-label="liked ? 'Like' : 'Unlike'" :class="{ 'active-button' : liked }">
+          <i :class="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
+        </button>
       </div>
       
       <div class="podcastTitle">
         <template v-if="podcastTitle">{{ podcastTitle }}</template>
         <div class="skeleton-title" v-else></div>
       </div>
-
       <div class="podcastAuthor">
         <template v-if="podcastAuthor">{{ podcastAuthor }}</template>
         <div class="skeleton-author" v-else></div>
       </div>
+
     </div>
   </div>
 </template>
@@ -42,10 +41,10 @@ export default {
   },
   methods: {
     sendPodcastId() {
-      this.$router.push({ name: 'PodcastView', params: { podcastId: this.podcastId } });
+      this.$router.push({ name: 'PodcastView', params: { podcastId: this.podcastId } })
     },
     toggleLike() {
-      this.liked = !this.liked;
+      this.liked = !this.liked
     }
   }
 }
@@ -74,7 +73,15 @@ export default {
   margin-right: 10%;
 }
 
-.likeButton {
+.action-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 3em;
+  cursor: pointer;
+}
+
+.active-button {
   color: #1DB954;
 }
 

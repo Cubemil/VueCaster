@@ -1,46 +1,46 @@
 <template>
   <div id="audio-player-container">
     <div id="player-left">
-      <img :src="currentEpisode?.imgURL || albumArtworkUrl" alt="Album Artwork" id="album-cover">
+      <img :src="currentEpisode?.imgURL || albumArtworkUrl" alt="Album Artwork" id="album-cover" @click="sendPodcastId" aria-label="View podcast details">
       <div id="podcast-info">
-        <div id="podcast-title">{{ currentEpisode?.title || podcastTitle }}</div>
-        <div id="podcast-artist">{{ currentEpisode?.artist || podcastArtist }}</div>
+        <div id="podcast-title" @click="sendPodcastId" aria-label="View podcast details">{{ currentEpisode?.title || podcastTitle }}</div>
+        <div id="podcast-artist" @click="sendPodcastId" aria-label="View podcast details">{{ currentEpisode?.artist || podcastArtist }}</div>
       </div>
     </div>
     <div id="player-center">
       <div id="controls">
-        <button @click="previousPodcast" aria-label="Previous Podcast" class="control-button">
+        <button @click="previousPodcast" :disabled="!currentEpisode" aria-label="Previous Podcast" class="control-button">
           <i class="fas fa-step-backward"></i>
         </button>
-        <button @click="scrollBackwards" aria-label="Rewind 30 seconds" class="control-button">
+        <button @click="scrollBackwards" :disabled="!currentEpisode" aria-label="Rewind 30 seconds" class="control-button">
           <i class="fas fa-backward"></i>
         </button>
-        <button @click="togglePlayPause" :aria-label="isPlaying ? 'Pause' : 'Resume'" class="control-button">
+        <button @click="togglePlayPause" :disabled="!currentEpisode" :aria-label="isPlaying ? 'Pause' : 'Resume'" class="control-button">
           <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
         </button>
-        <button @click="scrollForwards" aria-label="Forward 30 seconds" class="control-button">
+        <button @click="scrollForwards" :disabled="!currentEpisode" aria-label="Forward 30 seconds" class="control-button">
           <i class="fas fa-forward"></i>
         </button>
-        <button @click="nextPodcast" aria-label="Next Podcast" class="control-button">
+        <button @click="nextPodcast" :disabled="!currentEpisode" aria-label="Next Podcast" class="control-button">
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
       <div id="playbar">
         <span>{{ formatTime(currentTime) }}</span>
         <input type="range" min="0" :max="duration" v-model="currentTime" 
-       @input="seek" aria-label="Seek" :aria-valuemin="0" :aria-valuemax="duration" :aria-valuenow="currentTime">
+               @input="seek" aria-label="Seek" :aria-valuemin="0" :aria-valuemax="duration" :aria-valuenow="currentTime" :disabled="!currentEpisode">
         <span>{{ formatTime(duration) }}</span>
       </div>
     </div>
     <div id="player-right">
-      <button @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'" :class="{ 'active-button' : isLiked}">
+      <button @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'" :class="{ 'active-button' : isLiked }" :disabled="!currentEpisode">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
-      <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }">
+      <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }" :disabled="!currentEpisode">
         <i class="fas fa-list"></i>
       </button>
     </div>
-    <audio ref="audio" :src="currentEpisode?.enclosure || audioUrl" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
+    <audio ref="audio" :src="currentEpisode?.enclosure || ''" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
   </div>
 </template>
 
@@ -51,7 +51,8 @@ import '@fortawesome/fontawesome-free/css/all.css'
 <script>
 export default {
   props: {
-    episode: { type: Object, default: null }
+    episode: { type: Object, default: null },
+    podcastId: [String, Number]
   },
   data() {
     return {
@@ -99,20 +100,27 @@ export default {
     },
     playAudio() {
       const audio = this.$refs.audio
-      if (audio) {
-        audio.play()
-        this.isPlaying = true
+      if (audio && audio.src) {
+        audio.play().then(() => {
+          this.isPlaying = true
+        }).catch((error) => {
+          console.error('Failed to play audio:', error)
+        })
       } else {
         console.error('Audio element not found')
       }
     },
     togglePlayPause() {
       const audio = this.$refs.audio
-      if (audio) {
+      if (audio && audio.src) {
         if (this.isPlaying) {
           audio.pause()
         } else {
-          audio.play()
+          audio.play().then(() => {
+            this.isPlaying = true
+          }).catch((error) => {
+            console.error('Failed to play audio:', error)
+          })
         }
         this.isPlaying = !this.isPlaying
       } else {
@@ -166,6 +174,8 @@ export default {
       this.$emit('toggleQueue')
     },
     formatTime(time) {
+      if (isNaN(time)) return '00:00'
+      
       const hours = Math.floor(time / 3600)
       const minutes = Math.floor((time % 3600) / 60)
       const seconds = Math.floor(time % 60).toString().padStart(2, '0')
@@ -173,7 +183,11 @@ export default {
         return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds}`
       }
       return `${minutes}:${seconds}`
-    }
+    },
+    sendPodcastId() {
+      const podcastId = this.currentEpisode?.podcast_id
+      this.$router.push({ name: 'PodcastView', params: { podcastId: podcastId } })
+    },
   }
 }
 </script>
@@ -213,6 +227,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  cursor: pointer;
 }
 
 #podcast-title {
