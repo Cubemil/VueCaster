@@ -47,7 +47,7 @@ export default {
       currentEpisode: null,
       queue: JSON.parse(localStorage.getItem('queue') || '[]'),
       showQueue: false
-    };
+    }
   },
   methods: {
     setCurrentEpisode(episode) {
@@ -60,12 +60,12 @@ export default {
       console.log('Added to queue:', episode)
     },
     removeFromQueue(index) {
-      console.log('Removing from queue:', index)
+      console.log('Removing from queue:', index);
       this.queue.splice(index, 1)
       localStorage.setItem('queue', JSON.stringify(this.queue))
     },
     removeAllFromQueue() {
-      this.queue = [];
+      this.queue = []
       localStorage.setItem('queue', JSON.stringify(this.queue))
     },
     toggleQueue() {
@@ -94,7 +94,7 @@ export default {
       localStorage.setItem('queue', JSON.stringify(newQueue))
     }
   }
-}
+};
 </script>
 
 <style>

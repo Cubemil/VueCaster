@@ -23,12 +23,18 @@
     </div>
 
     <div class="pagination-bottom" v-if="podcasts.length >= 15">
+      <button :disabled="currentPage === 0" @click="firstPage" class="pagination-button" id="first-button" aria-label="First page">
+        <i class="fas fa-angle-double-left"></i>
+      </button>
       <button :disabled="currentPage === 0" @click="previousPage" class="pagination-button" id="previous-button" aria-label="Previous page">
         <i class="fas fa-chevron-left"></i>
       </button>
       <p id="current-page-text">{{ currentPage + 1 }}/{{ totalPages + 1 }}</p>
       <button :disabled="podcasts.length <= (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button" aria-label="Next page">
         <i class="fas fa-chevron-right"></i>
+      </button>
+      <button :disabled="currentPage === totalPages" @click="lastPage" class="pagination-button" id="last-button" aria-label="Last page">
+        <i class="fas fa-angle-double-right"></i>
       </button>
     </div>
     
@@ -55,8 +61,8 @@ export default {
   },
   watch: {
     podcasts() {
-      this.currentPage = 0;
-      this.totalPages = Math.ceil(this.podcasts.length / 15) - 1;
+      this.currentPage = 0
+      this.totalPages = Math.ceil(this.podcasts.length / 15) - 1
       this.updateVisiblePodcasts()
     }
   },
@@ -69,12 +75,20 @@ export default {
     },
     nextPage() {
       this.currentPage++
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15)
+      this.updateVisiblePodcasts()
     },
     previousPage() {
       this.currentPage--
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15)
+      this.updateVisiblePodcasts()
     },
+    firstPage() {
+      this.currentPage = 0
+      this.updateVisiblePodcasts()
+    },
+    lastPage() {
+      this.currentPage = this.totalPages
+      this.updateVisiblePodcasts()
+    }
   }
 }
 </script>
@@ -130,6 +144,10 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.pagination-button:hover {
+  background: #1DB954;
 }
 
 .pagination-button:disabled {

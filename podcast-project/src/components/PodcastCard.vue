@@ -77,9 +77,14 @@ export default {
 .action-button {
   background: none;
   border: none;
-  color: #fff;
+  color: #646060;
   font-size: 3em;
   cursor: pointer;
+}
+
+.action-button:hover {
+  color: #fff;
+  scale: 1.1;
 }
 
 .active-button {

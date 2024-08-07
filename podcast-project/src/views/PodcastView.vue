@@ -73,6 +73,7 @@ export default {
   flex-direction: row;
   padding: 1%;
   font-size: 100%;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
 }

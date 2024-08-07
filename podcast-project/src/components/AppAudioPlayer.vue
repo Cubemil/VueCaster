@@ -264,12 +264,6 @@ export default {
   flex: 1 1 60%;
 }
 
-.fixed-icon-size {
-  font-size: 1.2em;
-  width: 1.5em;
-  text-align: center;
-}
-
 #controls {
   display: flex;
   align-items: center;
@@ -278,10 +272,14 @@ export default {
 .control-button {
   background: none;
   border: none;
-  color: #fff;
+  color: #beb8b8;
   font-size: 1.2em;
   margin: 0 0.5em;
   cursor: pointer;
+}
+
+.control-button:hover {
+  color: #fff;
 }
 
 .playbar {
@@ -311,10 +309,32 @@ button:disabled {
   color: #666;
 }
 
+.control-button, .action-button {
+  background: none;
+  border: none;
+  color: #beb8b8;
+  font-size: 1.2em;
+  margin: 0 0.5em;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.control-button:hover, .action-button:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.fixed-icon-size {
+  font-size: 1.2em;
+  width: 1.5em;
+  text-align: center;
+  line-height: 1.2em;
+}
+
 .action-button {
   background: none;
   border: none;
-  color: #fff;
+  color: #beb8b8;
   font-size: 1.2em;
   margin: 0 0.5em;
   cursor: pointer;

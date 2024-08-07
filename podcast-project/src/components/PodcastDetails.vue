@@ -7,11 +7,11 @@
     <p v-html="data.description"></p>
 
     <div id="visualization">
-      <p>Language: {{ data.language }}</p>
+      <p>Language: {{ getLanguage() }}</p>
       <p>Average episode length: {{ data.stats.medianduration_string }}</p>
       <p>Episode count: {{ data.episode_count }}</p>
       <p>Last publication: {{ new Date(data.lastpub).toLocaleDateString() }}</p>
-      <p>Publication interval: {{ data.stats.pubinterval_string }}</p>
+      <!--<p>Publication interval: {{ data.stats.pubinterval_string }}</p>-->
       <p>Complete duration: {{ data.stats.complete_duration_value }}</p>
     </div>
   </div>
@@ -28,7 +28,31 @@ export default {
     data: {}
   },
   mounted() {
-    console.log('PodcastDetails mounted with data:', this.data);
+    console.log('PodcastDetails mounted with data:', this.data)
+  },
+  methods: {
+    getLanguage() {
+      switch (this.data.language) {
+        case 'en':
+          return 'English'
+        case 'de':
+          return 'German'
+        case 'fr':
+          return 'French'
+        case 'es':
+          return 'Spanish'
+        default:
+          return 'Unknown Language'
+      }
+    },
+    getPublicationInterval() {
+      const interval_type = this.data.stats.pubinterval_type
+      if (interval_type === 1) {
+        return 'Daily'
+      } else {
+        return 'Unknown'
+      }
+    }
   }
 }
 </script>

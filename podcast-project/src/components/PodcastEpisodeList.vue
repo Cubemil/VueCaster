@@ -3,7 +3,7 @@
     <div v-for="episode in episodes" :key="episode.id" class="episode">
       <img :src="podcastImage" alt="Podcast Image" class="episode-image"/>
       <div class="episode-content">
-        <h3>{{ episode.title }}</h3>
+        <h3 id="episode-title">{{ episode.title }}</h3>
 
         <div id="duration-and-publication-area">
           <div id="duration-area">
@@ -99,7 +99,6 @@ export default {
   width: 100%;
   max-width: 35vw;
   box-sizing: border-box;
-  cursor: pointer;
 }
 
 .episode-image {
@@ -121,12 +120,13 @@ export default {
   color: #fff;
 }
 
-#duration-icon, #publication-icon {
-  color: #1DB954;
+#duration-area, #publication-area {
+  margin-right: 1%;
+  margin-left: 1%;
 }
 
-#publication-area {
-  margin-left: 1%;
+#duration-icon, #publication-icon {
+  color: #1DB954;
 }
 
 #episode-description {
@@ -151,10 +151,15 @@ export default {
   font-size: 1em;
 }
 
+#toggle-description-button:hover {
+  text-decoration: underline;
+}
+
 .episode h3 {
   font-size: 1.3em;
   margin: 0;
   overflow: hidden;
+  
 }
 
 .episode p {
@@ -166,9 +171,16 @@ export default {
   align-self: center;
   background: none;
   border: none;
-  color: #1DB954;
+  color: #808080;
   font-size: 1.5em;
   margin-left: 10px;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
+
+.play-button:hover, #queue-button:hover {
+  color: #11ff00;
+  font-size: 1.6em;
+}
+
 </style>
