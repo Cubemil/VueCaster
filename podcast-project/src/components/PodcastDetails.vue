@@ -65,6 +65,7 @@ export default {
   padding: 2%;
   color: white;
   background-color: transparent;
+  cursor: default;
 }
 
 #podcast-image {

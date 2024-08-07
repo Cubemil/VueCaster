@@ -103,7 +103,8 @@ export default {
 }
 
 #refresh-button:hover {
-  background-color: #1aa34a;
+  background-color: #5efe58;
+  scale: 1.1;
 }
 
 </style>

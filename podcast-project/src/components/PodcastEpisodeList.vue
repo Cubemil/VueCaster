@@ -3,7 +3,7 @@
     <div v-for="episode in episodes" :key="episode.id" class="episode">
       <img :src="podcastImage" alt="Podcast Image" class="episode-image"/>
       <div class="episode-content">
-        <h3 id="episode-title">{{ episode.title }}</h3>
+        <h3 id="episode-title" @click="playEpisode(episode)" aria-label="Play episode">{{ episode.title }}</h3>
 
         <div id="duration-and-publication-area">
           <div id="duration-area">
@@ -25,7 +25,7 @@
       </div>
 
       <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
-        <i class="fas fa-play"></i>
+        <i :class=" episode.id === currentEpisode?.id ? 'fas fa-pause' : 'fas fa-play'"></i>
       </button>
 
       <button v-if="!episode.addedToQueue"
@@ -49,7 +49,8 @@
 export default {
   props: {
     episodes: { type: Array, required: true },
-    podcastImage: { type: String, required: true }
+    podcastImage: { type: String, required: true },
+    currentEpisode: { type: Object }
   },
   methods: {
     playEpisode(episode) {
@@ -58,7 +59,7 @@ export default {
     },
     addToQueue(episode) {
       console.log('Adding to queue: ', episode)
-      episode.addedToQueue = true // Mark episode as added to the queue
+      episode.addedToQueue = true
       this.$emit('addToQueue', episode)
     },
     removeFromQueue(episode) {
@@ -72,7 +73,7 @@ export default {
         queue.splice(index, 1)
         localStorage.setItem('queue', JSON.stringify(queue))
         this.$emit('updateQueue', queue)
-        episode.addedToQueue = false // Mark episode as removed from the queue
+        episode.addedToQueue = false
       } else {
         console.log('Episode not found in queue')
       }
@@ -99,6 +100,16 @@ export default {
   width: 100%;
   max-width: 35vw;
   box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.episode:last-child {
+  border-bottom: none;
+}
+
+.episode:hover {
+  background-color: #1f1f1f;
+  scale: 1.01;
 }
 
 .episode-image {
@@ -159,7 +170,11 @@ export default {
   font-size: 1.3em;
   margin: 0;
   overflow: hidden;
-  
+}
+
+.episode h3:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .episode p {
@@ -171,16 +186,16 @@ export default {
   align-self: center;
   background: none;
   border: none;
-  color: #808080;
+  color: #ccc;
   font-size: 1.5em;
   margin-left: 10px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .play-button:hover, #queue-button:hover {
   color: #11ff00;
-  font-size: 1.6em;
+  transform: scale(1.3);
 }
 
 </style>

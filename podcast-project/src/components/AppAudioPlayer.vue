@@ -222,6 +222,7 @@ export default {
   border-radius: 4px;
   margin-right: 0.5em;
   cursor: pointer;
+  transition: opacity 0.2s;
 }
 
 #album-cover:hover {

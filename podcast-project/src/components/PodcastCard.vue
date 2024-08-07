@@ -61,10 +61,12 @@ export default {
   text-align: left;
   padding: 20px;
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 #podcast-card:hover {
-  background: rgb(28, 28, 28);
+  background: rgb(47, 47, 47);
+  scale: 1.05;
 }
 
 #top-area {
