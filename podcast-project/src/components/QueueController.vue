@@ -2,9 +2,11 @@
   <div id="queue-controller">
     <div id="queue-header">
       <h2>Queue</h2>
+      <!--
       <button @click="closeQueue" class="action-button" aria-label="Close queue">
         <i class="fas fa-close"></i>
-      </button>
+      </button>  
+      -->
     </div>
     
     <div v-if="queue.length > 0" id="visible-queue">
@@ -56,11 +58,11 @@ export default {
     removeFromQueue(index) {
       this.$emit('removeFromQueue', index)
     },
+    /*closeQueue() {
+      this.$emit('closeQueue')
+    },*/
     removeAllFromQueue() {
       this.$emit('removeAllFromQueue')
-    },
-    closeQueue() {
-      this.$emit('closeQueue')
     },
     updateQueue() {
       this.$emit('update:queue', this.queue)
@@ -104,6 +106,7 @@ export default {
   align-items: center;
 }
 
+/*
 #close-button {
   background: none;
   border: none;
@@ -111,6 +114,7 @@ export default {
   font-size: 1.5em;
   cursor: pointer;
 }
+*/
 
 .queue-item {
   display: flex;

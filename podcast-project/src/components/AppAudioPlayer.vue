@@ -1,7 +1,7 @@
 <template>
   <div id="audio-player-container">
     <div id="player-left">
-      <img :src="currentEpisode?.imgURL || albumArtworkUrl" alt="Album Artwork" id="album-cover" @click="sendPodcastId" aria-label="View podcast details">
+      <img v-if="currentEpisode" :src="currentEpisode?.imgURL" alt="Album Artwork" id="album-cover" @click="sendPodcastId" aria-label="View podcast details">
       <div id="podcast-info">
         <div id="podcast-title" @click="sendPodcastId" aria-label="View podcast details">{{ currentEpisode?.title || podcastTitle }}</div>
         <div id="podcast-artist" @click="sendPodcastId" aria-label="View podcast details">{{ currentEpisode?.artist || podcastArtist }}</div>
@@ -16,7 +16,7 @@
           <i class="fas fa-backward"></i>
         </button>
         <button @click="togglePlayPause" :disabled="!currentEpisode" :aria-label="isPlaying ? 'Pause' : 'Resume'" class="control-button">
-          <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+          <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'" class="fixed-icon-size"></i>
         </button>
         <button @click="scrollForwards" :disabled="!currentEpisode" aria-label="Forward 30 seconds" class="control-button">
           <i class="fas fa-forward"></i>
@@ -25,7 +25,7 @@
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
-      <div id="playbar">
+      <div class="playbar" :class="{ 'disabled-playbar': !currentEpisode }">
         <span>{{ formatTime(currentTime) }}</span>
         <input type="range" min="0" :max="duration" v-model="currentTime" 
                @input="seek" aria-label="Seek" :aria-valuemin="0" :aria-valuemax="duration" :aria-valuenow="currentTime" :disabled="!currentEpisode">
@@ -33,10 +33,10 @@
       </div>
     </div>
     <div id="player-right">
-      <button @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'" :class="{ 'active-button' : isLiked }" :disabled="!currentEpisode">
+      <button v-if="currentEpisode" @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'" :class="{ 'active-button' : isLiked }">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
-      <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }" :disabled="!currentEpisode">
+      <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }">
         <i class="fas fa-list"></i>
       </button>
     </div>
@@ -221,6 +221,11 @@ export default {
   width: 4em;
   border-radius: 4px;
   margin-right: 0.5em;
+  cursor: pointer;
+}
+
+#album-cover:hover {
+  opacity: 0.5;
 }
 
 #podcast-info {
@@ -259,6 +264,12 @@ export default {
   flex: 1 1 60%;
 }
 
+.fixed-icon-size {
+  font-size: 1.2em;
+  width: 1.5em;
+  text-align: center;
+}
+
 #controls {
   display: flex;
   align-items: center;
@@ -273,15 +284,20 @@ export default {
   cursor: pointer;
 }
 
-#playbar {
+.playbar {
   display: flex;
   align-items: center;
   width: 80%;
+  color: #fff;
 }
 
-#playbar input[type="range"] {
+.playbar input[type="range"] {
   width: 100%;
   margin: 0 0.5em;
+}
+
+.disabled-playbar {
+  opacity: 0.5;
 }
 
 #player-right {
@@ -289,6 +305,10 @@ export default {
   align-items: center;
   justify-content: flex-end;
   flex: 1 1 20%;
+}
+
+button:disabled {
+  color: #666;
 }
 
 .action-button {
@@ -302,6 +322,10 @@ export default {
 
 .active-button {
   color: #1DB954;
+}
+
+#podcast-title:hover, #podcast-artist:hover {
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 768px) {

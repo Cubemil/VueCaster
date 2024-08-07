@@ -69,6 +69,10 @@ a {
   display: block;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 p {
   text-align: left;
   line-height: 1.6;

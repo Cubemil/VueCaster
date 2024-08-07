@@ -1,10 +1,10 @@
 <template>
-  <div class="podcastContainer">
-    <div class="podcastCard" @click="sendPodcastId" aria-label="View podcast details">
+  <div id="podcast-container">
+    <div id="podcast-card" @click="sendPodcastId" aria-label="View podcast details">
       
-      <div class="image-and-like">
-        <div class="podcastImageContainer">
-          <img :src="image" class="podcastImage" v-if="image" alt="Podcast Image"/>
+      <div id="top-area">
+        <div id="podcast-image-container">
+          <img :src="image" id="podcast-image" v-if="image" alt="Podcast Image"/>
           <div class="skeleton-image" v-else></div>
         </div>
         <button @click.stop="toggleLike" class="action-button" :aria-label="liked ? 'Like' : 'Unlike'" :class="{ 'active-button' : liked }">
@@ -12,14 +12,15 @@
         </button>
       </div>
       
-      <div class="podcastTitle">
+      <div id="podcast-title">
         <template v-if="podcastTitle">{{ podcastTitle }}</template>
         <div class="skeleton-title" v-else></div>
       </div>
-      <div class="podcastAuthor">
+      <div id="podcast-author">
         <template v-if="podcastAuthor">{{ podcastAuthor }}</template>
         <div class="skeleton-author" v-else></div>
       </div>
+      <div id="podcast-category"></div>
 
     </div>
   </div>
@@ -51,7 +52,7 @@ export default {
 </script>
 
 <style scoped>
-.podcastCard {
+#podcast-card {
   border-radius: 8px;
   width: 325px;
   height: 190px;
@@ -62,11 +63,11 @@ export default {
   cursor: pointer;
 }
 
-.podcastCard:hover {
+#podcast-card:hover {
   background: rgb(28, 28, 28);
 }
 
-.image-and-like {
+#top-area {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -85,14 +86,14 @@ export default {
   color: #1DB954;
 }
 
-.podcastImage {
+#podcast-image {
   width: 100px;
   height: auto;
   box-shadow: #121212 0 0 14px;
   border-radius: 6px;
 }
 
-.podcastTitle {
+#podcast-title {
   color: #fdfdfd;
   font-size: 30px;
   font-weight: bold;
@@ -104,7 +105,7 @@ export default {
   border-radius: 6px;
 }
 
-.podcastAuthor {
+#podcast-author {
   color: #A7A7A7;
   font-size: 14px;
   position: relative;
@@ -115,7 +116,7 @@ export default {
   border-radius: 6px;
 }
 
-.podcastImageContainer {
+.podcast-image-container {
   width: 100px;
   height: 100px;
   box-shadow: #121212 0 0 14px;

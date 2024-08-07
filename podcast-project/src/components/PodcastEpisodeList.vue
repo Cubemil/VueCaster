@@ -4,8 +4,18 @@
       <img :src="podcastImage" alt="Podcast Image" class="episode-image"/>
       <div class="episode-content">
         <h3>{{ episode.title }}</h3>
-        <i class="fas fa-clock" id="duration-in-seconds"></i> {{ Math.floor(episode.duration / 60) }} minutes
-        <p id="publication-date">Published on {{ new Date(episode.pubdate).toLocaleDateString() }}</p>
+
+        <div id="duration-and-publication-area">
+          <div id="duration-area">
+            <i class="fas fa-clock" id="duration-icon"></i> 
+            {{ Math.floor(episode.duration / 60) }} min
+          </div>
+          <div id="publication-area">
+            <i class="fas fa-calendar" id="publication-icon"></i>
+            {{ new Date(episode.pubdate).toLocaleDateString() }}
+          </div>
+        </div>
+
         <p id="episode-description" :class="{ expanded: episode.expanded }">
           {{ episode.description }}
         </p>
@@ -13,23 +23,24 @@
           {{ episode.expanded ? 'Show less' : 'Show more' }}
         </button>
       </div>
+
       <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
         <i class="fas fa-play"></i>
       </button>
-      
+
       <button v-if="!episode.addedToQueue"
         @click="addToQueue(episode)"
         id="queue-button"
         aria-label="Add episode to queue">
         <i class="fas fa-plus"></i>
-      </button>
-
+    </button>
       <button v-if="episode.addedToQueue"
         @click="removeFromQueue(episode)"
         id="queue-button" 
         aria-label="Remove episode from queue">
         <i class="fas fa-minus"></i>
       </button>
+
     </div>
   </div>
 </template>
@@ -102,7 +113,20 @@ export default {
 .episode-content {
   flex: 1;
   max-width: 100%;
-  overflow: hidden; /* This fixes the bug with long description text, whatever tf that was */
+  overflow: hidden;
+}
+
+#duration-and-publication-area {
+  display: flex;
+  color: #fff;
+}
+
+#duration-icon, #publication-icon {
+  color: #1DB954;
+}
+
+#publication-area {
+  margin-left: 1%;
 }
 
 #episode-description {
@@ -128,7 +152,7 @@ export default {
 }
 
 .episode h3 {
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin: 0;
   overflow: hidden;
 }

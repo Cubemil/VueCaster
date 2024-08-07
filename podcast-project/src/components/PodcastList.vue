@@ -31,6 +31,8 @@
         <i class="fas fa-chevron-right"></i>
       </button>
     </div>
+    
+    <p id="result-counter-text" v-if="podcasts.length > 0">Showing {{ podcasts.length }} results</p>
 
   </div>
 </template>
@@ -134,6 +136,14 @@ export default {
   background: #343333;
   color: #646060;
   cursor: not-allowed;
+}
+
+#result-counter-text {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  color: #A7A7A7;
+  font-size: 1em;
 }
 
 </style>

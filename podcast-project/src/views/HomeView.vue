@@ -3,7 +3,7 @@
     <h1 id="welcome-message">Welcome back! Here are some recommended podcasts for you!</h1>
     
     <div id="head-area">
-      <h1 id="subheading">These are the top 50 hot podcasts right now:</h1>
+      <h1 id="subheading">These are the top 100 hot podcasts right now:</h1>
       <button id="refresh-button" @click="getPodcastData">
         <i class="fas fa-refresh"></i>
         Refresh
@@ -27,7 +27,7 @@ export default {
   methods: {
     async getPodcastData() {
       try {
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=50'
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=100'
         const response = await fetch(url)
 
         if (!response.ok) {
