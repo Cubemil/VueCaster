@@ -86,11 +86,9 @@ export default {
             break
           }
         }
-
         if (!category) throw new Error('Category not found')
 
         const categoryId = category.id
-        
         const url = new URL('https://api.fyyd.de/0.2/category')
         url.searchParams.append('category_id', categoryId)
 
@@ -106,7 +104,7 @@ export default {
 
         const body = await response.json()
         console.log("body", body)
-
+  
         const podcasts = body.data.podcasts.map(podcast => ({
           id: podcast.id,
           title: podcast.title,
@@ -130,28 +128,54 @@ export default {
 <style scoped>
 #categories-container {
   background: transparent;
-  width: fit-content;
-  display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   margin: 1em auto;
+  max-width: 100%;
 }
 
 #category-cards-container {
   display: flex;
-  flex-wrap: wrap;
-  margin: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-gutter: stable;
+}
+
+#category-cards-container::-webkit-scrollbar {
+  height: 0.5em;
+  transition: height 0.3s ease;
+}
+
+#category-cards-container:hover::-webkit-scrollbar {
+  height: 0.7em;
+}
+
+#category-cards-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+#category-cards-container:hover::-webkit-scrollbar-thumb {
+  background: #a0a0a0;
 }
 
 .cards {
   border-radius: 8px;
   width: 10em;
   height: 4em;
-  margin: 0.25em;
+  margin: 0.5em;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.cards:hover {
+  transform: scale(1.05);
 }
 
 .cards h2 {

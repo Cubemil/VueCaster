@@ -9,6 +9,11 @@
         Refresh
       </button>
     </div>
+
+    <div v-if="isLoading" id="loading-area">
+      <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
+      Loading podcasts...
+    </div>
     
     <PodcastList :podcasts="podcasts"/>
   </div>
@@ -21,13 +26,17 @@ import PodcastList from '../components/PodcastList.vue';
 <script>
 export default {
   data() {
-    return { podcasts: [] }
+    return { 
+      podcasts: [],
+      isLoading: false
+     }
   },
   mounted() { this.getPodcastData() },
   methods: {
     async getPodcastData() {
       try {
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=100'
+        this.isLoading = true
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=300'
         const response = await fetch(url)
 
         if (!response.ok) {
@@ -50,6 +59,7 @@ export default {
 
         this.podcasts = fetchedPods
         console.log("Podcasts fetched: ", this.podcasts)
+        this.isLoading = false
       } catch (err) {
         console.error('Podcast could not be fetched.', err)
       }
@@ -105,6 +115,19 @@ export default {
 #refresh-button:hover {
   background-color: #5efe58;
   scale: 1.1;
+}
+
+#loading-area {
+  display: flex;
+  font-size: 3em;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 35vw;
+}
+
+#loading-indicator {
+  font-size: 1.5em;
+  margin-bottom: 2%;
 }
 
 </style>
