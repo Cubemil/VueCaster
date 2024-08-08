@@ -33,7 +33,7 @@
       </div>
     </div>
     <div id="player-right">
-      <button v-if="currentEpisode" @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Like' : 'Unlike'" :class="{ 'active-button' : isLiked }">
+      <button v-if="currentEpisode" @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Unlike podcast' : 'Like podcast'" :class="{ 'active-button' : isLiked }">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
       <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }">

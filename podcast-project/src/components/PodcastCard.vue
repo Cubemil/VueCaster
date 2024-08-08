@@ -7,7 +7,7 @@
           <img :src="image" id="podcast-image" v-if="image" alt="Podcast Image"/>
           <div class="skeleton-image" v-else></div>
         </div>
-        <button @click.stop="toggleLike" class="action-button" :aria-label="liked ? 'Like' : 'Unlike'" :class="{ 'active-button' : liked }">
+        <button @click.stop="toggleLike" class="action-button" :aria-label="liked ? 'Unlike podcast' : 'Like podcast'" :class="{ 'active-button' : liked }">
           <i :class="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
         </button>
       </div>

@@ -110,6 +110,7 @@ export default {
 .episode:hover {
   background-color: #1f1f1f;
   scale: 1.01;
+  border-bottom: none;
 }
 
 .episode-image {
