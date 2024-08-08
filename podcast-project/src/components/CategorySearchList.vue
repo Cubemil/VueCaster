@@ -1,63 +1,18 @@
 <template>
   <div id="categories-container">
     <div id="category-cards-container">
-      <div class="cards" style="background: rgb(83, 122, 161)" @click="getPodcastsInCategory('arts')">
-        <h2>Arts</h2>
-      </div>
-      <div class="cards" style="background: rgb(232, 17, 91)" @click="getPodcastsInCategory('business')">
-        <h2>Business</h2>
-      </div>
-      <div class="cards" style="background: rgb(56, 102, 205)" @click="getPodcastsInCategory('comedy')">
-        <h2>Comedy</h2>
-      </div>
-      <div class="cards" style="background: rgb(225, 51, 0)" @click="getPodcastsInCategory('education')">
-        <h2>Education</h2>
-      </div>
-      <div class="cards" style="background: rgb(30, 50, 100)" @click="getPodcastsInCategory('fiction')">
-        <h2>Fiction</h2>
-      </div>
-      <div class="cards" style="background: rgb(186, 93, 7)" @click="getPodcastsInCategory('government')">
-        <h2>Government</h2>
-      </div>
-      <div class="cards" style="background: rgb(0, 100, 80)" @click="getPodcastsInCategory('history')">
-        <h2>History</h2>
-      </div>
-      <div class="cards" style="background: rgb(39, 133, 106)" @click="getPodcastsInCategory('health & fitness')">
-        <h2>Health & <br> Fitness</h2>
-      </div>
-      <div class="cards" style="background: rgb(165, 103, 82)" @click="getPodcastsInCategory('kids & family')">
-        <h2>Kids & <br> Family</h2>
-      </div>
-      <div class="cards" style="background: rgb(30, 50, 100)" @click="getPodcastsInCategory('leisure')">
-        <h2>Leisure</h2>
-      </div>
-      <div class="cards" style="background: rgb(220, 20, 140)" @click="getPodcastsInCategory('music')">
-        <h2>Music</h2>
-      </div>
-      <div class="cards" style="background: rgb(96, 129, 8)" @click="getPodcastsInCategory('religion & spirituality')">
-        <h2>Religion & Spirituality</h2>
-      </div>
-      <div class="cards" style="background: rgb(13, 115, 236)" @click="getPodcastsInCategory('science')">
-        <h2>Science</h2>
-      </div>
-      <div class="cards" style="background: rgb(220, 20, 140)" @click="getPodcastsInCategory('society & culture')">
-        <h2>Society & Culture</h2>
-      </div>
-      <div class="cards" style="background: rgb(140, 25, 50)" @click="getPodcastsInCategory('sports')">
-        <h2>Sports</h2>
-      </div>
-      <div class="cards" style="background: rgb(141, 103, 171)" @click="getPodcastsInCategory('technology')">
-        <h2>Technology</h2>
-      </div>
-      <div class="cards" style="background: rgb(225, 51, 0)" @click="getPodcastsInCategory('true crime')">
-        <h2>True Crime</h2>
-      </div>
-      <div class="cards" style="background: rgb(30, 50, 100)" @click="getPodcastsInCategory('tv & film')">
-        <h2>TV & <br> Film</h2>
+      <div
+        v-for="(category, index) in categories"
+        :key="index"
+        class="cards"
+        :style="{ background: category.color }"
+        @click="getPodcastsInCategory(category.name)"
+      >
+        <i v-if="isLoading && loadingCategory === category.name" class="fas fa-spinner fa-spin"></i>
+        <h2 v-html="category.displayName"></h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
-    <i v-if="isLoading" class="fas fa-spinner fa-spin" id="loading-indicator"></i>
   </div>
 </template>
 
@@ -67,12 +22,34 @@ export default {
     return {
       errorMessage: null,
       isLoading: false,
+      loadingCategory: null,
+      categories: [
+        { name: 'arts', displayName: 'Arts', color: 'rgb(83, 122, 161)' },
+        { name: 'business', displayName: 'Business', color: 'rgb(232, 17, 91)' },
+        { name: 'comedy', displayName: 'Comedy', color: 'rgb(56, 102, 205)' },
+        { name: 'education', displayName: 'Education', color: 'rgb(225, 51, 0)' },
+        { name: 'fiction', displayName: 'Fiction', color: 'rgb(30, 50, 100)' },
+        { name: 'government', displayName: 'Government', color: 'rgb(186, 93, 7)' },
+        { name: 'history', displayName: 'History', color: 'rgb(0, 100, 80)' },
+        { name: 'health & fitness', displayName: 'Health & <br> Fitness', color: 'rgb(39, 133, 106)' },
+        { name: 'kids & family', displayName: 'Kids & <br> Family', color: 'rgb(165, 103, 82)' },
+        { name: 'leisure', displayName: 'Leisure', color: 'rgb(30, 50, 100)' },
+        { name: 'music', displayName: 'Music', color: 'rgb(220, 20, 140)' },
+        { name: 'religion & spirituality', displayName: 'Religion & Spirituality', color: 'rgb(96, 129, 8)' },
+        { name: 'science', displayName: 'Science', color: 'rgb(13, 115, 236)' },
+        { name: 'society & culture', displayName: 'Society & Culture', color: 'rgb(220, 20, 140)' },
+        { name: 'sports', displayName: 'Sports', color: 'rgb(140, 25, 50)' },
+        { name: 'technology', displayName: 'Technology', color: 'rgb(141, 103, 171)' },
+        { name: 'true crime', displayName: 'True Crime', color: 'rgb(225, 51, 0)' },
+        { name: 'tv & film', displayName: 'TV & <br> Film', color: 'rgb(30, 50, 100)' },
+      ],
     }
   },
   methods: {
     async getPodcastsInCategory(categoryName) {
       this.errorMessage = null
       this.isLoading = true
+      this.loadingCategory = categoryName
 
       try {
         // retrieve categories from local storage
@@ -119,6 +96,7 @@ export default {
         this.errorMessage = error.message
       } finally {
         this.isLoading = false
+        this.loadingCategory = null
       }
     }
   }
@@ -139,26 +117,10 @@ export default {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-gutter: stable;
 }
 
 #category-cards-container::-webkit-scrollbar {
-  height: 0.5em;
-  transition: height 0.3s ease;
-}
-
-#category-cards-container:hover::-webkit-scrollbar {
   height: 0.7em;
-}
-
-#category-cards-container::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-#category-cards-container:hover::-webkit-scrollbar-thumb {
-  background: #a0a0a0;
 }
 
 .cards {
@@ -172,6 +134,7 @@ export default {
   justify-content: center;
   flex-shrink: 0;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .cards:hover {
@@ -183,17 +146,14 @@ export default {
   font-size: 1.5em;
 }
 
+.cards i {
+  font-size: 2em;
+  margin-right: 5%;
+}
+
 #error-message {
   color: red;
   text-align: center;
   margin-bottom: -19px;
-}
-
-#loading-indicator {
-  color: #fbfbfb;
-  font-size: 2em;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: -42px;
 }
 </style>

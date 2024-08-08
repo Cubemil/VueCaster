@@ -325,6 +325,11 @@ button:disabled {
   transform: scale(1.1);
 }
 
+.control-button:disabled, .action-button:disabled {
+  color: #666;
+  transform: scale(1);
+}
+
 .fixed-icon-size {
   font-size: 1.2em;
   width: 1.5em;

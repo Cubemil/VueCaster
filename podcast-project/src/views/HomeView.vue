@@ -123,11 +123,11 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-left: 35vw;
+  color: #888;
 }
 
 #loading-indicator {
   font-size: 1.5em;
   margin-bottom: 2%;
 }
-
 </style>
