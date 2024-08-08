@@ -9,7 +9,7 @@
         @click="getPodcastsInCategory(category.name)"
       >
         <i v-if="isLoading && loadingCategory === category.name" class="fas fa-spinner fa-spin"></i>
-        <h2 v-html="category.displayName"></h2>
+        <h2 v-html="category.name"></h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
@@ -24,24 +24,78 @@ export default {
       isLoading: false,
       loadingCategory: null,
       categories: [
-        { name: 'arts', displayName: 'Arts', color: 'rgb(83, 122, 161)' },
-        { name: 'business', displayName: 'Business', color: 'rgb(232, 17, 91)' },
-        { name: 'comedy', displayName: 'Comedy', color: 'rgb(56, 102, 205)' },
-        { name: 'education', displayName: 'Education', color: 'rgb(225, 51, 0)' },
-        { name: 'fiction', displayName: 'Fiction', color: 'rgb(30, 50, 100)' },
-        { name: 'government', displayName: 'Government', color: 'rgb(186, 93, 7)' },
-        { name: 'history', displayName: 'History', color: 'rgb(0, 100, 80)' },
-        { name: 'health & fitness', displayName: 'Health & <br> Fitness', color: 'rgb(39, 133, 106)' },
-        { name: 'kids & family', displayName: 'Kids & <br> Family', color: 'rgb(165, 103, 82)' },
-        { name: 'leisure', displayName: 'Leisure', color: 'rgb(30, 50, 100)' },
-        { name: 'music', displayName: 'Music', color: 'rgb(220, 20, 140)' },
-        { name: 'religion & spirituality', displayName: 'Religion & Spirituality', color: 'rgb(96, 129, 8)' },
-        { name: 'science', displayName: 'Science', color: 'rgb(13, 115, 236)' },
-        { name: 'society & culture', displayName: 'Society & Culture', color: 'rgb(220, 20, 140)' },
-        { name: 'sports', displayName: 'Sports', color: 'rgb(140, 25, 50)' },
-        { name: 'technology', displayName: 'Technology', color: 'rgb(141, 103, 171)' },
-        { name: 'true crime', displayName: 'True Crime', color: 'rgb(225, 51, 0)' },
-        { name: 'tv & film', displayName: 'TV & <br> Film', color: 'rgb(30, 50, 100)' },
+        {  
+          name: 'Arts', 
+          color: 'rgb(83, 122, 161)'
+        },
+        {
+          name: 'Business',
+          color: 'rgb(232, 17, 91)' 
+        },
+        {
+          name: 'Comedy',
+          color: 'rgb(56, 102, 205)' 
+        },
+        {
+          name: 'Education',
+          color: 'rgb(225, 51, 0)' 
+        },
+        {
+          name: 'Fiction',
+          color: 'rgb(30, 50, 100)' 
+        },
+        {
+          name: 'Government',
+          color: 'rgb(186, 93, 7)' 
+        },
+        {
+          name: 'History',
+          color: 'rgb(0, 100, 80)' 
+        },
+        {
+          name: 'Health & Fitness',
+          color: 'rgb(39, 133, 106)' 
+        },
+        {
+          name: 'Kids & Family',
+          color: 'rgb(165, 103, 82)' 
+        },
+        {
+          name: 'Leisure',
+          color: 'rgb(30, 50, 100)' 
+        },
+        {
+          name: 'Music',
+          color: 'rgb(220, 20, 140)' 
+        },
+        {
+          name: 'Religion & Spirituality',
+          color: 'rgb(96, 129, 8)' 
+        },
+        {
+          name: 'Science',
+          color: 'rgb(13, 115, 236)' 
+        },
+        {
+          name: 'Society & Culture',
+          color: 'rgb(220, 20, 140)' 
+        },
+        {
+          name: 'Sports',
+          color: 'rgb(140, 25, 50)' 
+        },
+        {
+          name: 'Technology',
+          color: 'rgb(141, 103, 171)' 
+        },
+        {
+          name: 'True Crime',
+          color: 'rgb(225, 51, 0)' 
+        },
+        {
+          name: 'TV & Film',
+          color: 'rgb(30, 50, 100)' 
+        },
       ],
     }
   },
@@ -125,7 +179,7 @@ export default {
 
 .cards {
   border-radius: 8px;
-  width: 10em;
+  width: 12em;
   height: 4em;
   margin: 0.5em;
   cursor: pointer;
