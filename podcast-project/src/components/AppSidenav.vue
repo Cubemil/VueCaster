@@ -58,7 +58,8 @@ export default {
 #app-sidenav {
   width: 100%;
   max-width: 200px;
-  padding: 0 1em;
+  padding-right: 6em;
+  padding-left: 0.5em;
   background: transparent;
   transition: width 0.3s;
   display: flex;
