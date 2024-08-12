@@ -87,7 +87,7 @@ export default {
   border-radius: 28px;
   margin-top: 1px;
   padding: 0 15px;
-  height: 45px;
+  height: 50px;
   width: 100%;
   max-width: 600px;
 }
