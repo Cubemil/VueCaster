@@ -4,7 +4,6 @@ import SearchView from '@/views/SearchView.vue';
 import PodcastView from '@/views/PodcastView.vue';
 
 //TODO #-router 
-
 const routes = [
 	{
 		path: '/',
@@ -26,7 +25,12 @@ const routes = [
 		component: PodcastView,
 		props: true
 	},
+	{
+		path: '/:catchAll(.*)',
+		redirect: '/home'
+	}
 ];
+  
 
 const router = createRouter({
 	history: createWebHistory(),

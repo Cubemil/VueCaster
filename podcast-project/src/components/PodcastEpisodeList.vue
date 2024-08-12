@@ -1,7 +1,7 @@
 <template>
   <div id="episode-list-container">
     <div v-for="episode in episodes" :key="episode.id" class="episode">
-      <img :src="podcastImage" alt="Podcast Image" class="episode-image"/>
+      <img :src="episode.imgURL" alt="Podcast Image" id="episode-image"/>
       <div class="episode-content">
         <h3 id="episode-title" @click="playEpisode(episode)" aria-label="Play episode">{{ episode.title }}</h3>
 
@@ -49,7 +49,6 @@
 export default {
   props: {
     episodes: { type: Array, required: true },
-    podcastImage: { type: String, required: true },
     currentEpisode: { type: Object }
   },
   methods: {
@@ -113,7 +112,7 @@ export default {
   border-bottom: none;
 }
 
-.episode-image {
+#episode-image {
   width: 100px;
   height: 100px;
   border-radius: 10px;
