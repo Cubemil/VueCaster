@@ -54,7 +54,7 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 32%;
+  height: 12em;
 }
 
 #search-bar-area {
