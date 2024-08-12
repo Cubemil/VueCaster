@@ -73,15 +73,18 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-right: 10%;
+  position: relative;
 }
 
 .action-button {
   background: none;
   border: none;
   color: #646060;
-  font-size: 3em;
+  font-size: 1.5em;
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .action-button:hover {
