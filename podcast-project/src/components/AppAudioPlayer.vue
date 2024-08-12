@@ -199,7 +199,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5em 1em;
+  padding: 1em 1em;
   background-color: black;
   color: #fff;
   font-size: 1.7em;
