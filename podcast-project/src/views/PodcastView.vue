@@ -7,7 +7,7 @@
       <h2>Episodes</h2>
       <PodcastEpisodeList
         :episodes="podcastEpisodes"
-        :podcastImage="podcastDetails?.imgURL"
+        :currentEpisode="currentEpisode"
         @playEpisode="playEpisode"
         @addToQueue="addToQueue"
         @updateQueue="updateQueue"
@@ -26,8 +26,12 @@ export default {
   data() {
     return {
       podcastDetails: null,
-      podcastEpisodes: []
-    };
+      podcastEpisodes: [],
+      currentEpisode: null
+    }
+  },
+  mounted() {
+    this.getPodcastData()
   },
   methods: {
     async getPodcastData() {
@@ -41,28 +45,22 @@ export default {
 
         this.podcastDetails = body.data
         this.podcastEpisodes = body.data.episodes
-        console.log('Podcast details:', this.podcastDetails)
-        console.log('Podcast episodes:', this.podcastEpisodes)
       } catch (err) {
         console.error('Error fetching podcast details:', err)
       }
     },
     playEpisode(episode) {
       const episodeWithArtist = { ...episode, artist: this.podcastDetails.title }
-      console.log('Emitting episode with artist:', episodeWithArtist)
+      this.currentEpisode = episodeWithArtist
       this.$emit('playEpisode', episodeWithArtist)
     },
     addToQueue(episode) {
       const episodeWithArtist = { ...episode, artist: this.podcastDetails.title }
-      console.log('Adding episode to queue:', episodeWithArtist)
       this.$emit('addToQueue', episodeWithArtist)
     },
     updateQueue(newQueue) {
       this.$emit('updateQueue', newQueue)
     }
-  },
-  mounted() {
-    this.getPodcastData()
   }
 }
 </script>

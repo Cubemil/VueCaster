@@ -51,16 +51,13 @@ export default {
   },
   methods: {
     setCurrentEpisode(episode) {
-      console.log('Setting current episode:', episode)
       this.currentEpisode = episode
     },
     addToQueue(episode) {
       this.queue.push(episode);
       localStorage.setItem('queue', JSON.stringify(this.queue))
-      console.log('Added to queue:', episode)
     },
     removeFromQueue(index) {
-      console.log('Removing from queue:', index);
       this.queue.splice(index, 1)
       localStorage.setItem('queue', JSON.stringify(this.queue))
     },

@@ -1,6 +1,6 @@
 <template>
   <div id="episode-list-container">
-    <div v-for="episode in episodes" :key="episode.id" class="episode">
+    <div v-for="episode in episodes" :key="episode.id" :class="{ 'episode': true, 'playing': episode.id === currentEpisode?.id }">
       <img :src="episode.imgURL" alt="Podcast Image" id="episode-image"/>
       <div class="episode-content">
         <h3 id="episode-title" @click="playEpisode(episode)" aria-label="Play episode">{{ episode.title }}</h3>
@@ -53,20 +53,18 @@ export default {
   },
   methods: {
     playEpisode(episode) {
-      console.log('Selected Episode: ', episode)
       this.$emit('playEpisode', episode)
     },
+    toggleDescription(episode) {
+      episode.expanded = !episode.expanded
+    },
     addToQueue(episode) {
-      console.log('Adding to queue: ', episode)
       episode.addedToQueue = true
       this.$emit('addToQueue', episode)
     },
     removeFromQueue(episode) {
-      console.log('Removing from queue: ', episode)
-
       const queue = JSON.parse(localStorage.getItem('queue'))
       const index = queue.findIndex(item => item.id === episode.id)
-      console.log('Index:', index)
 
       if (index !== -1) {
         queue.splice(index, 1)
@@ -76,9 +74,6 @@ export default {
       } else {
         console.log('Episode not found in queue')
       }
-    },
-    toggleDescription(episode) {
-      episode.expanded = !episode.expanded
     }
   }
 }
@@ -180,6 +175,10 @@ export default {
 .episode p {
   font-size: 1em;
   color: #666;
+}
+
+.playing {
+  background-color: #46cd4b;
 }
 
 .play-button, #queue-button {
