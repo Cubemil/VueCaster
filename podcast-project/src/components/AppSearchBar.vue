@@ -85,6 +85,7 @@ export default {
   align-items: center;
   background: #242424;
   border-radius: 28px;
+  margin-top: 1px;
   padding: 0 15px;
   height: 45px;
   width: 100%;
@@ -92,7 +93,7 @@ export default {
 }
 
 #searchbar-container:focus-within {
-  border: 1px solid #fdfdfd;
+  box-shadow: 0 0 0 1px #fdfdfd;
 }
 
 #searchbar-input {
