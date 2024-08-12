@@ -47,13 +47,19 @@ export default {
   color: #ffffff;
   background: transparent;
   overflow-x: hidden;
+  position: relative;
 }
 
 #categories {
   display: flex;
   justify-content: center;
   width: 100%;
+  height: 32%;
 }
 
+#search-bar-area {
+  position: absolute;
+  left: 1px;
+}
 </style>
 
