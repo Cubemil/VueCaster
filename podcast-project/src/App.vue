@@ -126,7 +126,7 @@ body {
 }
 
 #sidenav-area {
-  flex: 13%;
+  flex: 10%;
   border-radius: 15px;
   display: flex;
   justify-content: left;
