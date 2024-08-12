@@ -11,7 +11,7 @@
       </div>
 
       <transition-group name="fade" tag="div">
-        <draggable :list="queue" @end="updateQueueOrder" class="draggable">
+        <draggable :list="queue" @end="updateQueue" class="draggable">
           <div v-for="(episode, index) in queue" :key="episode.id" :class="{ 'queue-item': true, 'playing': episode.id === currentEpisode?.id }">
             <img :src="episode.imgURL" alt="Podcast image" @click="sendPodcastId(episode)">
             
@@ -55,8 +55,7 @@ export default {
   },
   props: {
     queue: { type: Array, required: true },
-    currentEpisode: { type: Object },
-    podcastId: [String, Number]
+    currentEpisode: { type: Object }
   },
   methods: {
     playEpisode(episode) {
@@ -69,9 +68,6 @@ export default {
       this.$emit('removeAllFromQueue')
     },
     updateQueue() {
-      this.$emit('update:queue', this.queue)
-    },
-    updateQueueOrder() {
       this.$emit('update:queue', this.queue)
       localStorage.setItem('queue', JSON.stringify(this.queue))
     },
@@ -123,7 +119,8 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1em;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 .queue-item {

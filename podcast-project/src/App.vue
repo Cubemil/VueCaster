@@ -16,16 +16,17 @@
       </div>
     </div>
     <div id="footer-area">
-      <AppAudioPlayer :episode="currentEpisode" 
+      <AppAudioPlayer 
+          :episode="currentEpisode" 
           @toggleQueue="toggleQueue"
       />
-      <QueueController v-if="showQueue" 
+      <QueueController 
+          v-if="showQueue" 
           :queue="queue"
           :currentEpisode="currentEpisode"
           @playEpisode="setCurrentEpisode"
           @removeFromQueue="removeFromQueue"
           @removeAllFromQueue="removeAllFromQueue" 
-          @closeQueue="toggleQueue"
           @update:queue="updateQueue"
       />
     </div>
@@ -91,7 +92,7 @@ export default {
       localStorage.setItem('queue', JSON.stringify(newQueue))
     }
   }
-};
+}
 </script>
 
 <style>

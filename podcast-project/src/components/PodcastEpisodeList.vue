@@ -178,7 +178,15 @@ export default {
 }
 
 .playing {
-  background-color: #46cd4b;
+  background: rgba(132, 244, 126, 0.19)
+}
+
+.playing p {
+  color: #fff;
+}
+
+.playing:hover {
+  background: #1db95459;
 }
 
 .play-button, #queue-button {
