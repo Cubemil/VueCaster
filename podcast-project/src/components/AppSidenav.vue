@@ -58,12 +58,11 @@ export default {
 #app-sidenav {
   width: 100%;
   max-width: 200px;
-  padding: 20px 10px;
+  padding: 0 1em;
   background: transparent;
   transition: width 0.3s;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 #app-sidenav.collapsed {
@@ -114,6 +113,7 @@ export default {
 .nav-text {
   flex: 1;
   text-align: left;
+  font-size: 0.8em;
 }
 
 .router-link:hover {
