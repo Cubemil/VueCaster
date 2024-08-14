@@ -119,10 +119,10 @@ export default {
 
 #loading-area {
   display: flex;
-  font-size: 3em;
+  font-size: 2em;
   flex-direction: column;
   align-items: center;
-  margin-left: 35vw;
+  margin-left: 30vw;
   color: #888;
 }
 
