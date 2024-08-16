@@ -5,12 +5,12 @@
 
       <div class="pagination-top">
         <button class="pagination-button" id="previous-button"
-                aria-label="Previous page">
+                aria-label="Previous page" @click="back">
           <i class="fas fa-chevron-left"></i>
         </button>
 
         <button class="pagination-button"
-                id="next-button" aria-label="Next page">
+                id="next-button" aria-label="Next page" @click="forward">
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>
@@ -41,6 +41,8 @@ import RecentSearchList from "@/components/RecentSearchList.vue";
 </script>
 
 <script>
+import router from "@/router";
+
 export default {
   data() {
     return {
@@ -57,6 +59,12 @@ export default {
       this.podcasts = []
       document.getElementById("categories").style.display = "block";
       document.getElementById("recent-search-list").style.display = "block";
+    },
+    forward() {
+      router.go(1);
+    },
+    back() {
+      router.go(-1);
     }
   }
 }
