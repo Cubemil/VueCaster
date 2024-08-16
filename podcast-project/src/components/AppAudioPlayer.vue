@@ -239,18 +239,6 @@ export default {
         iconElement.className = "fas fa-volume-high";
         iconElement.style.marginRight = "0";
       }
-    },
-    mute() {
-      /* not finished */
-      if (this.$refs.volume.valueAsNumber > 0) {
-        console.log("Mute");
-        this.$refs.volume.valueAsNumber = 0;
-        this.$refs.audio.volume = 0;
-        this.$refs.icon.className = "fas fa-volume-mute";
-        this.$refs.icon.style.marginRight = "4px";
-      } else if (this.$refs.volume.valueAsNumber === 0) {
-        console.log("unMute");
-      }
     }
   }
 }
