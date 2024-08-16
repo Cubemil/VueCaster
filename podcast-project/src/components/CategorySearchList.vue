@@ -1,6 +1,6 @@
 <template>
   <div id="categories-container">
-    <h2 style="margin: 0;padding-left: 0.5em;padding-bottom: 0.25em;">Browse all</h2>
+    <h2 style="margin: 0;padding-left: 0.5em;padding-bottom: 0.25em;">Categories</h2>
     <div id="category-cards-container">
       <div
           v-for="(category, index) in categories"
@@ -9,12 +9,14 @@
           :style="{ background: category.color }"
           @click="getPodcastsInCategory(category.name)"
       >
-        <i v-if="isLoading && loadingCategory === category.name" class="fas fa-spinner fa-spin"></i>
+
         <h2 v-html="category.name"></h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
   </div>
+
+
 </template>
 
 <script>
@@ -202,14 +204,6 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-}
-
-.cards i {
-  font-size: 1.2em;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 0.5em;
 }
 
 #error-message {
