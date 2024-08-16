@@ -3,7 +3,8 @@
     <i class="fas fa-search" id="search-icon" @click="fetchPodcasts" aria-label="Perform search"></i>
     <input id="searchbar-input" type="text" placeholder="What do you want to play?" size="40"
            ref="inputField" @input="inputNotEmpty" @keydown.enter="fetchPodcasts" autocomplete="off">
-    <i class="fas fa-times" id="delete-icon" ref="deleteIcon" @click="clearInput" aria-label="Clear search bar input"></i>
+    <i class="fas fa-times" id="delete-icon" ref="deleteIcon" @click="clearInput"
+       aria-label="Clear search bar input"></i>
     <i v-if="isLoading" class="fas fa-spinner fa-spin" id="loading-indicator"></i>
   </div>
 </template>

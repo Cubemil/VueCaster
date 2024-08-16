@@ -1,14 +1,14 @@
 <template>
   <div id="search-view-container">
     <div id="search-bar-area">
-      <AppSearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
+      <AppSearchBar @change="displayCategories" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
     </div>
-    
+
     <div id="categories">
       <CategorySearchList @search-performed="updatePodcasts"/>
     </div>
 
-    <PodcastList :podcasts="podcasts"/>
+    <PodcastList id="podcasts" :podcasts="podcasts"/>
   </div>
 </template>
 
@@ -20,17 +20,22 @@ import CategorySearchList from "@/components/CategorySearchList.vue"
 
 <script>
 export default {
-  data() { 
-    return { 
-      podcasts:[] 
+  data() {
+    return {
+      podcasts: []
     }
   },
   methods: {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts
+      document.getElementById("categories").style.display = "none";
     },
     clearPodcasts() {
       this.podcasts = []
+      document.getElementById("categories").style.display = "block";
+    },
+    displayCategories() {
+
     }
   }
 }
@@ -60,6 +65,10 @@ export default {
 #search-bar-area {
   position: absolute;
   left: 1px;
+}
+
+#podcasts {
+  margin-top: 4.5em;
 }
 </style>
 
