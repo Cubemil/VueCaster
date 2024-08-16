@@ -16,9 +16,13 @@
       </div>
 
       <div id="search-bar-area">
-        <AppSearchBar @change="displayCategories" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
+        <AppSearchBar @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
       </div>
 
+    </div>
+
+    <div id="recent-search-list">
+      <RecentSearchList/>
     </div>
 
     <div id="categories">
@@ -33,6 +37,7 @@
 import AppSearchBar from '@/components/AppSearchBar.vue'
 import PodcastList from '@/components/PodcastList.vue'
 import CategorySearchList from "@/components/CategorySearchList.vue"
+import RecentSearchList from "@/components/RecentSearchList.vue";
 </script>
 
 <script>
@@ -46,13 +51,12 @@ export default {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts
       document.getElementById("categories").style.display = "none";
+      document.getElementById("recent-search-list").style.display = "none";
     },
     clearPodcasts() {
       this.podcasts = []
       document.getElementById("categories").style.display = "block";
-    },
-    displayCategories() {
-
+      document.getElementById("recent-search-list").style.display = "block";
     }
   }
 }
