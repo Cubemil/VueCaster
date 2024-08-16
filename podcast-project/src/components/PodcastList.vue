@@ -98,17 +98,6 @@ export default {
 #podcast-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  flex-grow: 1;
-  background: transparent;
-}
-
-.pagination-top {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-right: 5%;
 }
 
 #current-page-text {
