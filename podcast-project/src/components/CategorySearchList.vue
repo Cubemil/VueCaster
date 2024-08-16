@@ -207,8 +207,9 @@ export default {
 .cards i {
   font-size: 1.2em;
   position: absolute;
-  top: 0.8em;
-  left: 3.5em;
+  bottom: 0;
+  right: 0;
+  margin: 0.5em;
 }
 
 #error-message {
