@@ -229,11 +229,11 @@ export default {
       if (volumeInput === 0) {
         console.log("Mute");
         iconElement.className = "fas fa-volume-mute";
-        iconElement.style.marginRight = "4px";
+        iconElement.style.marginRight = "3px";
       } else if (volumeInput <= 0.5) {
         console.log("Low");
         iconElement.className = "fas fa-volume-low";
-        iconElement.style.marginRight = "12px";
+        iconElement.style.marginRight = "10px";
       } else {
         console.log("High");
         iconElement.className = "fas fa-volume-high";
