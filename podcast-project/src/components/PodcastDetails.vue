@@ -1,6 +1,6 @@
 <template>
   <div id="podcast-detailed-view-container" v-if="data && data.title">
-    <img :src="data.imgURL" alt="Podcast Image" id="podcast-image" />
+    <img :src="data.imgURL" alt="Podcast Image" id="podcast-image"/>
     <h1>{{ data.title }}</h1>
     <h2>{{ data.author || 'Author Unknown' }}</h2>
     <a :href="data.htmlURL" target="_blank">Link to Podcast: {{ data.htmlURL }}</a>
@@ -115,6 +115,12 @@ p {
 }
 
 #loading-area {
-  font-size: 300%;
+  font-size: 200%;
+  margin: auto;
+  color: #888;
+}
+
+#loading-area i {
+  margin: 0.5em;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="home-view-container">
     <h1 id="welcome-message">Welcome back! Here are some recommended podcasts for you!</h1>
-    
+
     <div id="head-area">
       <h1 id="subheading">These are the top 100 hot podcasts right now:</h1>
       <button id="refresh-button" @click="getPodcastData">
@@ -14,7 +14,7 @@
       <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
       Loading podcasts...
     </div>
-    
+
     <PodcastList :podcasts="podcasts"/>
   </div>
 </template>
@@ -26,12 +26,14 @@ import PodcastList from '../components/PodcastList.vue';
 <script>
 export default {
   data() {
-    return { 
+    return {
       podcasts: [],
       isLoading: false
-     }
+    }
   },
-  mounted() { this.getPodcastData() },
+  mounted() {
+    this.getPodcastData()
+  },
   methods: {
     async getPodcastData() {
       try {
@@ -118,16 +120,8 @@ export default {
 }
 
 #loading-area {
-  display: flex;
-  font-size: 2em;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 30vw;
+  font-size: 200%;
+  margin: auto;
   color: #888;
-}
-
-#loading-indicator {
-  font-size: 1.5em;
-  margin-bottom: 2%;
 }
 </style>
