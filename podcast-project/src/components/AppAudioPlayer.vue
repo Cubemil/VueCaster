@@ -301,7 +301,7 @@ export default {
 }
 
 #podcast-title {
-  font-size: 0.8em;
+  font-size: 0.6em;
   font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -324,7 +324,7 @@ export default {
 }
 
 #podcast-artist {
-  font-size: 0.8em;
+  font-size: 0.6em;
   color: #b3b3b3;
 }
 
