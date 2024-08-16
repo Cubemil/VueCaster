@@ -91,10 +91,16 @@ export default {
   height: 50px;
   width: 100%;
   max-width: 600px;
+  transition: 0.3s;
 }
 
 #searchbar-container:focus-within {
   box-shadow: 0 0 0 1px #fdfdfd;
+}
+
+#searchbar-container:hover {
+  background: rgb(40, 40, 40);
+  box-shadow: 0 0 0 1px rgb(112, 112, 112);
 }
 
 #searchbar-input {

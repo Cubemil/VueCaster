@@ -1,7 +1,24 @@
 <template>
   <div id="search-view-container">
-    <div id="search-bar-area">
-      <AppSearchBar @change="displayCategories" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
+
+    <div id="top">
+
+      <div class="pagination-top">
+        <button class="pagination-button" id="previous-button"
+                aria-label="Previous page">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <button class="pagination-button"
+                id="next-button" aria-label="Next page">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div id="search-bar-area">
+        <AppSearchBar @change="displayCategories" @search-performed="updatePodcasts" @clear-search="clearPodcasts"/>
+      </div>
+
     </div>
 
     <div id="categories">
@@ -63,12 +80,47 @@ export default {
 }
 
 #search-bar-area {
-  position: absolute;
-  left: 1px;
+  position: relative;
 }
 
 #podcasts {
   margin-top: 4.5em;
+}
+
+.pagination-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-left: 0.5em;
+  margin-right: 1em;
+}
+
+.pagination-button {
+  font-size: 90%;
+  color: #ffffff;
+  background: #242424;
+  border: none;
+  border-radius: 50%;
+  padding: 1.25em;
+  margin: 0.35em;
+  width: 1.25em;
+  height: 1.25em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pagination-button:hover {
+  background: #1DB954;
+}
+
+#top {
+  display: flex;
+  position: absolute;
+  left: 1px;
 }
 </style>
 
