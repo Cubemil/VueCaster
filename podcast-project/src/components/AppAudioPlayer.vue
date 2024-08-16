@@ -259,7 +259,7 @@ export default {
 <style scoped>
 #audio-player-container {
   width: 100%;
-  height: 10vh;
+  height: 5vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -282,7 +282,7 @@ export default {
 }
 
 #album-cover {
-  width: 4em;
+  width: 3em;
   border-radius: 4px;
   margin-right: 0.5em;
   cursor: pointer;
@@ -301,7 +301,7 @@ export default {
 }
 
 #podcast-title {
-  font-size: 1em;
+  font-size: 0.8em;
   font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -340,14 +340,15 @@ export default {
 #controls {
   display: flex;
   align-items: center;
+  font-size: 0.8em;
 }
 
 .control-button {
   background: none;
   border: none;
   color: #beb8b8;
-  font-size: 1.2em;
   margin: 0 0.5em;
+  padding-bottom: 0.4em;
   cursor: pointer;
 }
 
@@ -360,20 +361,21 @@ export default {
   align-items: center;
   width: 80%;
   color: #fff;
+  font-size: 0.8em;
 }
 
 .playbar input[type="range"] {
-  width: 100%;
   margin: 0 0.5em;
+  width: 100%;
 }
 
 #volume-bar {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 #volume-bar input[type="range"] {
-  width: 100%;
   margin: 0 0.5em;
 }
 
@@ -423,7 +425,7 @@ button:disabled {
   background: none;
   border: none;
   color: #beb8b8;
-  font-size: 1.2em;
+  font-size: 1em;
   margin: 0 0.5em;
   cursor: pointer;
 }
