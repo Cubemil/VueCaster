@@ -101,11 +101,10 @@ export default {
     }
   },
   mounted() {
-    // Set initial volume based on stored value or default to 1
-    const savedVolume = localStorage.getItem('rangeValue') || 1;
+    const savedVolume = localStorage.getItem('rangeValue') || 1
     this.$refs.volume.value = savedVolume;
     this.$refs.audio.volume = savedVolume;
-    this.setVolume();
+    this.setVolume()
   },
   methods: {
     loadEpisode(episode) {
@@ -218,29 +217,29 @@ export default {
       })
     },
     setVolume() {
-      const volumeInput = this.$refs.volume.valueAsNumber;
-      const audioElement = this.$refs.audio;
-      const iconElement = this.$refs.icon;
+      const volumeInput = this.$refs.volume.valueAsNumbe
+      const audioElement = this.$refs.audio
+      const iconElement = this.$refs.icon
 
       // Set the audio volume
-      audioElement.volume = volumeInput;
+      audioElement.volume = volumeInput
 
       // Save the value to localStorage
-      localStorage.setItem('rangeValue', volumeInput);
+      localStorage.setItem('rangeValue', volumeInput)
 
       // Update the volume icon based on the current volume level
       if (volumeInput === 0) {
-        console.log("Mute");
-        iconElement.className = "fas fa-volume-mute";
-        iconElement.style.marginRight = "3px";
+        console.log("Mute")
+        iconElement.className = "fas fa-volume-mute"
+        iconElement.style.marginRight = "3px"
       } else if (volumeInput <= 0.5) {
         console.log("Low");
-        iconElement.className = "fas fa-volume-low";
-        iconElement.style.marginRight = "10px";
+        iconElement.className = "fas fa-volume-low"
+        iconElement.style.marginRight = "10px"
       } else {
         console.log("High");
-        iconElement.className = "fas fa-volume-high";
-        iconElement.style.marginRight = "0";
+        iconElement.className = "fas fa-volume-high"
+        iconElement.style.marginRight = "0"
       }
     }
   }

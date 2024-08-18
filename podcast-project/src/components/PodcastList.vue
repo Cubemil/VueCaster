@@ -13,16 +13,16 @@
       </div>
     -->
 
-    <!--TODO change back to Podcast Card of course-->
     <div v-if="visiblePodcasts.length > 0" id="podcast-list">
       <PodcastCard
-          v-for="(podcast, index) in visiblePodcasts"
-          :key="index"
-          :podcast="podcast"
-          :podcastId="podcast.id"
-          :image="podcast.image"
-          :podcastTitle="podcast.title"
-          :podcastAuthor="podcast.author"/>
+        v-for="(podcast, index) in visiblePodcasts"
+        :key="index"
+        :podcast="podcast"
+        :podcastId="podcast.id"
+        :image="podcast.image"
+        :podcastTitle="podcast.title"
+        :podcastAuthor="podcast.author"
+      />
     </div>
 
     <div class="pagination-bottom" v-if="podcasts.length >= 15">

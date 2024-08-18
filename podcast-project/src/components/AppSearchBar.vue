@@ -35,7 +35,7 @@ export default {
       if (inputField && deleteIcon) {
         inputField.value = ''
         deleteIcon.style.visibility = 'hidden'
-        this.$emit('clear-search') // Emit an event to clear the search results in the parent component
+        this.$emit('clear-search')
       }
     },
     async fetchPodcasts() {
@@ -67,7 +67,7 @@ export default {
             image: podcast.layoutImageURL,
             url: podcast.url
           }))
-          this.$emit('search-performed', podcasts)  // emits the search results to the parent component
+          this.$emit('search-performed', podcasts)
         }
       } catch (err) {
         console.error('Podcast could not be found.', err)

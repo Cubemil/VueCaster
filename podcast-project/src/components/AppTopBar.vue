@@ -29,5 +29,4 @@
 .fa-ellipsis-h, .fa-user-circle {
 	font-size: 2em;
 }
-
 </style>

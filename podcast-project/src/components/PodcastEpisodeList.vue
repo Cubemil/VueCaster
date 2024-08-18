@@ -204,5 +204,4 @@ export default {
   color: #11ff00;
   transform: scale(1.3);
 }
-
 </style>
