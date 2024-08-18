@@ -1,19 +1,22 @@
 <template>
   <div id="categories-container">
+    <h2 style="margin: 0;padding-left: 0.5em;padding-bottom: 0.25em;">Categories</h2>
     <div id="category-cards-container">
       <div
-        v-for="(category, index) in categories"
-        :key="index"
-        class="cards"
-        :style="{ background: category.color }"
-        @click="getPodcastsInCategory(category.name)"
+          v-for="(category, index) in categories"
+          :key="index"
+          class="cards"
+          :style="{ background: category.color }"
+          @click="getPodcastsInCategory(category.name)"
       >
-        <i v-if="isLoading && loadingCategory === category.name" class="fas fa-spinner fa-spin"></i>
+
         <h2 v-html="category.name"></h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
   </div>
+
+
 </template>
 
 <script>
@@ -24,77 +27,77 @@ export default {
       isLoading: false,
       loadingCategory: null,
       categories: [
-        {  
-          name: 'Arts', 
+        {
+          name: 'Arts',
           color: 'rgb(83, 122, 161)'
         },
         {
           name: 'Business',
-          color: 'rgb(232, 17, 91)' 
+          color: 'rgb(232, 17, 91)'
         },
         {
           name: 'Comedy',
-          color: 'rgb(56, 102, 205)' 
+          color: 'rgb(56, 102, 205)'
         },
         {
           name: 'Education',
-          color: 'rgb(225, 51, 0)' 
+          color: 'rgb(225, 51, 0)'
         },
         {
           name: 'Fiction',
-          color: 'rgb(30, 50, 100)' 
+          color: 'rgb(30, 50, 100)'
         },
         {
           name: 'Government',
-          color: 'rgb(186, 93, 7)' 
+          color: 'rgb(186, 93, 7)'
         },
         {
           name: 'History',
-          color: 'rgb(0, 100, 80)' 
+          color: 'rgb(0, 100, 80)'
         },
         {
           name: 'Health & Fitness',
-          color: 'rgb(39, 133, 106)' 
+          color: 'rgb(39, 133, 106)'
         },
         {
           name: 'Kids & Family',
-          color: 'rgb(165, 103, 82)' 
+          color: 'rgb(165, 103, 82)'
         },
         {
           name: 'Leisure',
-          color: 'rgb(30, 50, 100)' 
+          color: 'rgb(30, 50, 100)'
         },
         {
           name: 'Music',
-          color: 'rgb(220, 20, 140)' 
+          color: 'rgb(220, 20, 140)'
         },
         {
           name: 'Religion & Spirituality',
-          color: 'rgb(96, 129, 8)' 
+          color: 'rgb(96, 129, 8)'
         },
         {
           name: 'Science',
-          color: 'rgb(13, 115, 236)' 
+          color: 'rgb(13, 115, 236)'
         },
         {
           name: 'Society & Culture',
-          color: 'rgb(220, 20, 140)' 
+          color: 'rgb(220, 20, 140)'
         },
         {
           name: 'Sports',
-          color: 'rgb(140, 25, 50)' 
+          color: 'rgb(140, 25, 50)'
         },
         {
           name: 'Technology',
-          color: 'rgb(141, 103, 171)' 
+          color: 'rgb(141, 103, 171)'
         },
         {
           name: 'True Crime',
-          color: 'rgb(225, 51, 0)' 
+          color: 'rgb(225, 51, 0)'
         },
         {
           name: 'TV & Film',
-          color: 'rgb(30, 50, 100)' 
+          color: 'rgb(30, 50, 100)'
         },
       ],
     }
@@ -135,7 +138,7 @@ export default {
 
         const body = await response.json()
         console.log("body", body)
-  
+
         const podcasts = body.data.podcasts.map(podcast => ({
           id: podcast.id,
           title: podcast.title,
@@ -160,7 +163,7 @@ export default {
 <style scoped>
 #categories-container {
   background: transparent;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   width: 100%;
   margin: 4.5em auto;
@@ -169,8 +172,8 @@ export default {
 
 #category-cards-container {
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-wrap: wrap;
+  overflow-x: hidden;
 }
 
 #category-cards-container::-webkit-scrollbar {
@@ -179,9 +182,9 @@ export default {
 
 .cards {
   border-radius: 8px;
-  width: 12em;
-  height: 4em;
-  margin: 0.5em;
+  width: 14.9em;
+  height: 8em;
+  margin: 0.8em;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -196,13 +199,11 @@ export default {
 }
 
 .cards h2 {
-  text-align: center;
   font-size: 1.5em;
-}
-
-.cards i {
-  font-size: 2em;
-  margin-right: 5%;
+  margin: 0.5em;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 #error-message {

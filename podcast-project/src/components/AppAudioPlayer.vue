@@ -1,24 +1,33 @@
 <template>
   <div id="audio-player-container">
     <div id="player-left">
-      <img v-if="currentEpisode" :src="currentEpisode?.imgURL" alt="Album Artwork" id="album-cover" @click="sendPodcastId" aria-label="View podcast details">
+      <img v-if="currentEpisode" :src="currentEpisode?.imgURL" alt="Album Artwork" id="album-cover"
+           @click="sendPodcastId" aria-label="View podcast details">
       <div id="podcast-info">
-        <div id="podcast-title" @click="sendPodcastId" aria-label="View podcast details">{{ currentEpisode?.title || podcastTitle }}</div>
-        <div id="podcast-artist" @click="sendPodcastId" aria-label="View podcast details">{{ currentEpisode?.artist || podcastArtist }}</div>
+        <div id="podcast-title" @click="sendPodcastId" aria-label="View podcast details">
+          {{ currentEpisode?.title || podcastTitle }}
+        </div>
+        <div id="podcast-artist" @click="sendPodcastId" aria-label="View podcast details">
+          {{ currentEpisode?.artist || podcastArtist }}
+        </div>
       </div>
     </div>
     <div id="player-center">
       <div id="controls">
-        <button @click="previousPodcast" :disabled="!currentEpisode" aria-label="Previous Podcast" class="control-button">
+        <button @click="previousPodcast" :disabled="!currentEpisode" aria-label="Previous Podcast"
+                class="control-button">
           <i class="fas fa-step-backward"></i>
         </button>
-        <button @click="scrollBackwards" :disabled="!currentEpisode" aria-label="Rewind 30 seconds" class="control-button">
+        <button @click="scrollBackwards" :disabled="!currentEpisode" aria-label="Rewind 30 seconds"
+                class="control-button">
           <i class="fas fa-backward"></i>
         </button>
-        <button @click="togglePlayPause" :disabled="!currentEpisode" :aria-label="isPlaying ? 'Pause' : 'Resume'" class="control-button">
+        <button @click="togglePlayPause" :disabled="!currentEpisode" :aria-label="isPlaying ? 'Pause' : 'Resume'"
+                class="control-button">
           <i :class="isPlaying ? 'fas fa-pause' : 'fas fa-play'" class="fixed-icon-size"></i>
         </button>
-        <button @click="scrollForwards" :disabled="!currentEpisode" aria-label="Forward 30 seconds" class="control-button">
+        <button @click="scrollForwards" :disabled="!currentEpisode" aria-label="Forward 30 seconds"
+                class="control-button">
           <i class="fas fa-forward"></i>
         </button>
         <button @click="nextPodcast" :disabled="!currentEpisode" aria-label="Next Podcast" class="control-button">
@@ -27,20 +36,30 @@
       </div>
       <div class="playbar" :class="{ 'disabled-playbar': !currentEpisode }">
         <span>{{ formatTime(currentTime) }}</span>
-        <input type="range" min="0" :max="duration" v-model="currentTime" 
-               @input="seek" aria-label="Seek" :aria-valuemin="0" :aria-valuemax="duration" :aria-valuenow="currentTime" :disabled="!currentEpisode">
+        <input type="range" min="0" :max="duration" v-model="currentTime"
+               @input="seek" aria-label="Seek" :aria-valuemin="0" :aria-valuemax="duration" :aria-valuenow="currentTime"
+               :disabled="!currentEpisode">
         <span>{{ formatTime(duration) }}</span>
       </div>
     </div>
     <div id="player-right">
-      <button v-if="currentEpisode" @click="toggleLike" class="action-button" :aria-label="isLiked ? 'Unlike podcast' : 'Like podcast'" :class="{ 'active-button' : isLiked }">
+      <button v-if="currentEpisode" @click="toggleLike" class="action-button"
+              :aria-label="isLiked ? 'Unlike podcast' : 'Like podcast'" :class="{ 'active-button' : isLiked }">
         <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
-      <button @click="toggleQueue" class="action-button" id="toggle-queue-button" :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }">
+      <button @click="toggleQueue" class="action-button" id="toggle-queue-button"
+              :aria-label="queueVisible ? 'Hide queue' : 'Show queue'" :class="{ 'active-button': queueVisible }">
         <i class="fas fa-list"></i>
       </button>
+      <div id="volume-bar">
+        <button class="action-button" @click="mute">
+          <i class="fas fa-volume-high" ref="icon"></i>
+        </button>
+        <input type="range" ref="volume" @input="setVolume" @change="setVolume" min="0" max="1" step="0.01"/>
+      </div>
     </div>
-    <audio ref="audio" :src="currentEpisode?.enclosure || ''" @timeupdate="updateTime" @loadedmetadata="loadMetadata"></audio>
+    <audio ref="audio" :src="currentEpisode?.enclosure || ''" @timeupdate="updateTime"
+           @loadedmetadata="loadMetadata"></audio>
   </div>
 </template>
 
@@ -51,7 +70,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 <script>
 export default {
   props: {
-    episode: { type: Object, default: null },
+    episode: {type: Object, default: null},
     podcastId: [String, Number]
   },
   data() {
@@ -80,6 +99,13 @@ export default {
       },
       immediate: true
     }
+  },
+  mounted() {
+    // Set initial volume based on stored value or default to 1
+    const savedVolume = localStorage.getItem('rangeValue') || 1;
+    this.$refs.volume.value = savedVolume;
+    this.$refs.audio.volume = savedVolume;
+    this.setVolume();
   },
   methods: {
     loadEpisode(episode) {
@@ -175,7 +201,7 @@ export default {
     },
     formatTime(time) {
       if (isNaN(time)) return '00:00'
-      
+
       const hours = Math.floor(time / 3600)
       const minutes = Math.floor((time % 3600) / 60)
       const seconds = Math.floor(time % 60).toString().padStart(2, '0')
@@ -186,7 +212,36 @@ export default {
     },
     sendPodcastId() {
       const podcastId = this.currentEpisode?.podcast_id
-      this.$router.push({ name: 'PodcastView', params: { podcastId: podcastId } })
+      this.$router.push({
+        name: 'PodcastView', 
+        params: {podcastId: podcastId}
+      })
+    },
+    setVolume() {
+      const volumeInput = this.$refs.volume.valueAsNumber;
+      const audioElement = this.$refs.audio;
+      const iconElement = this.$refs.icon;
+
+      // Set the audio volume
+      audioElement.volume = volumeInput;
+
+      // Save the value to localStorage
+      localStorage.setItem('rangeValue', volumeInput);
+
+      // Update the volume icon based on the current volume level
+      if (volumeInput === 0) {
+        console.log("Mute");
+        iconElement.className = "fas fa-volume-mute";
+        iconElement.style.marginRight = "3px";
+      } else if (volumeInput <= 0.5) {
+        console.log("Low");
+        iconElement.className = "fas fa-volume-low";
+        iconElement.style.marginRight = "10px";
+      } else {
+        console.log("High");
+        iconElement.className = "fas fa-volume-high";
+        iconElement.style.marginRight = "0";
+      }
     }
   }
 }
@@ -195,7 +250,7 @@ export default {
 <style scoped>
 #audio-player-container {
   width: 100%;
-  height: 10vh;
+  height: 5vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -218,7 +273,7 @@ export default {
 }
 
 #album-cover {
-  width: 4em;
+  width: 3em;
   border-radius: 4px;
   margin-right: 0.5em;
   cursor: pointer;
@@ -237,7 +292,7 @@ export default {
 }
 
 #podcast-title {
-  font-size: 1em;
+  font-size: 0.6em;
   font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -245,14 +300,22 @@ export default {
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  10% { transform: translateX(0); }
-  90% { transform: translateX(-100%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 #podcast-artist {
-  font-size: 0.8em;
+  font-size: 0.6em;
   color: #b3b3b3;
 }
 
@@ -268,14 +331,15 @@ export default {
 #controls {
   display: flex;
   align-items: center;
+  font-size: 0.8em;
 }
 
 .control-button {
   background: none;
   border: none;
   color: #beb8b8;
-  font-size: 1.2em;
   margin: 0 0.5em;
+  padding-bottom: 0.4em;
   cursor: pointer;
 }
 
@@ -288,10 +352,21 @@ export default {
   align-items: center;
   width: 80%;
   color: #fff;
+  font-size: 0.8em;
 }
 
 .playbar input[type="range"] {
+  margin: 0 0.5em;
   width: 100%;
+}
+
+#volume-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+#volume-bar input[type="range"] {
   margin: 0 0.5em;
 }
 
@@ -341,7 +416,7 @@ button:disabled {
   background: none;
   border: none;
   color: #beb8b8;
-  font-size: 1.2em;
+  font-size: 1em;
   margin: 0 0.5em;
   cursor: pointer;
 }

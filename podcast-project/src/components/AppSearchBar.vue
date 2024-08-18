@@ -3,7 +3,8 @@
     <i class="fas fa-search" id="search-icon" @click="fetchPodcasts" aria-label="Perform search"></i>
     <input id="searchbar-input" type="text" placeholder="What do you want to play?" size="40"
            ref="inputField" @input="inputNotEmpty" @keydown.enter="fetchPodcasts" autocomplete="off">
-    <i class="fas fa-times" id="delete-icon" ref="deleteIcon" @click="clearInput" aria-label="Clear search bar input"></i>
+    <i class="fas fa-times" id="delete-icon" ref="deleteIcon" @click="clearInput"
+       aria-label="Clear search bar input"></i>
     <i v-if="isLoading" class="fas fa-spinner fa-spin" id="loading-indicator"></i>
   </div>
 </template>
@@ -90,10 +91,16 @@ export default {
   height: 50px;
   width: 100%;
   max-width: 600px;
+  transition: 0.3s;
 }
 
 #searchbar-container:focus-within {
   box-shadow: 0 0 0 1px #fdfdfd;
+}
+
+#searchbar-container:hover {
+  background: rgb(40, 40, 40);
+  box-shadow: 0 0 0 1px rgb(112, 112, 112);
 }
 
 #searchbar-input {
