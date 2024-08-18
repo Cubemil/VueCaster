@@ -76,7 +76,7 @@ export default {
       const targetRoute = this.$router.resolve({ name: 'PodcastView', params: { podcastId } })
 
       if (targetRoute) this.$router.push(targetRoute.href)
-    },
+    }
   }
 }
 </script>

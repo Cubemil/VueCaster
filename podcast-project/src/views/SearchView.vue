@@ -21,7 +21,7 @@
 
     </div>
 
-    <div id="recent-search-list">
+    <div v-if="re" id="recent-search-list">
       <RecentSearchList/>
     </div>
 
@@ -45,19 +45,20 @@ import router from "@/router"
 export default {
   data() {
     return {
-      podcasts: []
+      podcasts: [],
+      recentSearches: []
     }
   },
   methods: {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts
-      document.getElementById("categories").style.display = "none"
-      document.getElementById("recent-search-list").style.display = "none"
+      // document.getElementById("categories").style.display = "none"
+      // document.getElementById("recent-search-list").style.display = "none"
     },
     clearPodcasts() {
       this.podcasts = []
-      document.getElementById("categories").style.display = "block"
-      document.getElementById("recent-search-list").style.display = "block"
+      // document.getElementById("categories").style.display = "block"
+      // document.getElementById("recent-search-list").style.display = "block"
     },
     forward() {
       router.go(1)
@@ -133,4 +134,3 @@ export default {
   left: 1px;
 }
 </style>
-

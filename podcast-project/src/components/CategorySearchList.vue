@@ -1,6 +1,5 @@
 <template>
   <div id="categories-container">
-    <h2 style="margin: 0;padding-left: 0.5em;padding-bottom: 0.25em;">Categories</h2>
     <div id="category-cards-container">
       <div
           v-for="(category, index) in categories"
@@ -9,14 +8,12 @@
           :style="{ background: category.color }"
           @click="getPodcastsInCategory(category.name)"
       >
-
+        <i v-if="isLoading && loadingCategory === category.name" class="fas fa-spinner fa-spin"></i>
         <h2 v-html="category.name"></h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
   </div>
-
-
 </template>
 
 <script>
@@ -163,17 +160,17 @@ export default {
 <style scoped>
 #categories-container {
   background: transparent;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 4.5em auto;
+  margin: 1em auto;
   max-width: 100%;
 }
 
 #category-cards-container {
   display: flex;
-  flex-wrap: wrap;
-  overflow-x: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 #category-cards-container::-webkit-scrollbar {
@@ -182,9 +179,9 @@ export default {
 
 .cards {
   border-radius: 8px;
-  width: 14.9em;
-  height: 8em;
-  margin: 0.8em;
+  width: 12em;
+  height: 4em;
+  margin: 0.5em;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -199,11 +196,13 @@ export default {
 }
 
 .cards h2 {
+  text-align: center;
   font-size: 1.5em;
-  margin: 0.5em;
-  position: absolute;
-  left: 0;
-  top: 0;
+}
+
+.cards i {
+  font-size: 2em;
+  margin-right: 5%;
 }
 
 #error-message {
