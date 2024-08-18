@@ -187,7 +187,7 @@ export default {
     sendPodcastId() {
       const podcastId = this.currentEpisode?.podcast_id
       this.$router.push({ name: 'PodcastView', params: { podcastId: podcastId } })
-    },
+    }
   }
 }
 </script>

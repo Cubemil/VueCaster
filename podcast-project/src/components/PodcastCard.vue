@@ -1,34 +1,35 @@
 <template>
-  <div id="podcast-container">
-    <div id="podcast-card" @click="sendPodcastId" aria-label="View podcast details">
-      
-      <div id="top-area">
-        <div id="podcast-image-container">
-          <img :src="image" id="podcast-image" v-if="image" alt="Podcast Image"/>
-          <div class="skeleton-image" v-else></div>
-        </div>
-        <button @click.stop="toggleLike" class="action-button" :aria-label="liked ? 'Unlike podcast' : 'Like podcast'" :class="{ 'active-button' : liked }">
-          <i :class="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
-        </button>
+  <div id="podcast-card-container" @click="sendPodcastId" aria-label="View podcast details">
+    
+    <div id="top-area">
+      <div id="podcast-image-container">
+        <img v-if="image" :src="image" id="podcast-image" alt="Podcast Image"/>
+        <div v-else class="skeleton-image"></div>
       </div>
-      
-      <div id="podcast-title">
-        <template v-if="podcastTitle">{{ podcastTitle }}</template>
-        <div class="skeleton-title" v-else></div>
-      </div>
-      <div id="podcast-author">
-        <template v-if="podcastAuthor">{{ podcastAuthor }}</template>
-        <div class="skeleton-author" v-else></div>
-      </div>
-      <div id="podcast-category"></div>
-
+      <button 
+        @click.stop="toggleLike"
+        class="action-button"
+        :aria-label="liked ? 'Unlike podcast' : 'Like podcast'"
+        :class="{ 'active-button' : liked }"
+      >
+        <i :class="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
+      </button>
     </div>
+  
+    <div id="podcast-title">
+      <div v-if="podcastTitle">{{ podcastTitle }}</div>
+      <div v-else class="skeleton-title"></div>
+    </div>
+    <div id="podcast-author">
+      <div v-if="podcastAuthor">{{ podcastAuthor }}</div>
+      <div v-else class="skeleton-author"></div>
+    </div>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PodcastCard',
   props: {
     image: String,
     podcastTitle: String,
@@ -52,7 +53,7 @@ export default {
 </script>
 
 <style scoped>
-#podcast-card {
+#podcast-card-container {
   border-radius: 8px;
   width: 325px;
   height: 190px;
@@ -64,7 +65,7 @@ export default {
   transition: all 0.25s ease;
 }
 
-#podcast-card:hover {
+#podcast-card-container:hover {
   background: rgb(47, 47, 47);
   scale: 1.05;
 }
@@ -74,6 +75,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   position: relative;
+}
+
+#podcast-image {
+  width: 100px;
+  height: auto;
+  box-shadow: #121212 0 0 14px;
+  border-radius: 6px;
 }
 
 .action-button {
@@ -94,13 +102,6 @@ export default {
 
 .active-button {
   color: #1DB954;
-}
-
-#podcast-image {
-  width: 100px;
-  height: auto;
-  box-shadow: #121212 0 0 14px;
-  border-radius: 6px;
 }
 
 #podcast-title {

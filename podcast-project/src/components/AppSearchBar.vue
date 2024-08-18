@@ -18,63 +18,63 @@ export default {
   },
   methods: {
     inputNotEmpty() {
-      const inputField = this.$refs.inputField;
-      const deleteIcon = this.$refs.deleteIcon;
+      const inputField = this.$refs.inputField
+      const deleteIcon = this.$refs.deleteIcon
       if (inputField && deleteIcon) {
         if (inputField.value !== '') {
-          deleteIcon.style.visibility = 'visible';
+          deleteIcon.style.visibility = 'visible'
         } else {
-          deleteIcon.style.visibility = 'hidden';
+          deleteIcon.style.visibility = 'hidden'
         }
       }
     },
     clearInput() {
-      const inputField = this.$refs.inputField;
-      const deleteIcon = this.$refs.deleteIcon;
+      const inputField = this.$refs.inputField
+      const deleteIcon = this.$refs.deleteIcon
       if (inputField && deleteIcon) {
-        inputField.value = '';
-        deleteIcon.style.visibility = 'hidden';
-        this.$emit('clear-search');  // Emit an event to clear the search results in the parent component
+        inputField.value = ''
+        deleteIcon.style.visibility = 'hidden'
+        this.$emit('clear-search') // Emit an event to clear the search results in the parent component
       }
     },
     async fetchPodcasts() {
       const inputField = this.$refs.inputField;
       if (inputField && inputField.value !== '') {
-        inputField.style.outlineWidth = '0px';
-        inputField.blur();
-        await this.getPodcastData();
+        inputField.style.outlineWidth = '0px'
+        inputField.blur()
+        await this.getPodcastData()
       }
     },
     async getPodcastData() {
-      this.isLoading = true;
-      this.errorMessage = '';
+      this.isLoading = true
+      this.errorMessage = ''
       try {
-        const inputField = this.$refs.inputField;
+        const inputField = this.$refs.inputField
         if (inputField && inputField.value !== '') {
-          const podcastName = inputField.value.trim().toLowerCase();
-          let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
-          url.searchParams.append('title', podcastName);
-          const response = await fetch(url);
+          const podcastName = inputField.value.trim().toLowerCase()
+          let url = new URL('https://api.fyyd.de/0.2/search/podcast/')
+          url.searchParams.append('title', podcastName)
+          const response = await fetch(url)
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok')
           }
-          const body = await response.json();
+          const body = await response.json()
           const podcasts = body.data.map(podcast => ({
             id: podcast.id,
             title: podcast.title,
             author: podcast.author,
             image: podcast.layoutImageURL,
             url: podcast.url
-          }));
-          this.$emit('search-performed', podcasts);  // emits the search results to the parent component
+          }))
+          this.$emit('search-performed', podcasts)  // emits the search results to the parent component
         }
       } catch (err) {
-        console.error('Podcast could not be found.', err);
-        this.errorMessage = 'Podcast could not be found. Please try again later.';
+        console.error('Podcast could not be found.', err)
+        this.errorMessage = 'Podcast could not be found. Please try again later.'
       } finally {
-        this.isLoading = false;
+        this.isLoading = false
       }
-    },
+    }
   }
 }
 </script>

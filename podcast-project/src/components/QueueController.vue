@@ -23,7 +23,7 @@
                 {{ Math.floor(episode.duration / 60) }} min
               </div>
             </div>
-              
+            
             <div id="button-area">
               <button @click="playEpisode(episode)" class="action-button" aria-label="Play episode">
                 <i :class=" episode.id === currentEpisode?.id ? 'fas fa-pause' : 'fas fa-play'"></i>

@@ -4,7 +4,7 @@
       <PodcastDetails :data="podcastDetails"/>
     </div>
     <div id="episodes-area" v-if="podcastDetails">
-      <h2>Episodes</h2>
+      <h2>Latest Episodes</h2>
       <PodcastEpisodeList
         :episodes="podcastEpisodes"
         :currentEpisode="currentEpisode"
@@ -17,8 +17,8 @@
 </template>
 
 <script setup>
-import PodcastDetails from '../components/PodcastDetails.vue';
-import PodcastEpisodeList from '../components/PodcastEpisodeList.vue';
+import PodcastDetails from '../components/PodcastDetails.vue'
+import PodcastEpisodeList from '../components/PodcastEpisodeList.vue'
 </script>
 
 <script>

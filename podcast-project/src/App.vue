@@ -34,11 +34,11 @@
 </template>
 
 <script setup>
-import '@fortawesome/fontawesome-free/css/all.css';
-import AppTopBar from "@/components/AppTopBar.vue";
-import AppSidenav from "@/components/AppSidenav.vue";
-import AppAudioPlayer from "@/components/AppAudioPlayer.vue";
-import QueueController from "@/components/QueueController.vue";
+import '@fortawesome/fontawesome-free/css/all.css'
+import AppTopBar from "@/components/AppTopBar.vue"
+import AppSidenav from "@/components/AppSidenav.vue"
+import AppAudioPlayer from "@/components/AppAudioPlayer.vue"
+import QueueController from "@/components/QueueController.vue"
 </script>
 
 <script>
@@ -55,7 +55,7 @@ export default {
       this.currentEpisode = episode
     },
     addToQueue(episode) {
-      this.queue.push(episode);
+      this.queue.push(episode)
       localStorage.setItem('queue', JSON.stringify(this.queue))
     },
     removeFromQueue(index) {

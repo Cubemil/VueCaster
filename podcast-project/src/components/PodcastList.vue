@@ -1,6 +1,19 @@
 <template>
   <div id="podcast-list-container">
 
+    <!--
+      <div class="pagination-top" v-if="podcasts.length >= 15">
+      <button :disabled="currentPage === 0" @click="previousPage" class="pagination-button" id="previous-button" aria-label="Previous page">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button :disabled="podcasts.length <= (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button" aria-label="Next page">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <p id="current-page-text">{{ currentPage + 1 }}/{{ totalPages + 1 }}</p>
+      </div>
+    -->
+
+    <!--TODO change back to Podcast Card of course-->
     <div v-if="visiblePodcasts.length > 0" id="podcast-list">
       <PodcastCard
         v-for="(podcast, index) in visiblePodcasts"
@@ -153,16 +166,4 @@ export default {
   color: #A7A7A7;
   font-size: 1em;
 }
-
-/*
-<div class="pagination-top" v-if="podcasts.length >= 15">
-<button :disabled="currentPage === 0" @click="previousPage" class="pagination-button" id="previous-button" aria-label="Previous page">
-  <i class="fas fa-chevron-left"></i>
-</button>
-<button :disabled="podcasts.length <= (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button" aria-label="Next page">
-  <i class="fas fa-chevron-right"></i>
-</button>
-<p id="current-page-text">{{ currentPage + 1 }}/{{ totalPages + 1 }}</p>
-</div>
-*/
 </style>
