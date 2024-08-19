@@ -47,12 +47,12 @@ export default {
 <style scoped>
 #podcast-shelf-item-container {
   border-radius: 5%;
-  width: 7vw;
-  height: 150%;
-  margin: 0.5%;
+  width: 170px;
+  height: 220px;
+  margin: 0.5em;
   background: rgb(24, 24, 24);
   text-align: center;
-  padding: 1%;
+  padding: 1.1em;
   cursor: pointer;
   transition: all 0.25s ease;
 }
@@ -63,7 +63,7 @@ export default {
 }
 
 .podcast-image {
-  width: 7vw;
+  width: 160px;
   height: auto;
   box-shadow: #121212 0 0 14px;
   border-radius: 5%;
@@ -79,7 +79,7 @@ export default {
 
 #podcast-title {
   color: #fdfdfd;
-  font-size: 2.5vh;
+  font-size: 1.8em;
   font-weight: bold;
   position: relative;
   white-space: nowrap;
@@ -88,7 +88,7 @@ export default {
 
 #podcast-author {
   color: #A7A7A7;
-  font-size: 2vh;
+  font-size: 1em;
   white-space: nowrap;
   overflow: hidden;
 }

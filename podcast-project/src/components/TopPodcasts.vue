@@ -1,21 +1,21 @@
 <template>
   <div id="top-podcasts-view-container">
     <div id="head-area">
-      <h1 id="heading">These are the top 100 hot podcasts right now:</h1>
+      <h1 id="heading">These are the top 50 hot podcasts right now:</h1>
       <button id="refresh-button" @click="getPodcastData">
         <i class="fas fa-refresh"></i>
         Refresh
       </button>
     </div>
 
+		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
+    <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
+    <PodcastList :podcasts="podcasts" @toggleExpand="toggleExpand"/>
+    
     <div v-if="isLoading" id="loading-area">
       <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
       Loading podcasts...
     </div>
-    
-		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <PodcastList :podcasts="podcasts" @toggleExpand="toggleExpand"/>
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
     async getPodcastData() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=100'
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=50'
         const response = await fetch(url)
 
         if (!response.ok) 

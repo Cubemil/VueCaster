@@ -10,7 +10,6 @@
           <i class="fas fa-chevron-right"></i>
         </button>
         <p id="current-page-text">{{ currentPage + 1 }}/{{ totalPages + 1 }}</p>
-        
       </div>
       
       <button id="expand-button" @click="toggleExpand">Show all</button>
@@ -46,7 +45,7 @@ export default {
       visiblePodcasts: [], 
       currentPage: 0,
       totalPages: 0,
-      itemsPerPage: 0
+      itemsPerRow: 0
     }
   },
   watch: {
@@ -67,28 +66,27 @@ export default {
   methods: {
     updatePagination() {
       const containerWidth = document.getElementById('podcast-shelf-container').clientWidth
-      const containerHeight = document.getElementById('podcast-shelf-container').clientHeight
-      const itemWidth = 150
-      const itemHeight = 250
+      const itemWidth = 170
 
       const itemsPerRow = Math.floor(containerWidth / itemWidth)
-      const itemsPerPage = Math.floor(containerHeight / itemHeight)
-
-      this.itemsPerPage = itemsPerRow * itemsPerPage
-      this.totalPages = Math.ceil(this.podcasts.length / this.itemsPerPage) - 1
+      this.totalPages = Math.ceil(this.podcasts.length / itemsPerRow) - 1
 
       this.updateVisiblePodcasts()
     },
     updateVisiblePodcasts() {
-      this.visiblePodcasts = this.podcasts.slice(this.currentPage * this.itemsPerPage, (this.currentPage + 1) * this.itemsPerPage)
+      const startIndex = this.currentPage * this.itemsPerRow
+      const endIndex = startIndex + this.itemsPerRow
+      this.visiblePodcasts = this.podcasts.slice(startIndex, endIndex)
     },
     nextPage() {
-      this.currentPage++
-      this.updateVisiblePodcasts()
+      if (this.currentPage < this.totalPages)
+        this.currentPage++
+        this.updateVisiblePodcasts()
     },
     previousPage() {
-      this.currentPage--
-      this.updateVisiblePodcasts()
+      if (this.currentPage > 0)
+        this.currentPage--
+        this.updateVisiblePodcasts()
     },
     toggleExpand() {
       this.$emit('toggleExpand')
@@ -105,16 +103,16 @@ export default {
 <style scoped>
 #podcast-shelf-container {
   width: 100%;
-  height: 100vh;
-  overflow-y: auto;
+  height: auto;
   background: transparent;
 }
 
 #podcast-shelf {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  overflow: hidden;
   background: transparent;
 }
 
