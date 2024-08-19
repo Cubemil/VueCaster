@@ -94,7 +94,7 @@ export default {
   width: 100%;
   max-width: 35vw;
   box-sizing: border-box;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .episode:last-child {
@@ -103,8 +103,6 @@ export default {
 
 .episode:hover {
   background-color: #1f1f1f;
-  scale: 1.01;
-  border-bottom: none;
 }
 
 #episode-image {

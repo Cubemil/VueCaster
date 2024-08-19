@@ -11,8 +11,8 @@
       <p>Average episode length: {{ data.stats.medianduration_string }}</p>
       <p>Episode count: {{ data.episode_count }}</p>
       <p>Last publication: {{ new Date(data.lastpub).toLocaleDateString() }}</p>
-      <!--TODO: implement: <p>Publication interval: {{ data.stats.pubinterval_string }}</p>-->
-      <p>Complete duration: {{ data.stats.complete_duration_value }}</p>
+      <p>Publication interval: {{ getPublicationInterval() }}</p>
+      <p>Complete duration: {{ data.stats.complete_duration_value / 60}}h</p>
     </div>
   </div>
 
@@ -27,8 +27,12 @@ export default {
   props: {
     data: {}
   },
-  mounted() {
-    console.log('PodcastDetails mounted with data:', this.data)
+  watch: {
+    data(newData) {
+      if (newData)
+        console.log('Podcast data loaded:', newData)
+        console.log(this.data.stats.pubinterval_string)
+    }
   },
   methods: {
     getLanguage() {
@@ -47,10 +51,26 @@ export default {
     },
     getPublicationInterval() {
       const interval_type = this.data.stats.pubinterval_type
-      if (interval_type === 1) {
-        return 'Daily'
-      } else {
-        return 'Unknown'
+      const interval_value = this.data.stats.pubinterval_value
+
+      if (!interval_type || !interval_value || interval_value < 1 || interval_type < 1) 
+        return 'No regular interval'
+      
+      switch (interval_type) {
+        case 1:
+          if (interval_value === 1 || interval_value === 0)
+            return 'Daily'
+          else
+            return `Every ${interval_value} days`
+        case 2:
+          if (interval_value === 7 || interval_value === 0)
+            return 'Weekly'
+          else
+            return `Every ${interval_value} weeks`
+        case 3:
+          return 'Bi-weekly'
+        default:
+          return 'No regular interval'
       }
     }
   }

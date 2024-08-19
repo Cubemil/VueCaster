@@ -17,17 +17,17 @@
     </div>
     <div id="footer-area">
       <AppAudioPlayer 
-          :episode="currentEpisode" 
-          @toggleQueue="toggleQueue"
+        :episode="currentEpisode" 
+        @toggleQueue="toggleQueue"
       />
       <QueueController 
-          v-if="showQueue" 
-          :queue="queue"
-          :currentEpisode="currentEpisode"
-          @playEpisode="setCurrentEpisode"
-          @removeFromQueue="removeFromQueue"
-          @removeAllFromQueue="removeAllFromQueue" 
-          @update:queue="updateQueue"
+        v-if="showQueue" 
+        :queue="queue"
+        :currentEpisode="currentEpisode"
+        @playEpisode="setCurrentEpisode"
+        @removeFromQueue="removeFromQueue"
+        @removeAllFromQueue="removeAllFromQueue" 
+        @update:queue="updateQueue"
       />
     </div>
   </div>
@@ -70,7 +70,7 @@ export default {
       this.showQueue = !this.showQueue
     },
     updateQueue(newQueue) {
-      this.queue = newQueue
+      this.queue = newQueue 
       localStorage.setItem('queue', JSON.stringify(newQueue))
     },
     async getCategories() {
@@ -101,6 +101,7 @@ body {
   padding: 0;
   background: #000000;
   height: 100vh;
+  overflow: hidden;
 }
 
 .top-bar {
@@ -121,7 +122,7 @@ body {
 #content {
   display: flex;
   flex-direction: row;
-  flex: 85%;
+  flex: 83%;
   overflow: hidden;
 }
 
@@ -150,7 +151,7 @@ body {
 }
 
 #footer-area {
-  flex: 10%;
+  flex: 12%;
   display: flex;
   justify-content: center;
 }

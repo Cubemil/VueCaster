@@ -14,7 +14,8 @@
     </div>
     
 		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/>
+    <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
+    <PodcastList :podcasts="podcasts" @toggleExpand="toggleExpand"/>
   </div>
 </template>
 
@@ -29,7 +30,7 @@ export default {
     return { 
       podcasts: [],
       isLoading: false,
-			podsExpanded: true // TODO change to false by default later
+			podsExpanded: false
     }
   },
   mounted() {

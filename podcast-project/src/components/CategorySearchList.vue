@@ -96,7 +96,7 @@ export default {
           name: 'TV & Film',
           color: 'rgb(30, 50, 100)'
         },
-      ],
+      ]
     }
   },
   methods: {
