@@ -19,6 +19,8 @@
       <AppAudioPlayer 
         :episode="currentEpisode" 
         @toggleQueue="toggleQueue"
+        @playNextEpisode="playNextEpisode"
+        @playPreviousEpisode="playPreviousEpisode"
       />
       <QueueController 
         v-if="showQueue" 
@@ -72,6 +74,24 @@ export default {
     updateQueue(newQueue) {
       this.queue = newQueue 
       localStorage.setItem('queue', JSON.stringify(newQueue))
+    },
+    playNextEpisode() {
+      const currentIndex = this.queue.findIndex(episode => episode.id === this.currentEpisode.id)
+      if (currentIndex !== -1 && currentIndex < this.queue.length - 1) {
+        this.setCurrentEpisode(this.queue[currentIndex + 1])
+      } else {
+        // repeat queue (TODO maybe change to something else later)
+        this.setCurrentEpisode(this.queue[0])
+      }
+    },
+    playPreviousEpisode() {
+      const currentIndex = this.queue.findIndex(episode => episode.id === this.currentEpisode.id)
+      if (currentIndex > 0) {
+        this.setCurrentEpisode(this.queue[currentIndex - 1])
+      } else {
+        // go back to first episode
+        this.setCurrentEpisode(this.queue[0])
+      }
     },
     async getCategories() {
       try {

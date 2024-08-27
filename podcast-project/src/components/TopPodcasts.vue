@@ -7,15 +7,16 @@
         Refresh
       </button>
     </div>
-
-		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <PodcastList :podcasts="podcasts" @toggleExpand="toggleExpand"/>
     
     <div v-if="isLoading" id="loading-area">
       <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
       Loading podcasts...
     </div>
+    
+		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
+    <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
+    <PodcastList :podcasts="podcasts" @toggleExpand="toggleExpand"/>
+    
   </div>
 </template>
 

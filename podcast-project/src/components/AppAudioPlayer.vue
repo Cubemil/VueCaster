@@ -21,9 +21,9 @@
     <div id="player-center">
       <div id="controls">
         <button
-          @click="previousPodcast"
+          @click="playPreviousEpisode"
           :disabled="!currentEpisode"
-          aria-label="Previous Podcast"
+          aria-label="Play Previous Episode"
           class="control-button"
         >
           <i class="fas fa-step-backward"></i>
@@ -53,9 +53,9 @@
           <i class="fas fa-forward"></i>
         </button>
         <button 
-          @click="nextPodcast" 
+          @click="playNextEpisode" 
           :disabled="!currentEpisode" 
-          aria-label="Next Podcast" class="control-button"
+          aria-label="Play Next Episode" class="control-button"
         >
           <i class="fas fa-step-forward"></i>
         </button>
@@ -64,8 +64,8 @@
         <span>{{ formatTime(currentTime) }}</span>
         <input 
           type="range" 
-          min="0" 
-          :max="duration" 
+          min="0"
+          :max="duration"
           v-model="currentTime"
           @input="seek"
           aria-label="Seek"
@@ -216,11 +216,11 @@ export default {
         console.error('Audio element not found')
       }
     },
-    previousPodcast() {
-      console.log('Playing previous podcast')
+    playPreviousEpisode() {
+      this.$emit('playPreviousEpisode')
     },
-    nextPodcast() {
-      console.log('Playing next podcast')
+    playNextEpisode() {
+      this.$emit('playNextEpisode')
     },
     scrollBackwards() {
       this.currentTime = Math.max(0, this.currentTime - 30)
@@ -243,6 +243,9 @@ export default {
       if (audio) {
         this.currentTime = audio.currentTime
         this.duration = audio.duration
+        if (this.currentTime >= this.duration) {
+          this.playNextEpisode() // auto-play next episode
+        }
       } else {
         console.error('Audio element not found')
       }
@@ -287,7 +290,6 @@ export default {
 
       audioElement.volume = volumeInput
       localStorage.setItem('rangeValue', volumeInput)
-
       this.isMuted = false
 
       if (volumeInput === 0) {
@@ -298,10 +300,9 @@ export default {
         iconElement.className = "fas fa-volume-up"
       }
 
-      /*TODO check if fa-volume is available someday for medium volume (0.3 - 0.6):
+      /* TODO check if fa-volume is available someday for medium volume (0.3 - 0.6):
       * } else if (volumeInput <= 0.6) {
-      * iconElement.className = "fas fa-volume"
-      */
+      * iconElement.className = "fas fa-volume" */
     },
     toggleMute () {
       const audioElement = this.$refs.audio
