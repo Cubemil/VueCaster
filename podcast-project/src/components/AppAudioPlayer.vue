@@ -335,23 +335,26 @@ export default {
   padding: 0.5em;
   color: #fff;
   font-size: 1.7em;
+  height: 10vh;
 }
 
 #player-left, #player-center, #player-right {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: flex 0.2s ease;
 }
 
 #player-left {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex: 1 1 20%;
+  flex: 1 1 15%;
   overflow: hidden;
   max-height: 100%;
 }
 
 #album-cover {
   width: 4em;
+  height: 4em;
   border-radius: 4px;
   margin-right: 0.5em;
   cursor: pointer;
@@ -367,6 +370,7 @@ export default {
   flex-direction: column;
   overflow: hidden;
   cursor: pointer;
+  width: 100%;
 }
 
 #podcast-title {
@@ -375,6 +379,7 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   animation: marquee 10s linear infinite;
+  max-width: 100%;
 }
 
 @keyframes marquee {
@@ -403,7 +408,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  flex: 1 1 50%;
+  flex: 1 1 30%;
 }
 
 #controls {
@@ -424,7 +429,7 @@ export default {
 .playbar {
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 100%;
   color: #fff;
   font-size: 0.8em;
 }
@@ -509,13 +514,12 @@ button:disabled {
 }
 
 @media screen and (max-width: 768px) {
-  #audio-player-container {
-    font-size: 1em;
+  #player-left {
+    flex: 1 1 10%;  /* shrink left section further on smaller screens */
   }
 
-  #album-cover {
-    width: 3em;
-    height: 3em;
+  #player-center {
+    flex: 1 1 80%;
   }
 }
 </style>
