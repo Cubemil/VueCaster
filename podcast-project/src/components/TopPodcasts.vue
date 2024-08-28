@@ -2,10 +2,7 @@
   <div id="top-podcasts-view-container">
     <div id="head-area">
       <h1 id="heading">These are the top 50 hot podcasts right now:</h1>
-      <button id="refresh-button" @click="getPodcastData">
-        <i class="fas fa-refresh"></i>
-        Refresh
-      </button>
+      <!-- <button id="refresh-button" @click="getPodcastData"><i class="fas fa-refresh"></i>Refresh</button> -->
     </div>
     
     <div v-if="isLoading" id="loading-area">
@@ -15,7 +12,11 @@
     
 		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
     <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
+    <!-- TODO implement nr. 1 podcast worldwide -->
+    <!-- TODO implement top podcasts in your country (get user location) -->
+    <!-- TODO implement top genres -->
     <PodcastList :podcasts="podcasts" @toggleExpand="toggleExpand"/>
+
     
   </div>
 </template>
@@ -35,7 +36,7 @@ export default {
     }
   },
   mounted() {
-		this.getPodcastData()
+    this.getPodcastData()
 	},
   methods: {
     async getPodcastData() {
@@ -129,3 +130,4 @@ export default {
   margin-bottom: 2%;
 }
 </style>
+
