@@ -24,9 +24,6 @@
 
 <script>
 export default {
-	props: {
-		isCollapsed: { type: Boolean, default: false }
-	},
 	data() {
 		return {
 			likedPodcasts: [],
@@ -40,11 +37,6 @@ export default {
 	},
 	beforeUnmount() {
 		window.removeEventListener('storage', this.handleStorageChange)
-	},
-	watch: {
-		likedPodcasts() {
-			this.loadLikedPodcasts()
-		}
 	},
 	methods: {
 		loadLikedPodcasts() {

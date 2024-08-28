@@ -29,9 +29,22 @@
           <span v-if="!isCollapsed" class="nav-text">Saved Episodes</span>
         </router-link>
       </li>
+      <li 
+        id="liked-podcast-header"
+        class="app-sidenav-item"
+        @click="toggleLikedList"
+        :class="{ active: showLikedList }"
+      >
+        <div class="router-link">
+          <i class="fas fa-heart nav-icon"></i>
+          <span v-if="!isCollapsed" class="nav-text">Liked Podcasts</span>
+        </div>
+        <i id="expand-arrow" v-if="!isCollapsed" :class="showLikedList ? 'fas fa-chevron-down' : 'fas fa-chevron-right'" class="chevron-icon"></i>
+      </li>
     </ul>
 
-    <LikedPodcastsList 
+    <LikedPodcastsList
+      v-if="showLikedList && !isCollapsed"
       :isCollapsed="isCollapsed"
     />
 
@@ -46,12 +59,16 @@ import LikedPodcastsList from "@/components/LikedPodcastsList.vue"
 export default {
   data() { 
     return { 
-      isCollapsed: false
+      isCollapsed: false,
+      showLikedList: true
     }
   },
   methods: {
     toggleSidenav() {
       this.isCollapsed = !this.isCollapsed
+    },
+    toggleLikedList() {
+      this.showLikedList = !this.showLikedList
     },
     handleResize() {
       if (window.innerWidth > 768 && this.isCollapsed)
@@ -105,6 +122,7 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .router-link {
@@ -116,6 +134,12 @@ export default {
   font-size: 1.5em;
   width: 100%;
   padding: 10px 0;
+}
+
+#liked-podcast-header {
+  display: flex;
+  color: #B3B3B3;
+  align-items: center;
 }
 
 .nav-icon {
