@@ -11,10 +11,10 @@
       >
       <div id="podcast-info">
         <div id="podcast-title" @click="sendPodcastId" aria-label="View podcast details">
-          {{ currentEpisode?.title || podcastTitle }}
+          {{ currentEpisode?.title }}
         </div>
         <div id="podcast-artist" @click="sendPodcastId" aria-label="View podcast details">
-          {{ currentEpisode?.artist || podcastArtist }}
+          {{ currentEpisode?.artist }}
         </div>
       </div>
     </div>
@@ -134,10 +134,6 @@ export default {
   data() {
     return {
       currentEpisode: this.episode,
-      albumArtworkUrl: 'https://placehold.co/200/121212/121212',
-      podcastTitle: '',
-      podcastArtist: '',
-      audioUrl: null,
       isPlaying: false,
       currentTime: 0,
       duration: 0,
@@ -151,10 +147,9 @@ export default {
     episode: {
       handler(newValue) {
         if (newValue) {
-          console.log('New episode received:', newValue)
           this.currentEpisode = newValue
           this.loadEpisode(newValue)
-          console.log('Current episode:', this.currentEpisode)
+          this.checkIfLiked()
         }
       },
       immediate: true
@@ -165,6 +160,10 @@ export default {
     this.$refs.volume.value = savedVolume
     this.$refs.audio.volume = savedVolume
     this.setVolume()
+    
+    if (this.currentEpisode) {
+      this.checkIfLiked()
+    }
   },
   methods: {
     loadEpisode(episode) {
@@ -259,7 +258,26 @@ export default {
       }
     },
     toggleLike() {
-      this.isLiked = !this.isLiked
+      const likedEpisodes = JSON.parse(localStorage.getItem('likedEpisodes') || '[]')
+      const episodeIndex = likedEpisodes.findIndex(episode => episode.id === this.currentEpisode.id)
+
+      if (episodeIndex === -1) {
+        likedEpisodes.push(this.currentEpisode)
+        this.isLiked = true
+      } else {
+        likedEpisodes.splice(episodeIndex, 1)
+        this.isLiked = false
+      }
+
+      localStorage.setItem('likedEpisodes', JSON.stringify(likedEpisodes))
+    },
+    checkIfLiked() {
+      if (this.currentEpisode && this.currentEpisode.id) {
+        const likedEpisodes = JSON.parse(localStorage.getItem('likedEpisodes') || '[]')
+        this.isLiked = likedEpisodes.some(episode => episode.id === this.currentEpisode.id)
+      } else {
+        this.isLiked = false
+      }
     },
     toggleQueue() {
       this.queueVisible = !this.queueVisible
