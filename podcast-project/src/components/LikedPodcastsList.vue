@@ -1,6 +1,6 @@
 <template>
 	<div id="liked-podcast-list-container">
-		<h3 v-if="!isCollapsed">Your Liked Podcasts</h3>
+
 		<ul id="liked-podcasts-list">
 			<li v-for="podcast in likedPodcasts" :key="podcast.id" class="liked-podcast-item">
 				<router-link 
@@ -97,13 +97,19 @@ export default {
 
 <style scoped>
 #liked-podcast-list-container {
-  margin-top: 1rem;
-  border-top: 1px solid #B3B3B3;
+  margin-top: 1;
+	padding-top: 10%;
 }
 
 #liked-podcast-list-container h3 {
-	color: #B3B3B3;
-	font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  color: #B3B3B3;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.5em;
+  width: 100%;
+  padding: 10px 0;
 }
 
 #liked-podcasts-list {
@@ -135,6 +141,13 @@ export default {
 
 .liked-podcast-link:hover {
 	color: #fff;
+}
+
+.app-sidenav-item {
+  margin: 10px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .podcast-image {

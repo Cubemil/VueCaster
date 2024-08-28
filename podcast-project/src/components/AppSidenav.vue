@@ -45,7 +45,9 @@ import LikedPodcastsList from "@/components/LikedPodcastsList.vue"
 <script>
 export default {
   data() { 
-    return { isCollapsed: false}
+    return { 
+      isCollapsed: false
+    }
   },
   methods: {
     toggleSidenav() {

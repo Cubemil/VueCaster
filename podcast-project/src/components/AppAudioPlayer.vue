@@ -85,7 +85,7 @@
         :aria-label="isLiked ? 'Unlike podcast' : 'Like podcast'" 
         :class="{ 'active-button' : isLiked }"
       >
-        <i :class="isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
+        <i :class="isLiked ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
       </button>
       <button 
         @click="toggleQueue" 
@@ -258,23 +258,23 @@ export default {
       }
     },
     toggleLike() {
-      const likedEpisodes = JSON.parse(localStorage.getItem('likedEpisodes') || '[]')
-      const episodeIndex = likedEpisodes.findIndex(episode => episode.id === this.currentEpisode.id)
+      const savedEpisodes = JSON.parse(localStorage.getItem('savedEpisodes') || '[]')
+      const episodeIndex = savedEpisodes.findIndex(episode => episode.id === this.currentEpisode.id)
 
       if (episodeIndex === -1) {
-        likedEpisodes.push(this.currentEpisode)
+        savedEpisodes.push(this.currentEpisode)
         this.isLiked = true
       } else {
-        likedEpisodes.splice(episodeIndex, 1)
+        savedEpisodes.splice(episodeIndex, 1)
         this.isLiked = false
       }
 
-      localStorage.setItem('likedEpisodes', JSON.stringify(likedEpisodes))
+      localStorage.setItem('savedEpisodes', JSON.stringify(savedEpisodes))
     },
     checkIfLiked() {
       if (this.currentEpisode && this.currentEpisode.id) {
-        const likedEpisodes = JSON.parse(localStorage.getItem('likedEpisodes') || '[]')
-        this.isLiked = likedEpisodes.some(episode => episode.id === this.currentEpisode.id)
+        const savedEpisodes = JSON.parse(localStorage.getItem('savedEpisodes') || '[]')
+        this.isLiked = savedEpisodes.some(episode => episode.id === this.currentEpisode.id)
       } else {
         this.isLiked = false
       }

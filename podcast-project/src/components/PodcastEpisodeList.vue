@@ -31,13 +31,26 @@
       <button v-if="!episode.addedToQueue"
         @click="addToQueue(episode)"
         id="queue-button"
-        aria-label="Add episode to queue">
+        aria-label="Add episode to queue"
+      >
         <i class="fas fa-plus"></i>
-    </button>
+      </button>
+
+      <button
+        @click="toggleLike(episode)"
+        class="like-button"
+        :aria-label="isEpisodeLiked(episode) ? 'Unlike episode' : 'Like episode'"
+        :class="{ 'liked-button': isEpisodeLiked(episode) }"
+      >
+        <i :class="isEpisodeLiked(episode) ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
+      </button>
+
+
       <button v-if="episode.addedToQueue"
         @click="removeFromQueue(episode)"
         id="queue-button" 
-        aria-label="Remove episode from queue">
+        aria-label="Remove episode from queue"
+      >
         <i class="fas fa-minus"></i>
       </button>
 
@@ -50,6 +63,19 @@ export default {
   props: {
     episodes: { type: Array, required: true },
     currentEpisode: { type: Object }
+  },
+  data() {
+    return {
+      savedEpisodes: JSON.parse(localStorage.getItem('savedEpisodes')) || []
+    }
+  },
+  watch: {
+    savedEpisodes: {
+      handler(newsavedEpisodes) {
+        localStorage.setItem('savedEpisodes', JSON.stringify(newsavedEpisodes))
+      },
+      deep: true
+    }
   },
   methods: {
     playEpisode(episode) {
@@ -74,6 +100,17 @@ export default {
       } else {
         console.log('Episode not found in queue')
       }
+    },
+    toggleLike(episode) {
+      const episodeIndex = this.savedEpisodes.findIndex(item => item.id === episode.id)
+
+      if (episodeIndex === -1)
+        this.savedEpisodes.push(episode)
+      else
+        this.savedEpisodes.splice(episodeIndex, 1)
+    },
+    isEpisodeLiked(episode) {
+      return this.savedEpisodes.some(item => item.id === episode.id)
     }
   }
 }
@@ -191,4 +228,25 @@ export default {
   color: #11ff00;
   transform: scale(1.3);
 }
+
+.like-button {
+  background: none;
+  border: none;
+  color: #beb8b8;
+  font-size: 1.2em;
+  cursor: pointer;
+  align-self: center;
+  margin-left: 10px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.like-button:hover {
+  color: #1DB954;
+  transform: scale(1.1);
+}
+
+.liked-button {
+  color: #1DB954;
+}
+
 </style>
