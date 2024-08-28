@@ -21,12 +21,16 @@
 
     </div>
 
-    <!--
-    TODO implement
+
+    <!--TODO implement
     <div v-if="recentSearches.length > 0" id="recent-search-list">
       <RecentSearchList/>
     </div> 
     -->
+    <div id="recent-search-list">
+      <RecentSearchList/>
+    </div>
+
 
     <div id="categories">
       <CategorySearchList @search-performed="updatePodcasts"/>
@@ -36,8 +40,8 @@
   </div>
 </template>
 
-  position: relative;
-  <script setup>
+position: relative;
+<script setup>
 import AppSearchBar from '@/components/AppSearchBar.vue'
 import PodcastList from '@/components/PodcastList.vue'
 import CategorySearchList from "@/components/CategorySearchList.vue"
@@ -65,10 +69,10 @@ export default {
       // document.getElementById("recent-search-list").style.display = "block"
     },
     forward() {
-      router.go(1)
+      history.forward();
     },
     back() {
-      router.go(-1)
+      history.back();
     }
   }
 }

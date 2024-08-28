@@ -1,21 +1,21 @@
 <template>
-  <div id="podcast-card-container" @click="sendPodcastId" aria-label="View podcast details">
-    
+  <div id="podcast-card-container" @click="sendPodcastId();getSearchedPodcasts();" aria-label="View podcast details">
+
     <div id="top-area">
       <div id="podcast-image-container">
         <img v-if="image" :src="image" id="podcast-image" alt="Podcast Image"/>
         <div v-else class="skeleton-image"></div>
       </div>
       <button
-        @click.stop="toggleLike"
-        class="action-button"
-        :aria-label="liked ? 'Unlike podcast' : 'Like podcast'"
-        :class="{ 'active-button' : liked }"
+          @click.stop="toggleLike"
+          class="action-button"
+          :aria-label="liked ? 'Unlike podcast' : 'Like podcast'"
+          :class="{ 'active-button' : liked }"
       >
         <i :class="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
     </div>
-  
+
     <div id="podcast-title">
       <div v-if="podcastTitle">{{ podcastTitle }}</div>
       <div v-else class="skeleton-title"></div>
@@ -39,7 +39,8 @@ export default {
   },
   data() {
     return {
-      liked: this.isLiked
+      liked: this.isLiked,
+      searchedPodcasts: []  // Array to store clicked podcast IDs
     }
   },
   watch: {
@@ -47,9 +48,13 @@ export default {
       this.liked = newVal
     }
   },
+  created() {
+    // Retrieve the clickedPodcastIds array from local storage when the component is created
+    this.clickedPodcastIds = JSON.parse(localStorage.getItem('clickedPodcastIds') || '[]');
+  },
   methods: {
     sendPodcastId() {
-      this.$router.push({ name: 'PodcastView', params: { podcastId: this.podcastId } })
+      this.$router.push({name: 'PodcastView', params: {podcastId: this.podcastId}})
     },
     toggleLike() {
       this.liked = !this.liked
@@ -62,6 +67,12 @@ export default {
         if (index !== -1) likedPodcasts.splice(index, 1)
       }
       localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
+    },
+    getSearchedPodcasts() {
+      this.clickedPodcastIds.push(this.podcastId);  // Add the current podcast ID to the array
+      localStorage.setItem('clickedPodcastIds', JSON.stringify(this.clickedPodcastIds));  // Save the array in local storage
+      console.log('Clicked Podcasts: ', this.clickedPodcastIds);  // Print the array to the console
+      // TODO retrieve data in RecentSearchList component
     }
   }
 }

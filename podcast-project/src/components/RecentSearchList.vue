@@ -11,8 +11,11 @@
 </template>
 
 <script>
+import PodcastCard from "@/components/PodcastCard.vue";
+
 export default {
   name: "RecentSearchList",
+  components: {PodcastCard},
   data() {
     return {
       errorMessage: null,
@@ -27,7 +30,8 @@ export default {
   flex-direction: row;
   align-items: center;
   width: 100%;
-  margin: 4.5em auto;
+  margin-top: 2em;
+  margin-bottom: 1em;
   max-width: 100%;
 }
 
