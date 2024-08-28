@@ -442,7 +442,6 @@ export default {
 #volume-bar {
   display: flex;
   align-items: center;
-  width: 100%;
 }
 
 #volume-bar input[type="range"] {
