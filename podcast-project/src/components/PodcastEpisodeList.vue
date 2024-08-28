@@ -25,7 +25,7 @@
       </div>
 
       <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
-        <i :class=" episode.id === currentEpisode?.id ? 'fas fa-pause' : 'fas fa-play'"></i>
+        <i class="fas fa-play"></i>
       </button>
 
       <button v-if="!episode.addedToQueue"
@@ -163,28 +163,17 @@ export default {
   font-size: 1.3em;
   margin: 0;
   overflow: hidden;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .episode h3:hover {
-  text-decoration: underline;
-  cursor: pointer;
+  color: #1DB954;
 }
 
 .episode p {
   font-size: 1em;
   color: #666;
-}
-
-.playing {
-  background: rgba(132, 244, 126, 0.19)
-}
-
-.playing p {
-  color: #fff;
-}
-
-.playing:hover {
-  background: #1db95459;
 }
 
 .play-button, #queue-button {
