@@ -6,7 +6,7 @@
         <img v-if="image" :src="image" id="podcast-image" alt="Podcast Image"/>
         <div v-else class="skeleton-image"></div>
       </div>
-      <button 
+      <button
         @click.stop="toggleLike"
         class="action-button"
         :aria-label="liked ? 'Unlike podcast' : 'Like podcast'"
@@ -34,11 +34,17 @@ export default {
     image: String,
     podcastTitle: String,
     podcastAuthor: String,
-    podcastId: [String, Number]
+    podcastId: [String, Number],
+    isLiked: Boolean
   },
   data() {
     return {
-      liked: false
+      liked: this.isLiked
+    }
+  },
+  watch: {
+    isLiked(newVal) {
+      this.liked = newVal
     }
   },
   methods: {
@@ -47,6 +53,15 @@ export default {
     },
     toggleLike() {
       this.liked = !this.liked
+
+      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+      if (this.liked) {
+        likedPodcasts.push(this.podcastId)
+      } else {
+        const index = likedPodcasts.indexOf(this.podcastId)
+        if (index !== -1) likedPodcasts.splice(index, 1)
+      }
+      localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
     }
   }
 }

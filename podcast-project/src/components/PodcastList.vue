@@ -15,13 +15,13 @@
 
     <div v-if="visiblePodcasts.length > 0" id="podcast-list">
       <PodcastCard
-        v-for="(podcast, index) in visiblePodcasts"
-        :key="index"
-        :podcast="podcast"
+        v-for="podcast in visiblePodcasts"
+        :key="podcast.id"
         :podcastId="podcast.id"
         :image="podcast.image"
         :podcastTitle="podcast.title"
         :podcastAuthor="podcast.author"
+        :isLiked="isPodcastLiked(podcast.id)"
       />
     </div>
 
@@ -71,6 +71,9 @@ export default {
       this.currentPage = 0
       this.totalPages = Math.ceil(this.podcasts.length / 15) - 1
       this.updateVisiblePodcasts()
+    },
+    currentPage() {
+      this.updateVisiblePodcasts()
     }
   },
   mounted() {
@@ -95,6 +98,10 @@ export default {
     lastPage() {
       this.currentPage = this.totalPages
       this.updateVisiblePodcasts()
+    },
+    isPodcastLiked(podcastId) {
+      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+      return likedPodcasts.includes(podcastId)
     }
   }
 }
