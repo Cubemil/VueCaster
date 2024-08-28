@@ -41,6 +41,11 @@ export default {
 	beforeUnmount() {
 		window.removeEventListener('storage', this.handleStorageChange)
 	},
+	watch: {
+		likedPodcasts() {
+			this.loadLikedPodcasts()
+		}
+	},
 	methods: {
 		loadLikedPodcasts() {
 			const likedPodcastIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
