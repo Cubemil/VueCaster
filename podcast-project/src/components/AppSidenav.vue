@@ -26,7 +26,7 @@
       <li class="app-sidenav-item">
         <router-link id="router-link-saved" to="/saved" class="router-link">
           <i class="fas fa-bookmark nav-icon"></i>
-          <span v-if="!isCollapsed" class="nav-text">Saved</span>
+          <span v-if="!isCollapsed" class="nav-text">Saved Episodes</span>
         </router-link>
       </li>
     </ul>
