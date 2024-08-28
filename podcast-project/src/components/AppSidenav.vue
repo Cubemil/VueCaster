@@ -1,8 +1,12 @@
 <template>
   <nav id="app-sidenav" :class="{ collapsed: isCollapsed }">
     
-    <button id="toggle-button" @click="toggleSidenav" :aria-label="isCollapsed ? 'Expand side navbar' : 'Collapse side navbar'" 
-            :aria-expanded="!isCollapsed">
+    <button 
+      id="toggle-button"
+      @click="toggleSidenav"
+      :aria-label="isCollapsed ? 'Expand side navbar' : 'Collapse side navbar'" 
+      :aria-expanded="!isCollapsed"
+    >
       <i class="fas fa-bars"></i>
     </button>
 
@@ -27,8 +31,16 @@
       </li>
     </ul>
 
+    <LikedPodcastsList 
+      :isCollapsed="isCollapsed"
+    />
+
   </nav>
 </template>
+
+<script setup>
+import LikedPodcastsList from "@/components/LikedPodcastsList.vue"
+</script>
 
 <script>
 export default {
@@ -40,9 +52,8 @@ export default {
       this.isCollapsed = !this.isCollapsed
     },
     handleResize() {
-      if (window.innerWidth > 768 && this.isCollapsed) {
+      if (window.innerWidth > 768 && this.isCollapsed)
         this.isCollapsed = false
-      }
     },
   },
   mounted () {
@@ -57,11 +68,11 @@ export default {
 <style scoped>
 #app-sidenav {
   width: 100%;
-  max-width: 200px;
+  max-width: 15vw;
   padding-right: 6em;
   padding-left: 0.5em;
   background: transparent;
-  transition: width 0.3s;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
 }
@@ -144,13 +155,13 @@ export default {
 
   #app-sidenav.collapsed .router-link {
     display: flex;
-    flex-direction: column; /* Stack icon and text vertically */
-    align-items: center; /* Center items */
+    flex-direction: column;
+    align-items: center;
   }
 
   .nav-icon {
-    margin-right: 0; /* Remove right margin */
-    margin-bottom: 5px; /* Add bottom margin */
+    margin-right: 0;
+    margin-bottom: 5px;
   }
 }
 </style>
