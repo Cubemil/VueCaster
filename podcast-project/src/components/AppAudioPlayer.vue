@@ -350,6 +350,7 @@ export default {
   flex: 1 1 15%;
   overflow: hidden;
   max-height: 100%;
+  padding-right: 5%;
 }
 
 #album-cover {
@@ -510,6 +511,12 @@ button:disabled {
 
 #podcast-title:hover, #podcast-artist:hover {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 1024px) {
+  #player-left {
+    padding-right: 0%;
+  }
 }
 
 @media screen and (max-width: 768px) {
