@@ -1,80 +1,50 @@
 <template>
   <div id="top-podcasts-view-container">
-    <div id="head-area">
-      <!-- <button id="refresh-button" @click="getLatestPodcastData();getPopularPodcastData()"><i class="fas fa-refresh"></i>Refresh</button> -->
-    </div>
     
+    <h1>
+      Hot Podcasts Right Now
+      <i class="fas fa-fire"></i>
+    </h1>
+
     <div v-if="isLoading" id="loading-area">
       <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
       Loading podcasts...
     </div>
-    
-		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
 
-    <h1>Recently Played</h1>
-    <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
-    <h1>Latest Podcasts</h1>
-    <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
-    <h1>Most Popular Podcasts</h1>
-    <PodcastList :podcasts="mostPopularPodcasts" @toggleExpand="toggleExpand"/>
+    <div id="head-area">
+      <button id="refresh-button" @click="getHotPodcasts">
+        <i id="refresh-icon" class="fas fa-refresh"></i>
+        Refresh
+      </button>
+    </div>
+    
+		<PodcastShelf v-if="!podsExpanded" :podcasts="hotPodcasts" @toggleExpand="toggleExpand"/>
+    <PodcastList v-if="podsExpanded" :podcasts="hotPodcasts" @toggleExpand="toggleExpand"/>
   </div>
 </template>
 
 <script setup>
 import PodcastShelf from '../components/PodcastShelf.vue'
 import PodcastList from '../components/PodcastList.vue'
-import PodcastShelfItem from "@/components/PodcastShelfItem.vue";
 </script>
 
 <script>
 export default {
   data() {
     return { 
-      latestPodcasts: [],
-      mostPopularPodcasts: [],
+      hotPodcasts: [],
       isLoading: false,
 			podsExpanded: false
     }
   },
   mounted() {
-    this.getLatestPodcastData()
-    this.getPopularPodcastData()
+    this.getHotPodcasts()
 	},
   methods: {
-    async getLatestPodcastData() {
+    async getHotPodcasts() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=4' // latest podcasts 25
-
-        const response = await fetch(url)
-
-        if (!response.ok) 
-          throw new Error('Network response was not ok', response.statusText)
-
-        const body = await response.json()
-        if (!body.data)
-          throw new Error('No data found in response body')
-
-        const fetchedPods = body.data.map(podcast => ({
-          id: podcast.id,
-          title: podcast.title,
-          author: podcast.author,
-          image: podcast.layoutImageURL,
-          url: podcast.url
-        }))
-
-        this.latestPodcasts = fetchedPods
-        console.log("Podcasts fetched: ", this.latestPodcasts)
-        this.isLoading = false
-      } catch (err) {
-        console.error('Podcast could not be fetched.', err)
-      }
-    },
-    async getPopularPodcastData() {
-      try {
-        this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=50'; // most popular/active podcasts 25
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=50'
         const response = await fetch(url)
 
         if (!response.ok)
@@ -92,8 +62,8 @@ export default {
           url: podcast.url
         }))
 
-        this.mostPopularPodcasts = fetchedPods
-        console.log("Podcasts fetched: ", this.mostPopularPodcasts)
+        this.hotPodcasts = fetchedPods
+        console.log("Hot Podcasts fetched: ", this.hotPodcasts)
         this.isLoading = false
       } catch (err) {
         console.error('Podcast could not be fetched.', err)
@@ -111,32 +81,22 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  color: #ffffff;
-  align-items: flex-start;
+  max-width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
   background: transparent;
-}
-
-#heading {
-  font-size: 1.5em;
-  font-weight: normal;
   color: #ffffff;
-}
-
-#head-area {
-  display: flex;
-  justify-content: space-between;
-  max-width: 90%;
-  align-items: center;
-  width: 100%;
+  overflow-y: auto;
+  align-items: flex-start;
 }
 
 #refresh-button {
   background-color: #1DB954;
+  margin-left: 1%; /* Align it similarly to Latest Podcasts */
   color: #ffffff;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 20px; /* Adjust padding to be consistent */
   font-size: 1em;
   border-radius: 20px;
   cursor: pointer;
@@ -145,7 +105,12 @@ export default {
 
 #refresh-button:hover {
   background-color: #5efe58;
-  scale: 1.1;
+  transform: scale(1.04);
+}
+
+#refresh-icon {
+  color: #fff;
+  margin-right: 2%;
 }
 
 #loading-area {
@@ -162,10 +127,9 @@ export default {
   margin-bottom: 2%;
 }
 
-h1 {
-  font-size: 1.5em;
-  padding-left: 0.5em;
-  padding-bottom: 0.25em;
+i {
+  color: #1DB954;
 }
+
 </style>
 

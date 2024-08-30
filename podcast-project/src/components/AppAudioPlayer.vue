@@ -193,6 +193,9 @@ export default {
         audio.play()
           .then(() => {
             this.isPlaying = true
+            if (this.currentEpisode && this.currentEpisode.podcast_id) {
+              this.updateRecentlyPlayed(this.currentEpisode.podcast_id)
+            }
           })
           .catch((error) => {
             console.error('Failed to play audio:', error)
@@ -353,6 +356,18 @@ export default {
       if (event.key === 'savedEpisodes') {
         this.checkIfLiked()
       }
+    },
+    updateRecentlyPlayed(podcastId) {
+      let recentlyPlayed = JSON.parse(localStorage.getItem('recentlyPlayed') || '[]')
+
+      recentlyPlayed = recentlyPlayed.filter(id => id !== podcastId)
+      recentlyPlayed.unshift(podcastId)
+
+      if (recentlyPlayed.length > 50) {
+        recentlyPlayed = recentlyPlayed.slice(0, 50)
+      }
+
+      localStorage.setItem('recentlyPlayed', JSON.stringify(recentlyPlayed))
     }
   }
 }
