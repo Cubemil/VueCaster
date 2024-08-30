@@ -1,21 +1,45 @@
 <template>
   <div id="home-view-container">
-
+    
     <div v-if="recentlyPlayedPodcasts.length > 0" id="recently-played-area">
       <h1>Pick up where you left off:</h1>
       <h3>Recently Played</h3>
-      <PodcastList :podcasts="recentlyPlayedPodcasts" @toggleExpand="toggleExpand"/>
+      <PodcastShelf
+        v-if="!recentPodsExpanded"
+        :podcasts="recentlyPlayedPodcasts"
+        section="recent"
+        @toggleExpand="toggleExpand"
+      />
+      <PodcastList
+        v-else
+        :podcasts="recentlyPlayedPodcasts"
+        section="recent"
+        @toggleExpand="toggleExpand"
+        />
     </div>
-    
+
     <div id="latest-podcast-area">
       <h1>
         Latest Podcasts
         <i class="fas fa-clock"></i>
       </h1>
-      <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
+      <PodcastShelf
+        v-if="!latestPodsExpanded"
+        :podcasts="latestPodcasts"
+        section="latest"
+        @toggleExpand="toggleExpand"
+      />
+      <PodcastList
+        v-else
+        :podcasts="latestPodcasts"
+        section="latest"
+        @toggleExpand="toggleExpand"
+        />
     </div>
 
-    <TopPodcasts/>
+    <div id="top-podcasts-area">
+      <TopPodcasts/>
+    </div>
 
   </div>
 </template>
@@ -23,6 +47,7 @@
 <script setup>
 import TopPodcasts from '../components/TopPodcasts.vue'
 import PodcastList from '../components/PodcastList.vue'
+import PodcastShelf from '../components/PodcastShelf.vue'
 </script>
 
 <script>
@@ -32,7 +57,8 @@ export default {
       latestPodcasts: [],
       recentlyPlayedPodcasts: [],
       isLoading: false,
-      podsExpanded: false
+      recentPodsExpanded: false,
+      latestPodsExpanded: false
     }
   },
   mounted() {
@@ -43,7 +69,7 @@ export default {
     async getLatestPodcasts() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=8'
+        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=20'
 
         const response = await fetch(url)
 
@@ -102,6 +128,12 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+    toggleExpand(section) {
+      if (section === 'recent')
+        this.recentPodsExpanded = !this.recentPodsExpanded
+      else if (section === 'latest')
+        this.latestPodsExpanded = !this.latestPodsExpanded
     }
   }
 }
@@ -111,10 +143,19 @@ export default {
 #home-view-container {
   overflow-y: auto;
   max-height: 100%;
+  width: 100%;
+  margin-left: 1%;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 i {
   color: #1DB954;
+}
+
+#recently-played-area, #latest-podcast-area, #top-podcasts-area {
+  margin-top: 2%;
+  width: 75vw;
+  box-sizing: border-box;
 }
 </style>

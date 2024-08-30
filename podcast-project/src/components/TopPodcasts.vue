@@ -1,19 +1,24 @@
 <template>
   <div id="top-podcasts-view-container">
-    <div id="head-area">
-      <!-- <button id="refresh-button" @click="getLatestPodcastData();getPopularPodcastData()"><i class="fas fa-refresh"></i>Refresh</button> -->
-    </div>
-    
-    <div v-if="isLoading" id="loading-area">
-      <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
-      Loading podcasts...
-    </div>
     
     <h1>
       Hot Podcasts Right Now
       <i class="fas fa-fire"></i>
     </h1>
-		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
+
+    <div v-if="isLoading" id="loading-area">
+      <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
+      Loading podcasts...
+    </div>
+
+    <div id="head-area">
+      <button id="refresh-button" @click="getHotPodcasts">
+        <i id="refresh-icon" class="fas fa-refresh"></i>
+        Refresh
+      </button>
+    </div>
+    
+		<PodcastShelf v-if="!podsExpanded" :podcasts="hotPodcasts" @toggleExpand="toggleExpand"/>
     <PodcastList v-if="podsExpanded" :podcasts="hotPodcasts" @toggleExpand="toggleExpand"/>
   </div>
 </template>
@@ -29,7 +34,7 @@ export default {
     return { 
       hotPodcasts: [],
       isLoading: false,
-			podsExpanded: true //todo change to false
+			podsExpanded: false
     }
   },
   mounted() {
@@ -76,26 +81,22 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  color: #ffffff;
-  align-items: flex-start;
+  max-width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
   background: transparent;
-}
-
-#head-area {
-  display: flex;
-  justify-content: space-between;
-  max-width: 90%;
-  align-items: center;
-  width: 100%;
+  color: #ffffff;
+  overflow-y: auto;
+  align-items: flex-start;
 }
 
 #refresh-button {
   background-color: #1DB954;
+  margin-left: 1%; /* Align it similarly to Latest Podcasts */
   color: #ffffff;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 20px; /* Adjust padding to be consistent */
   font-size: 1em;
   border-radius: 20px;
   cursor: pointer;
@@ -104,7 +105,12 @@ export default {
 
 #refresh-button:hover {
   background-color: #5efe58;
-  scale: 1.1;
+  transform: scale(1.04);
+}
+
+#refresh-icon {
+  color: #fff;
+  margin-right: 2%;
 }
 
 #loading-area {
@@ -124,5 +130,6 @@ export default {
 i {
   color: #1DB954;
 }
+
 </style>
 

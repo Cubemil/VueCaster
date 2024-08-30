@@ -1,8 +1,7 @@
 <template>
   <div id="podcast-shelf-container">
-
     <div id="header">
-      <div class="pagination-top" v-if="podcasts.length >= visiblePodcasts.length">
+      <div class="pagination-top" v-if="podcasts.length > visiblePodcasts.length">
         <button :disabled="currentPage === 0" @click="previousPage" class="pagination-button" id="previous-button" aria-label="Previous page">
           <i class="fas fa-chevron-left"></i>
         </button>
@@ -17,17 +16,15 @@
 
     <div v-if="visiblePodcasts.length > 0" id="podcast-shelf">
       <PodcastShelfItem
-      v-for="(podcast, index) in visiblePodcasts"
-      :key="index"
-      :podcast="podcast"
-      :podcastId="podcast.id"
-      :image="podcast.image"
-      :podcastTitle="podcast.title"
-      :podcastAuthor="podcast.author"/>
+        v-for="(podcast, index) in visiblePodcasts"
+        :key="index"
+        :podcast="podcast"
+        :podcastId="podcast.id"
+        :image="podcast.image"
+        :podcastTitle="podcast.title"
+        :podcastAuthor="podcast.author"
+      />
     </div>
-    
-    <!-- <p id="result-counter-text" v-if="podcasts.length > 0">Showing {{ podcasts.length }} results</p> -->
-
   </div>
 </template>
 
@@ -38,7 +35,15 @@ import PodcastShelfItem from './PodcastShelfItem.vue'
 <script>
 export default {
   props: {
-    podcasts: { type: Array, required: true }
+    podcasts: { 
+      type: Array, 
+      required: true,
+      default: () => []
+    },
+    section: { 
+      type: String, 
+      required: true 
+    }
   },
   data() { 
     return { 
@@ -65,11 +70,17 @@ export default {
   },
   methods: {
     updatePagination() {
+      if (!this.podcasts || this.podcasts.length === 0) {
+        this.visiblePodcasts = []
+        this.totalPages = 0
+        return
+      }
+      
       const containerWidth = document.getElementById('podcast-shelf-container').clientWidth
-      const itemWidth = 170
+      const itemWidth = 170 // width of single item (+ margins)
 
-      const itemsPerRow = Math.floor(containerWidth / itemWidth)
-      this.totalPages = Math.ceil(this.podcasts.length / itemsPerRow) - 1
+      this.itemsPerRow = Math.floor(containerWidth / itemWidth)
+      this.totalPages = Math.ceil(this.podcasts.length / this.itemsPerRow) - 1
 
       this.updateVisiblePodcasts()
     },
@@ -79,17 +90,19 @@ export default {
       this.visiblePodcasts = this.podcasts.slice(startIndex, endIndex)
     },
     nextPage() {
-      if (this.currentPage < this.totalPages)
+      if (this.currentPage < this.totalPages) {
         this.currentPage++
         this.updateVisiblePodcasts()
+      }
     },
     previousPage() {
-      if (this.currentPage > 0)
+      if (this.currentPage > 0) {
         this.currentPage--
         this.updateVisiblePodcasts()
+      }
     },
     toggleExpand() {
-      this.$emit('toggleExpand')
+      this.$emit('toggleExpand', this.section)
     }
   },
   computed: {
@@ -102,9 +115,12 @@ export default {
 
 <style scoped>
 #podcast-shelf-container {
-  width: 100%;
   height: auto;
   background: transparent;
+  width: 100%;
+  max-height: 25em;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 #podcast-shelf {
@@ -118,9 +134,8 @@ export default {
 
 #header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  width: 100%;
 }
 
 #expand-button {
@@ -130,14 +145,14 @@ export default {
   padding: 10px 20px;
   font-size: 1em;
   border-radius: 20px;
-  margin-right: 5%;
+  margin: 1em 2em;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 #expand-button:hover {
   background-color: #5efe58;
-  scale: 1.1;
+  scale: 1.05;
 }
 
 .pagination-top {
