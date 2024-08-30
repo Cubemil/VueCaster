@@ -92,6 +92,7 @@ export default {
   margin-top: 1;
 	padding-top: 10%;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #liked-podcast-list-container h3 {
