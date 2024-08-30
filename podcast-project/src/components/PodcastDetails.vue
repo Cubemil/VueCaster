@@ -53,6 +53,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.checkIfLiked()
+
+    window.addEventListener('storage', this.handleStorageChange)
+  },
+  beforeUnmount() {
+    window.removeEventListener('storage', this.handleStorageChange)
+  },
   methods: {
     getLanguage() {
       switch (this.data.language) {
@@ -112,6 +120,15 @@ export default {
       }
 
       localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
+
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'likedPodcasts',
+        newValue: JSON.stringify(likedPodcasts)
+      }))
+    },
+    handleStorageChange(event) {
+      if (event.key === 'likedPodcasts')
+        this.checkIfLiked()
     }
   }
 }

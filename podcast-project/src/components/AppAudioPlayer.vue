@@ -82,7 +82,7 @@
         v-if="currentEpisode" 
         @click="toggleLike" 
         class="action-button"
-        :aria-label="isLiked ? 'Unlike podcast' : 'Like podcast'" 
+        :aria-label="isLiked ? 'Remove episode from bookmarks' : 'Add episode to bookmarks'" 
         :class="{ 'active-button' : isLiked }"
       >
         <i :class="isLiked ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
@@ -164,6 +164,11 @@ export default {
     if (this.currentEpisode) {
       this.checkIfLiked()
     }
+
+    window.addEventListener('storage', this.handleStorageChange)
+  },
+  beforeUnmount() {
+    window.removeEventListener('storage', this.handleStorageChange)
   },
   methods: {
     loadEpisode(episode) {
@@ -270,6 +275,11 @@ export default {
       }
 
       localStorage.setItem('savedEpisodes', JSON.stringify(savedEpisodes))
+
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'savedEpisodes',
+        newValue: JSON.stringify(savedEpisodes)
+      }))
     },
     checkIfLiked() {
       if (this.currentEpisode && this.currentEpisode.id) {
@@ -337,6 +347,11 @@ export default {
         this.$refs.volume.value = 0
         this.isMuted = true
         iconElement.className = "fas fa-volume-mute"
+      }
+    },
+    handleStorageChange(event) {
+      if (event.key === 'savedEpisodes') {
+        this.checkIfLiked()
       }
     }
   }

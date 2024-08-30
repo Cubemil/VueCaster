@@ -39,7 +39,7 @@
       <button
         @click="toggleLike(episode)"
         class="like-button"
-        :aria-label="isEpisodeLiked(episode) ? 'Unlike episode' : 'Like episode'"
+        :aria-label="isEpisodeLiked(episode) ? 'Remove episode from bookmarks' : 'Add episode to bookmarks'"
         :class="{ 'liked-button': isEpisodeLiked(episode) }"
       >
         <i :class="isEpisodeLiked(episode) ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
@@ -77,6 +77,12 @@ export default {
       deep: true
     }
   },
+  mounted() {
+    window.addEventListener('storage', this.handleStorageChange)
+  },
+  beforeUnmount() {
+    window.removeEventListener('storage', this.handleStorageChange)
+  },
   methods: {
     playEpisode(episode) {
       this.$emit('playEpisode', episode)
@@ -108,9 +114,20 @@ export default {
         this.savedEpisodes.push(episode)
       else
         this.savedEpisodes.splice(episodeIndex, 1)
+
+      localStorage.setItem('savedEpisodes', JSON.stringify(this.savedEpisodes))
+
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'savedEpisodes',
+        newValue: JSON.stringify(this.savedEpisodes)
+      }))
     },
     isEpisodeLiked(episode) {
       return this.savedEpisodes.some(item => item.id === episode.id)
+    },
+    handleStorageChange(event) {
+      if (event.key === 'savedEpisodes')
+        this.savedEpisodes = JSON.parse(event.newValue) || []
     }
   }
 }
