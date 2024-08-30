@@ -1,7 +1,8 @@
 <template>
   <div id="recent-search-list-container">
     <h2 style="margin: 0;padding-left: 0.5em;padding-bottom: 0.25em;">Recent searches
-      <button @click="clearSearchList">Clear All</button>
+      <button id="clearButton" @click="clearSearchList"><i class="fa-solid fa-trash-can" style="color: #ffffff;"></i>
+      </button>
     </h2>
 
     <div id="recent-search-list">
@@ -63,5 +64,24 @@ export default {
   display: flex;
   flex-wrap: wrap;
   overflow-x: hidden;
+}
+
+#clearButton {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 0.8em;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+#clearButton:hover {
+  color: #11ff00;
+  transform: scale(1.2);
+}
+
+h2 {
+  display: inline-flex;
 }
 </style>

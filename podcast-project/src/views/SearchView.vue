@@ -25,7 +25,7 @@
     <!--TODO implement
     <div v-if="recentSearches.length > 0" id="recent-search-list">
       <RecentSearchList/>
-    </div> 
+    </div>
     -->
     <div id="recent-search-list">
       <RecentSearchList/>
