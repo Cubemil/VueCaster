@@ -91,6 +91,7 @@ export default {
 #liked-podcast-list-container {
   margin-top: 1;
 	padding-top: 10%;
+	overflow-y: auto;
 }
 
 #liked-podcast-list-container h3 {
@@ -169,5 +170,4 @@ export default {
     height: 30px;
   }
 }
-
 </style>
