@@ -159,8 +159,9 @@ body {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  overflow-y: hidden;
 }
 
 #sidenav-area, #main-area {

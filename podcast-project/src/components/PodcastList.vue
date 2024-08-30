@@ -110,7 +110,6 @@ export default {
 <style scoped>
 #podcast-list-container {
   width: 100%;
-  height: 100vh;
   overflow-y: auto;
   background: transparent;
 }
