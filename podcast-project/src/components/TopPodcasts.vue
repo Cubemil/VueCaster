@@ -11,13 +11,10 @@
     
 		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
     <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <!-- TODO implement nr. 1 podcast worldwide -->
-    <!-- TODO implement top podcasts in your country (get user location) -->
-    <!-- TODO implement top genres -->
 
     <h1>Latest Podcasts</h1>
     <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
-    <h1>Most Active Podcasts</h1>
+    <h1>Most Popular Podcasts</h1>
     <PodcastList :podcasts="mostPopularPodcasts" @toggleExpand="toggleExpand"/>
 
     
@@ -27,6 +24,7 @@
 <script setup>
 import PodcastShelf from '../components/PodcastShelf.vue'
 import PodcastList from '../components/PodcastList.vue'
+import PodcastShelfItem from "@/components/PodcastShelfItem.vue";
 </script>
 
 <script>
@@ -47,7 +45,7 @@ export default {
     async getLatestPodcastData() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=3' // latest podcasts
+        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=25' // latest podcasts
 
         const response = await fetch(url)
 
@@ -76,7 +74,7 @@ export default {
     async getPopularPodcastData() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=3' // most active podcasts
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=25' // most popular/active podcasts
 
         const response = await fetch(url)
 
