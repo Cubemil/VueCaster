@@ -33,6 +33,11 @@ export default {
   mounted() {
     this.getPodcastData()
   },
+  watch: {
+    $route() {
+      this.getPodcastData()
+    }
+  },
   methods: {
     async getPodcastData() {
       try {
