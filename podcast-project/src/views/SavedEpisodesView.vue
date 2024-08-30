@@ -132,6 +132,8 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+  width: 100%;
+  overflow-y: auto;
 }
 
 .episode {
@@ -140,7 +142,6 @@ export default {
 	border-bottom: 1px solid #ccc;
 	padding: 10px;
 	width: 100%;
-	max-width: 35vw;
 	box-sizing: border-box;
 	transition: all 0.2s ease;
 }

@@ -1,13 +1,17 @@
 <template>
   <div id="podcast-list-container">
 
-    <button v-if="section"
-      id="show-shelf-button"
-      @click="toggleExpand"
-    >
-      <i class="fas fa-arrow-left"></i>
-      Show shelf
-    </button>
+    <!--
+      <div class="pagination-top" v-if="podcasts.length >= 15">
+      <button :disabled="currentPage === 0" @click="previousPage" class="pagination-button" id="previous-button" aria-label="Previous page">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button :disabled="podcasts.length <= (currentPage + 1) * 15" @click="nextPage" class="pagination-button" id="next-button" aria-label="Next page">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <p id="current-page-text">{{ currentPage + 1 }}/{{ totalPages + 1 }}</p>
+      </div>
+    -->
 
     <div v-if="visiblePodcasts.length > 0" id="podcast-list">
       <PodcastCard
@@ -53,8 +57,7 @@ import PodcastCard from './PodcastCard.vue'
 <script>
 export default {
   props: {
-    podcasts: {type: Array, required: true},
-    section: {type: String, required: true}
+    podcasts: {type: Array, required: true}
   },
   data() {
     return {
@@ -99,9 +102,6 @@ export default {
     isPodcastLiked(podcastId) {
       const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
       return likedPodcasts.includes(podcastId)
-    },
-    toggleExpand() {
-      this.$emit('toggleExpand', this.section)
     }
   }
 }
@@ -110,6 +110,7 @@ export default {
 <style scoped>
 #podcast-list-container {
   width: 100%;
+  height: 100vh;
   overflow-y: auto;
   background: transparent;
 }
@@ -164,22 +165,5 @@ export default {
   text-align: center;
   color: #A7A7A7;
   font-size: 1em;
-}
-
-#show-shelf-button {
-  background: #646060;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1em;
-  border-radius: 20px;
-  margin: 1em 2em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#show-shelf-button:hover {
-  background-color: #5efe58;
-  scale: 1.05;
 }
 </style>

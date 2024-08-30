@@ -206,4 +206,10 @@ export default {
     background-color: #303030;
   }
 }
+
+@media only screen and (max-width: 1440px) {
+  #podcast-card-container {
+    width: 190px;
+  }
+}
 </style>
