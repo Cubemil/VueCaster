@@ -49,7 +49,7 @@ export default {
     }
   },
   created() {
-    this.clickedPodcastIds = JSON.parse(localStorage.getItem('clickedPodcastIds ') || '[]');
+    this.clickedPodcastIds = JSON.parse(localStorage.getItem('clickedPodcastIds') || '[]');
   },
   methods: {
     sendPodcastId() {
