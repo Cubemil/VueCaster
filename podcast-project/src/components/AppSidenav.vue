@@ -91,7 +91,7 @@ export default {
 <style scoped>
 #app-sidenav {
   width: 100%;
-  max-width: 15vw;
+  max-width: 10vw;
   padding-right: 6em;
   padding-left: 0.5em;
   background: transparent;

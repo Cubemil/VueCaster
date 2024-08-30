@@ -1,17 +1,17 @@
 <template>
-	<div v-if="likedPodcasts.length > 0" id="liked-podcasts-view-container">
+  <div v-if="likedPodcasts.length > 0" id="liked-podcasts-view-container">
     <div id="head-area">
-			<h1 id="heading">Here are your liked podcasts:</h1>
+      <h1 style="margin-left: 0;margin-top: 0.5em; margin-bottom: 0.5em;padding-left: 0.5em;padding-bottom: 0.25em;">Liked Podcasts</h1>
     </div>
-    
+
     <div v-if="isLoading" id="loading-area">
-			<i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
-				Loading podcasts...
+      <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
+      Loading podcasts...
     </div>
-    
+
     <PodcastList :podcasts="likedPodcasts" @toggleExpand="toggleExpand"/>
-    
-	</div>
+
+  </div>
   <div v-else id="liked-podcasts-view-container">
     <h1 id="heading">It seems like You haven't liked any podcasts yet. Here is some inspiration to get you going!</h1>
     <TopPodcasts/>
@@ -25,17 +25,17 @@ import TopPodcasts from '../components/TopPodcasts.vue'
 
 <script>
 export default {
-data() {
-    return { 
-    	likedPodcasts: [],
-    	isLoading: false,
+  data() {
+    return {
+      likedPodcasts: [],
+      isLoading: false,
       errorMessage: '',
     }
-	},
-	mounted() {
-		this.loadLikedPodcasts()
-	},
-	methods: {
+  },
+  mounted() {
+    this.loadLikedPodcasts()
+  },
+  methods: {
     async loadLikedPodcasts() {
       this.isLoading = true;
       this.errorMessage = ''
@@ -71,9 +71,9 @@ data() {
       }
     },
     toggleExpand() {
-    	this.podsExpanded = !this.podsExpanded
+      this.podsExpanded = !this.podsExpanded
     }
-	}
+  }
 }
 </script>
 
