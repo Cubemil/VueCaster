@@ -69,7 +69,7 @@ export default {
     async getLatestPodcasts() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=20'
+        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=40'
 
         const response = await fetch(url)
 

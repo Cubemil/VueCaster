@@ -1,7 +1,7 @@
 <template>
   <div id="podcast-list-container">
 
-    <button 
+    <button v-if="section"
       id="show-shelf-button"
       @click="toggleExpand"
     >
