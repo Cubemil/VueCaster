@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue';
 import SearchView from '@/views/SearchView.vue';
 import PodcastView from '@/views/PodcastView.vue';
 import LikedPodcastsView from '@/views/LikedPodcastsView.vue';
+import SavedEpisodesView from '@/views/SavedEpisodesView.vue';
 
 //TODO #-router 
 const routes = [
@@ -30,6 +31,11 @@ const routes = [
         path: '/liked-podcasts',
         name: 'LikedPodcastsView',
         component: LikedPodcastsView
+    },
+    { 
+        path: '/saved-episodes',
+        name: 'SavedEpisodesView',
+        component: SavedEpisodesView
     },
     {
         path: '/:catchAll(.*)',

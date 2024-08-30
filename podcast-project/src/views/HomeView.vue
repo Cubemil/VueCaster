@@ -75,25 +75,28 @@ export default {
       let recentlyPlayedIds = JSON.parse(localStorage.getItem('recentlyPlayed') || '[]')
 
       try {
-        const podcasts = await Promise.all(recentlyPlayedIds.map(async id => {
-          let url = new URL('https://api.fyyd.de/0.2/podcast/')
+        const podcasts = await Promise.all(recentlyPlayedIds.map(async (id) => {
+          const url = new URL('https://api.fyyd.de/0.2/podcast/')
           url.searchParams.append('podcast_id', id)
 
           const response = await fetch(url)
-          if (!response.ok) {
+          if (!response.ok)
             throw new Error('Network response was not ok')
-          }
-
           const body = await response.json()
+          if (!body.data)
+            throw new Error('No data found in response body')
+
           return {
             id: body.data.id,
             title: body.data.title,
-            imgURL: body.data.imgURL,
-            artist: body.data.author,
+            author: body.data.author,
+            image: body.data.imgURL,
             url: body.data.htmlURL
           }
         }))
+
         this.recentlyPlayedPodcasts = podcasts
+        console.log('Recently Played Podcasts fetched: ', this.recentlyPlayedPodcasts)
       } catch (error) {
         console.error('Failed to fetch recently played podcasts:', error.message)
       } finally {
