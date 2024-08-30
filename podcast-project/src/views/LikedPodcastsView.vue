@@ -37,36 +37,38 @@ data() {
 	},
 	methods: {
     async loadLikedPodcasts() {
-      this.isLoading = true
-			this.errorMessage = ''
+      this.isLoading = true;
+      this.errorMessage = ''
       const likedPodcastsIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
 
-			try {
-				const podcasts = await Promise.all(likedPodcastsIds.map(async id => {
-					let url = new URL('https://api.fyyd.de/0.2/podcast/')
-					url.searchParams.append('podcast_id', id)
+      try {
+        const podcasts = await Promise.all(likedPodcastsIds.map(async (id) => {
+          const url = new URL('https://api.fyyd.de/0.2/podcast/')
+          url.searchParams.append('podcast_id', id)
 
-					const response = await fetch(url)
-					if (!response.ok) {
-						throw new Error('Network response was not ok')
-					}
+          const response = await fetch(url)
+          if (!response.ok)
+            throw new Error('Network response was not ok')
+          const body = await response.json()
+          if (!body.data)
+            throw new Error('No data found in response body')
 
-					const body = await response.json()
-          console.log("body:", body)
-					return {
-						id: body.data.id,
-						title: body.data.title,
-						imgURL: body.data.imgURL,
-						artist: body.data.author,
+          return {
+            id: body.data.id,
+            title: body.data.title,
+            artist: body.data.author,
+            image: body.data.imgURL,
             url: body.data.htmlURL
-					}
-				}))
-				this.likedPodcasts = podcasts
-			} catch (error) {
-				this.errorMessage = error.message
-			} finally {
-				this.isLoading = false
-			}
+          }
+        }))
+
+        this.likedPodcasts = podcasts
+        console.log('Liked Podcasts fetched: ', this.likedPodcasts)
+      } catch (error) {
+        this.errorMessage = error.message
+      } finally {
+        this.isLoading = false
+      }
     },
     toggleExpand() {
     	this.podsExpanded = !this.podsExpanded
