@@ -92,20 +92,10 @@ export default {
 		},
 		addToQueue(episode) {
 			episode.addedToQueue = true
-			const queue = JSON.parse(localStorage.getItem('queue')) || []
-			queue.push(episode)
-			localStorage.setItem('queue', JSON.stringify(queue))
+			this.$emit('addToQueue', episode)
 		},
 		removeFromQueue(episode) {
-			const queue = JSON.parse(localStorage.getItem('queue')) || []
-			const index = queue.findIndex(item => item.id === episode.id)
-			if (index !== -1) {
-				queue.splice(index, 1)
-				localStorage.setItem('queue', JSON.stringify(queue))
-				episode.addedToQueue = false
-			} else {
-				console.log('Episode not found in queue')
-			}
+			this.$emit('removeFromQueue', episode)
 		},
 		toggleLike(episode) {
 			const episodeIndex = this.savedEpisodes.findIndex(item => item.id === episode.id)
