@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import SearchView from '@/views/SearchView.vue';
 import PodcastView from '@/views/PodcastView.vue';
+import LikedPodcastsView from '@/views/LikedPodcastsView.vue';
 
 //TODO #-router 
 const routes = [
@@ -24,6 +25,11 @@ const routes = [
         name: 'PodcastView',
         component: PodcastView,
         props: true
+    },
+    {
+        path: '/liked-podcasts',
+        name: 'LikedPodcastsView',
+        component: LikedPodcastsView
     },
     {
         path: '/:catchAll(.*)',

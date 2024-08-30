@@ -43,7 +43,7 @@
         
       </li>
         <router-link id="router-link-liked" to="/liked-podcasts" class="router-link">
-          <span id="show-all-text" v-if="!isCollapsed" class="nav-text">Show all</span>
+          <span id="show-all-text" v-if="showLikedList && !isCollapsed" class="nav-text">Show all</span>
         </router-link>
     </ul>
 
@@ -164,6 +164,10 @@ export default {
 
 #expand-arrow {
   margin-left: 2em;
+}
+
+#show-all-text:hover {
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 768px) {
