@@ -27,13 +27,21 @@
       <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
         <i class="fas fa-play"></i>
       </button>
-
+      
       <button v-if="!episode.addedToQueue"
         @click="addToQueue(episode)"
         id="queue-button"
         aria-label="Add episode to queue"
       >
-        <i class="fas fa-plus"></i>
+        <i class="fas fa-plus-circle"></i>
+      </button>
+
+      <button v-if="episode.addedToQueue"
+        @click="removeFromQueue(episode)"
+        id="queue-button" 
+        aria-label="Remove episode from queue"
+      >
+        <i class="fas fa-minus-circle"></i>
       </button>
 
       <button
@@ -43,15 +51,6 @@
         :class="{ 'liked-button': isEpisodeLiked(episode) }"
       >
         <i :class="isEpisodeLiked(episode) ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
-      </button>
-
-
-      <button v-if="episode.addedToQueue"
-        @click="removeFromQueue(episode)"
-        id="queue-button" 
-        aria-label="Remove episode from queue"
-      >
-        <i class="fas fa-minus"></i>
       </button>
 
     </div>
