@@ -106,6 +106,7 @@ export default {
   mounted() {
     if (localStorage.getItem('categories') === null) this.getCategories()
     if (localStorage.getItem('likedPodcasts') === null) localStorage.setItem('likedPodcasts', JSON.stringify([]))
+    if (localStorage.getItem('recentSearches') === null) localStorage.setItem('recentSearches', JSON.stringify([]))
   },
   watch: {
     queue(newQueue) {
