@@ -1,6 +1,5 @@
 <template>
   <div id="home-view-container">
-    <h1 id="heading">Welcome back!</h1>
     <TopPodcasts/>
   </div>
 </template>
@@ -16,5 +15,6 @@ import TopPodcasts from '../components/TopPodcasts.vue'
   width: 100%;
   height: 100%;
   overflow: auto;
+
 }
 </style>
