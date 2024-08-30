@@ -33,13 +33,11 @@
   </div>
 </template>
 
-position: relative;
 <script setup>
 import AppSearchBar from '@/components/AppSearchBar.vue'
 import PodcastList from '@/components/PodcastList.vue'
 import CategorySearchList from "@/components/CategorySearchList.vue"
 import RecentSearchList from "@/components/RecentSearchList.vue"
-import router from "@/router"
 </script>
 
 <script>
@@ -53,25 +51,21 @@ export default {
   methods: {
     updatePodcasts(podcasts) {
       this.podcasts = podcasts
-      // document.getElementById("categories").style.display = "none"
-      // document.getElementById("recent-search-list").style.display = "none"
     },
     clearPodcasts() {
       this.podcasts = []
-      // document.getElementById("categories").style.display = "block"
-      // document.getElementById("recent-search-list").style.display = "block"
     },
     forward() {
-      history.forward();
+      history.forward()
     },
     back() {
-      history.back();
+      history.back()
     }
   },
   mounted() {
-    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds'));
+    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds'))
     if (storedPodcasts) {
-      this.searchedPodcasts = storedPodcasts;
+      this.searchedPodcasts = storedPodcasts
     }
   },
 }

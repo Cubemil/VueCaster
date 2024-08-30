@@ -7,13 +7,13 @@
 
     <div id="recent-search-list">
       <PodcastCard
-          v-for="podcast in searchedPodcasts"
-          :key="podcast.id"
-          :podcastId="podcast.id"
-          :image="podcast.image"
-          :podcastTitle="podcast.title"
-          :podcastAuthor="podcast.author"
-          :isLiked="podcast.isLiked"
+        v-for="podcast in searchedPodcasts"
+        :key="podcast.id"
+        :podcastId="podcast.id"
+        :image="podcast.image"
+        :podcastTitle="podcast.title"
+        :podcastAuthor="podcast.author"
+        :isLiked="podcast.isLiked"
       />
     </div>
 
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import PodcastCard from "@/components/PodcastCard.vue";
+import PodcastCard from "@/components/PodcastCard.vue"
 
 export default {
   name: "RecentSearchList",
@@ -34,17 +34,17 @@ export default {
     }
   },
   mounted() {
-    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds'));
+    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds'))
     if (storedPodcasts) {
-      this.searchedPodcasts = storedPodcasts;
+      this.searchedPodcasts = storedPodcasts
     }
   },
   methods: {
     clearSearchList() {
       this.searchedPodcasts = [];
-      localStorage.removeItem('clickedPodcastIds');
-      console.log('Search List cleared: ', this.searchedPodcasts);
-      window.location.reload();
+      localStorage.removeItem('clickedPodcastIds')
+      console.log('Search List cleared: ', this.searchedPodcasts)
+      window.location.reload()
     }
   }
 }
