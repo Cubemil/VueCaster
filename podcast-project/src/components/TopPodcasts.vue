@@ -1,7 +1,7 @@
 <template>
   <div id="top-podcasts-view-container">
     <div id="head-area">
-      <!-- <button id="refresh-button" @click="getPodcastData"><i class="fas fa-refresh"></i>Refresh</button> -->
+      <!-- <button id="refresh-button" @click="getLatestPodcastData();getPopularPodcastData()"><i class="fas fa-refresh"></i>Refresh</button> -->
     </div>
     
     <div v-if="isLoading" id="loading-area">
@@ -12,12 +12,12 @@
 		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
     <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
 
+    <h1>Recently Played</h1>
+    <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
     <h1>Latest Podcasts</h1>
     <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
     <h1>Most Popular Podcasts</h1>
     <PodcastList :podcasts="mostPopularPodcasts" @toggleExpand="toggleExpand"/>
-
-    
   </div>
 </template>
 
@@ -45,7 +45,7 @@ export default {
     async getLatestPodcastData() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=25' // latest podcasts
+        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=4' // latest podcasts 25
 
         const response = await fetch(url)
 
@@ -74,8 +74,7 @@ export default {
     async getPopularPodcastData() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=25' // most popular/active podcasts
-
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=4&language=de'; // most popular/active podcasts 25
         const response = await fetch(url)
 
         if (!response.ok)
