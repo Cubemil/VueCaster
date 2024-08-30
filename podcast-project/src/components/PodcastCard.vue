@@ -67,6 +67,12 @@ export default {
         if (index !== -1) likedPodcasts.splice(index, 1)
       }
       localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
+
+      // dispatch a storage event manually for live updates in other components
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'likedPodcasts',
+        newValue: JSON.stringify(likedPodcasts),
+      }))
     },
     getSearchedPodcasts() {
       this.clickedPodcastIds.push(this.podcastId);  // Add the current podcast ID to the array

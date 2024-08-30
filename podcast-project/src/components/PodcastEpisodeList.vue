@@ -27,31 +27,30 @@
       <button @click="playEpisode(episode)" class="play-button" aria-label="Play episode">
         <i class="fas fa-play"></i>
       </button>
-
+      
       <button v-if="!episode.addedToQueue"
         @click="addToQueue(episode)"
         id="queue-button"
         aria-label="Add episode to queue"
       >
-        <i class="fas fa-plus"></i>
+        <i class="fas fa-plus-circle"></i>
       </button>
-
-      <button
-        @click="toggleLike(episode)"
-        class="like-button"
-        :aria-label="isEpisodeLiked(episode) ? 'Unlike episode' : 'Like episode'"
-        :class="{ 'liked-button': isEpisodeLiked(episode) }"
-      >
-        <i :class="isEpisodeLiked(episode) ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
-      </button>
-
 
       <button v-if="episode.addedToQueue"
         @click="removeFromQueue(episode)"
         id="queue-button" 
         aria-label="Remove episode from queue"
       >
-        <i class="fas fa-minus"></i>
+        <i class="fas fa-minus-circle"></i>
+      </button>
+
+      <button
+        @click="toggleLike(episode)"
+        class="like-button"
+        :aria-label="isEpisodeLiked(episode) ? 'Remove episode from bookmarks' : 'Add episode to bookmarks'"
+        :class="{ 'liked-button': isEpisodeLiked(episode) }"
+      >
+        <i :class="isEpisodeLiked(episode) ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
       </button>
 
     </div>
@@ -76,6 +75,12 @@ export default {
       },
       deep: true
     }
+  },
+  mounted() {
+    window.addEventListener('storage', this.handleStorageChange)
+  },
+  beforeUnmount() {
+    window.removeEventListener('storage', this.handleStorageChange)
   },
   methods: {
     playEpisode(episode) {
@@ -108,9 +113,20 @@ export default {
         this.savedEpisodes.push(episode)
       else
         this.savedEpisodes.splice(episodeIndex, 1)
+
+      localStorage.setItem('savedEpisodes', JSON.stringify(this.savedEpisodes))
+
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'savedEpisodes',
+        newValue: JSON.stringify(this.savedEpisodes)
+      }))
     },
     isEpisodeLiked(episode) {
       return this.savedEpisodes.some(item => item.id === episode.id)
+    },
+    handleStorageChange(event) {
+      if (event.key === 'savedEpisodes')
+        this.savedEpisodes = JSON.parse(event.newValue) || []
     }
   }
 }
