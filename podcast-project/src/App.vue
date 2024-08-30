@@ -166,8 +166,7 @@ body {
 #sidenav-area, #main-area {
   padding: 1%;
   margin: 0.4%;
-  background: linear-gradient(#121212, #000000);
-  background: #121212;
+  background: linear-gradient(#121212, #090909);
 }
 
 #footer-area {

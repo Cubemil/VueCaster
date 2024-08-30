@@ -1,8 +1,7 @@
 <template>
   <div id="top-podcasts-view-container">
     <div id="head-area">
-      <h1 id="heading">These are the top 50 hot podcasts right now:</h1>
-      <!-- <button id="refresh-button" @click="getPodcastData"><i class="fas fa-refresh"></i>Refresh</button> -->
+      <!-- <button id="refresh-button" @click="getLatestPodcastData();getPopularPodcastData()"><i class="fas fa-refresh"></i>Refresh</button> -->
     </div>
     
     <div v-if="isLoading" id="loading-area">
@@ -12,37 +11,42 @@
     
 		<!-- <PodcastShelf v-if="!podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
     <!-- <PodcastList v-if="podsExpanded" :podcasts="podcasts" @toggleExpand="toggleExpand"/> -->
-    <!-- TODO implement nr. 1 podcast worldwide -->
-    <!-- TODO implement top podcasts in your country (get user location) -->
-    <!-- TODO implement top genres -->
-    <PodcastList :podcasts="podcasts" @toggleExpand="toggleExpand"/>
 
-    
+    <h1>Recently Played</h1>
+    <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
+    <h1>Latest Podcasts</h1>
+    <PodcastList :podcasts="latestPodcasts" @toggleExpand="toggleExpand"/>
+    <h1>Most Popular Podcasts</h1>
+    <PodcastList :podcasts="mostPopularPodcasts" @toggleExpand="toggleExpand"/>
   </div>
 </template>
 
 <script setup>
 import PodcastShelf from '../components/PodcastShelf.vue'
 import PodcastList from '../components/PodcastList.vue'
+import PodcastShelfItem from "@/components/PodcastShelfItem.vue";
 </script>
 
 <script>
 export default {
   data() {
     return { 
-      podcasts: [],
+      latestPodcasts: [],
+      mostPopularPodcasts: [],
       isLoading: false,
 			podsExpanded: false
     }
   },
   mounted() {
-    this.getPodcastData()
+    this.getLatestPodcastData()
+    this.getPopularPodcastData()
 	},
   methods: {
-    async getPodcastData() {
+    async getLatestPodcastData() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=50'
+        const url = 'https://api.fyyd.de/0.2/podcast/latest/?count=4' // latest podcasts 25
+
         const response = await fetch(url)
 
         if (!response.ok) 
@@ -60,8 +64,36 @@ export default {
           url: podcast.url
         }))
 
-        this.podcasts = fetchedPods
-        console.log("Podcasts fetched: ", this.podcasts)
+        this.latestPodcasts = fetchedPods
+        console.log("Podcasts fetched: ", this.latestPodcasts)
+        this.isLoading = false
+      } catch (err) {
+        console.error('Podcast could not be fetched.', err)
+      }
+    },
+    async getPopularPodcastData() {
+      try {
+        this.isLoading = true
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=4&language=de'; // most popular/active podcasts 25
+        const response = await fetch(url)
+
+        if (!response.ok)
+          throw new Error('Network response was not ok', response.statusText)
+
+        const body = await response.json()
+        if (!body.data)
+          throw new Error('No data found in response body')
+
+        const fetchedPods = body.data.map(podcast => ({
+          id: podcast.id,
+          title: podcast.title,
+          author: podcast.author,
+          image: podcast.layoutImageURL,
+          url: podcast.url
+        }))
+
+        this.mostPopularPodcasts = fetchedPods
+        console.log("Podcasts fetched: ", this.mostPopularPodcasts)
         this.isLoading = false
       } catch (err) {
         console.error('Podcast could not be fetched.', err)
@@ -128,6 +160,12 @@ export default {
 #loading-indicator {
   font-size: 1.5em;
   margin-bottom: 2%;
+}
+
+h1 {
+  font-size: 1.5em;
+  padding-left: 0.5em;
+  padding-bottom: 0.25em;
 }
 </style>
 

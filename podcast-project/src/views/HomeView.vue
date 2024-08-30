@@ -1,6 +1,5 @@
 <template>
   <div id="home-view-container">
-    <h1 id="heading">Welcome back!</h1>
     <TopPodcasts/>
   </div>
 </template>

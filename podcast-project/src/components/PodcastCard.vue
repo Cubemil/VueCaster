@@ -87,7 +87,7 @@ export default {
 <style scoped>
 #podcast-card-container {
   border-radius: 8px;
-  width: 325px;
+  width: 316px;
   height: 190px;
   margin: 0.7em;
   background: rgb(24, 24, 24);

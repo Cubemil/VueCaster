@@ -103,7 +103,7 @@ export default {
 }
 
 #podcasts {
-  margin-top: 4.5em;
+  margin-top: 1.5em;
 }
 
 .pagination-top {
