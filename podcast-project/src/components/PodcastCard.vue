@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       liked: this.isLiked,
-      searchedPodcasts: []  // Array to store clicked podcast IDs
+      clickedPodcastIds: []
     }
   },
   watch: {
@@ -49,8 +49,7 @@ export default {
     }
   },
   created() {
-    // Retrieve the clickedPodcastIds array from local storage when the component is created
-    this.clickedPodcastIds = JSON.parse(localStorage.getItem('clickedPodcastIds') || '[]');
+    this.clickedPodcastIds = JSON.parse(localStorage.getItem('clickedPodcastIds ') || '[]');
   },
   methods: {
     sendPodcastId() {
@@ -75,10 +74,18 @@ export default {
       }))
     },
     getSearchedPodcasts() {
-      this.clickedPodcastIds.push(this.podcastId);  // Add the current podcast ID to the array
-      localStorage.setItem('clickedPodcastIds', JSON.stringify(this.clickedPodcastIds));  // Save the array in local storage
-      console.log('Clicked Podcasts: ', this.clickedPodcastIds);  // Print the array to the console
-      // TODO retrieve data in RecentSearchList component
+      if (!this.clickedPodcastIds.some(p => p.id === this.podcastId)) { // check of podcast with the same id in array
+        const newPodcast = {
+          id: this.podcastId,
+          title: this.podcastTitle,
+          author: this.podcastAuthor,
+          image: this.image,
+          isLiked: this.liked
+        };
+        this.clickedPodcastIds.push(newPodcast);
+        localStorage.setItem('clickedPodcastIds', JSON.stringify(this.clickedPodcastIds));
+      }
+      console.log('Clicked Podcasts: ', this.clickedPodcastIds);
     }
   }
 }

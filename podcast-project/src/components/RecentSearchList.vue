@@ -1,9 +1,19 @@
 <template>
   <div id="recent-search-list-container">
-    <h2 style="margin: 0;padding-left: 0.5em;padding-bottom: 0.25em;">Recent searches</h2>
+    <h2 style="margin: 0;padding-left: 0.5em;padding-bottom: 0.25em;">Recent searches
+      <button @click="clearSearchList">Clear All</button>
+    </h2>
 
-    <div id="podcast-cards-container">
-
+    <div id="recent-search-list">
+      <PodcastCard
+          v-for="podcast in searchedPodcasts"
+          :key="podcast.id"
+          :podcastId="podcast.id"
+          :image="podcast.image"
+          :podcastTitle="podcast.title"
+          :podcastAuthor="podcast.author"
+          :isLiked="podcast.isLiked"
+      />
     </div>
 
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
@@ -18,7 +28,21 @@ export default {
   components: {PodcastCard},
   data() {
     return {
+      searchedPodcasts: [],
       errorMessage: null,
+    }
+  },
+  mounted() {
+    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds'));
+    if (storedPodcasts) {
+      this.searchedPodcasts = storedPodcasts;
+    }
+  },
+  methods: {
+    clearSearchList() {
+      this.searchedPodcasts = [];
+      localStorage.removeItem('clickedPodcastIds');
+      console.log('Search List cleared: ', this.searchedPodcasts);
     }
   }
 }
@@ -35,7 +59,7 @@ export default {
   max-width: 100%;
 }
 
-#podcast-cards-container {
+#recent-search-list {
   display: flex;
   flex-wrap: wrap;
   overflow-x: hidden;

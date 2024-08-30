@@ -74,7 +74,7 @@ export default {
     async getPopularPodcastData() {
       try {
         this.isLoading = true
-        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=4&language=de'; // most popular/active podcasts 25
+        const url = 'https://api.fyyd.de/0.2/feature/podcast/hot/?count=50'; // most popular/active podcasts 25
         const response = await fetch(url)
 
         if (!response.ok)

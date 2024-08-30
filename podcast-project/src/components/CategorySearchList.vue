@@ -163,7 +163,6 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 0 auto;
   max-width: 100%;
 }
 
