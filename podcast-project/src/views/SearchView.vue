@@ -21,16 +21,9 @@
 
     </div>
 
-
-    <!--TODO implement
-    <div v-if="recentSearches.length > 0" id="recent-search-list">
+    <div v-if="searchedPodcasts.length > 0" id="recent-search-list">
       <RecentSearchList/>
     </div>
-    -->
-    <div id="recent-search-list">
-      <RecentSearchList/>
-    </div>
-
 
     <div id="categories">
       <CategorySearchList @search-performed="updatePodcasts"/>
@@ -54,7 +47,7 @@ export default {
   data() {
     return {
       podcasts: [],
-      // recentSearches: []
+      searchedPodcasts: []
     }
   },
   methods: {
@@ -74,7 +67,13 @@ export default {
     back() {
       history.back();
     }
-  }
+  },
+  mounted() {
+    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds'));
+    if (storedPodcasts) {
+      this.searchedPodcasts = storedPodcasts;
+    }
+  },
 }
 </script>
 

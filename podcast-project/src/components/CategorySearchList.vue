@@ -170,6 +170,7 @@ export default {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
+  margin-top: 1em;
 }
 
 #category-cards-container::-webkit-scrollbar {

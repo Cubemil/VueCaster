@@ -44,6 +44,7 @@ export default {
       this.searchedPodcasts = [];
       localStorage.removeItem('clickedPodcastIds');
       console.log('Search List cleared: ', this.searchedPodcasts);
+      window.location.reload();
     }
   }
 }
