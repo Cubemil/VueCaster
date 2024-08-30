@@ -38,9 +38,13 @@
         <div class="router-link">
           <i class="fas fa-heart nav-icon"></i>
           <span v-if="!isCollapsed" class="nav-text">Liked Podcasts</span>
+          <i id="expand-arrow" v-if="!isCollapsed" :class="showLikedList ? 'fas fa-chevron-down' : 'fas fa-chevron-right'" class="chevron-icon"></i>
         </div>
-        <i id="expand-arrow" v-if="!isCollapsed" :class="showLikedList ? 'fas fa-chevron-down' : 'fas fa-chevron-right'" class="chevron-icon"></i>
+        
       </li>
+        <router-link id="router-link-liked" to="/liked-podcasts" class="router-link">
+          <span id="show-all-text" v-if="!isCollapsed" class="nav-text">Show all</span>
+        </router-link>
     </ul>
 
     <LikedPodcastsList
@@ -156,6 +160,10 @@ export default {
 
 .router-link:hover {
   color: #ffffff;
+}
+
+#expand-arrow {
+  margin-left: 2em;
 }
 
 @media screen and (max-width: 768px) {
