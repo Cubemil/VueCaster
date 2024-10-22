@@ -24,4 +24,4 @@ deploy-docker-image:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/podcast-project/dockerfile"
-      --destination "${CI_PROJECT_DIR}:latest"
+      --destination "${CI_REGISTRY_IMAGE}:latest"
