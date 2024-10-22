@@ -14,7 +14,7 @@ build-project:
   image: node:22-alpine
   artifacts:
     paths:
-      - prod/
+      - /dist/index.html
 test-job1:
   stage: test
   script:
