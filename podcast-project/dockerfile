@@ -1,0 +1,8 @@
+# Apache Docker Image in Version 2.4 laden
+FROM httpd:2.4
+# Dateien der Seite kopieren
+COPY ./dist/ /usr/local/apache2/htdocs/
+# Sicherstellen, dass Apache Leserechte für die Dateien hat
+RUN chmod -R 755 /usr/local/apache2/htdocs/
+#Apache Konfiguration
+COPY ./custom-httpd.conf /usr/local/apache2/conf/httpd.conf
