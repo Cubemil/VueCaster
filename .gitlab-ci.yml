@@ -9,6 +9,7 @@ build-job:
 build-project:
   stage: build
   script:
+    - cd podcast-project
     - npm install
     - npm run serve
   image: node:22-alpine
