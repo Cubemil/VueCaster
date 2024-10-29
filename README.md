@@ -32,7 +32,7 @@ Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend
 - **Express.JS** *(quick and easy node.js-based web backend framework)*
 - **MongoDB** *(Database ORM)*
 
-![MEVN architecture](podcast-project/src/assets/mevncrudarchitecture.png)
+![MEVN architecture](web-frontend/src/assets/mevncrudarchitecture.png)
 
 ## Local project setup
 
@@ -40,6 +40,6 @@ Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend
 
 1. ```npm install -g @vue/cli``` (installs vue framework globally)
 2. clone the project and open the root folder in your IDE
-3. In the IDE: ```cd podcast-project``` (change into project folder)
+3. In the IDE: ```cd web-frontend``` (change into project folder)
 4. ```npm i``` (installs 'node_modules' / vue library)
 5. ```npm run serve``` (starts live server for web page)

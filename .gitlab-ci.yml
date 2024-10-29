@@ -5,13 +5,13 @@ stages:
 build-project:
   stage: build
   script:
-    - cd podcast-project
+    - cd web-frontend
     - npm install
     - npm run build
   image: node:22-alpine
   artifacts:
     paths:
-      - podcast-project/dist/
+      - web-frontend/dist/
 
 deploy-docker-image:
   stage: deploy
@@ -22,5 +22,5 @@ deploy-docker-image:
     - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/podcast-project/dockerfile"
+      --dockerfile "${CI_PROJECT_DIR}/web-frontend/dockerfile"
       --destination ${CI_REGISTRY_IMAGE}:latest
