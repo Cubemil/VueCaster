@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
+    "start:client": "npm --prefix web-frontend run serve",
+    "start:server": "npm --prefix server-backend run dev"
+  },
+  "dependencies": {
+    "vuetify": "^3.7.3"
+  }
+}
