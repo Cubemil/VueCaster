@@ -2,7 +2,7 @@
 
 ## Goal
 
-Creating a backend for our existing frontend web app [Podcast player](http://webengineering.ins.hs-anhalt.de:10051)
+Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend/) web app [Podcast player](http://webengineering.ins.hs-anhalt.de:10051)
 
 ### Functionality
 
