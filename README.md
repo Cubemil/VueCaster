@@ -32,6 +32,8 @@ Creating a backend for our existing frontend web app [Podcast player](http://web
 - **Express.JS** *(quick and easy node.js-based web backend framework)*
 - **MongoDB** *(Database ORM)*
 
+![MEVN architecture](podcast-project/src/assets/mevncrudarchitecture.png)
+
 ## Local project setup
 
 ***Any command on macOS needs to be called with sudo.***
