@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async loadLikedPodcasts() {
-      this.isLoading = true;
+      this.isLoading = true
       this.errorMessage = ''
       const likedPodcastsIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
 

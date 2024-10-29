@@ -39,7 +39,7 @@ export default {
       }
     },
     async fetchPodcasts() {
-      const inputField = this.$refs.inputField;
+      const inputField = this.$refs.inputField
       if (inputField && inputField.value !== '') {
         inputField.style.outlineWidth = '0px'
         inputField.blur()
