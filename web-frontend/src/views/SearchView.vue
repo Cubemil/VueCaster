@@ -34,22 +34,22 @@
 </template>
 
 <script setup>
-import AppSearchBar from '@/components/AppSearchBar.vue'
-import PodcastList from '@/components/PodcastList.vue'
-import CategorySearchList from "@/components/CategorySearchList.vue"
-import RecentSearchList from "@/components/RecentSearchList.vue"
+import AppSearchBar from '../components/AppSearchBar.vue'
+import PodcastList from '../components/PodcastList.vue'
+import CategorySearchList from "../components/CategorySearchList.vue"
+import RecentSearchList from "../components/RecentSearchList.vue"
 </script>
 
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
-      podcasts: [],
-      searchedPodcasts: []
+      podcasts: [] as string[],
+      searchedPodcasts: [] as string[]
     }
   },
   methods: {
-    updatePodcasts(podcasts) {
+    updatePodcasts(podcasts: string[]) {
       this.podcasts = podcasts
     },
     clearPodcasts() {
@@ -63,11 +63,11 @@ export default {
     }
   },
   mounted() {
-    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds'))
+    const storedPodcasts: string[] = JSON.parse(localStorage.getItem('clickedPodcastIds') || '[]')
     if (storedPodcasts) {
       this.searchedPodcasts = storedPodcasts
     }
-  },
+  }
 }
 </script>
 
