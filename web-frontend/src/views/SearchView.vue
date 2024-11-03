@@ -40,16 +40,16 @@ import CategorySearchList from "../components/CategorySearchList.vue"
 import RecentSearchList from "../components/RecentSearchList.vue"
 </script>
 
-<script lang="ts">
+<script>
 export default {
   data() {
     return {
-      podcasts: [] as string[],
-      searchedPodcasts: [] as string[]
+      podcasts: [],
+      searchedPodcasts: []
     }
   },
   methods: {
-    updatePodcasts(podcasts: string[]) {
+    updatePodcasts(podcasts) {
       this.podcasts = podcasts
     },
     clearPodcasts() {
@@ -63,7 +63,7 @@ export default {
     }
   },
   mounted() {
-    const storedPodcasts: string[] = JSON.parse(localStorage.getItem('clickedPodcastIds') || '[]')
+    const storedPodcasts = JSON.parse(localStorage.getItem('clickedPodcastIds') || '[]')
     if (storedPodcasts) {
       this.searchedPodcasts = storedPodcasts
     }
