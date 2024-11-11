@@ -8,6 +8,7 @@
     "start:server": "npm --prefix server-backend run dev"
   },
   "dependencies": {
+    "body-parser": "^1.20.3",
     "vuetify": "^3.7.3"
   }
 }
