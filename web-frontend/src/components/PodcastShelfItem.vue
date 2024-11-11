@@ -63,7 +63,7 @@ export default {
 }
 
 .podcast-image {
-  width: 160px;
+  width: 120px;
   height: auto;
   box-shadow: #121212 0 0 14px;
   border-radius: 5%;

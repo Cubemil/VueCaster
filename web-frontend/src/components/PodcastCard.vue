@@ -95,7 +95,7 @@ export default {
 #podcast-card-container {
   border-radius: 8px;
   width: 302px;
-  height: 190px;
+  height: 200px;
   margin: 0.7em;
   background: rgb(24, 24, 24);
   text-align: left;
@@ -148,7 +148,6 @@ export default {
   font-size: 30px;
   font-weight: bold;
   position: relative;
-  top: 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -159,7 +158,6 @@ export default {
   color: #A7A7A7;
   font-size: 14px;
   position: relative;
-  top: 35px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
