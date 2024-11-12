@@ -2,7 +2,8 @@
   "devDependencies": {
     "@playwright/test": "^1.48.2",
     "@types/node": "^22.9.0",
-    "concurrently": "^9.0.1"
+    "concurrently": "^9.0.1",
+    "monocart-coverage-reports": "^2.11.2"
   },
   "scripts": {
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
