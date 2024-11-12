@@ -1,14 +1,14 @@
 {
   "devDependencies": {
     "@playwright/test": "^1.48.2",
-    "@types/node": "^22.9.0",
     "concurrently": "^9.0.1",
     "monocart-coverage-reports": "^2.11.2"
   },
   "scripts": {
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start:client": "npm --prefix web-frontend run serve",
-    "start:server": "npm --prefix server-backend run dev"
+    "start:server": "npm --prefix server-backend run dev",
+    "test": "npx playwright test"
   },
   "dependencies": {
     "body-parser": "^1.20.3"
