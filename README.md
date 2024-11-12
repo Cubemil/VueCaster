@@ -36,7 +36,7 @@ Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend
 
 ## Local project setup
 
-***Any command on macOS needs to be called with sudo.***
+***Any command on macOS needs to be called with sudo by default.***
 
 1. ```npm install -g @vue/cli``` (installs vue framework globally)
 2. clone the project and open the root folder in your IDE
