@@ -2,6 +2,7 @@
   "devDependencies": {
     "@playwright/test": "^1.48.2",
     "concurrently": "^9.0.1",
+    "dotenv": "^16.4.5",
     "http-server": "^14.1.1",
     "monocart-coverage-reports": "^2.11.2"
   },
