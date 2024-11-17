@@ -4,28 +4,53 @@ const jwt = require('jsonwebtoken');
 
 /************************ ENVIRONMENT VARIABLES AND HELPER FUNCTIONS ************************/
 
+// fetch jwt secret key from env variables (note: not added to git)
 const secretKey = process.env.JWT_SECRET;
 
+// hashes password
 const hashPassword = async (password) => {
   return await bcrypt.hash(password, 10)
 };
 
+// checks if password is correct
 const comparePassword = async (password, hashedPassword) => {
-  return await bcrypt.compare(password, hashedPassword);
+  // ORIGINAL: return await bcrypt.compare(password, hashedPassword);
+  return bcrypt.compareSync(password, hashedPassword);
 };
 
-// POST /user/auth
-const auth = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, secretKey);
+// generates jwt token from user obj
+const generateToken = async (data) => {
+  const user = {
+    userId: data.userId,
+    username: data.username,
+    email: data.email,
+    roles: data.roles
+  }
+  return jwt.sign({ user }, secretKey, { expiresIn: '1h' }); 
+};
 
-    return res.status(200).json({
-      userId: decoded.userId,
-      username: decoded.username,
-      email: decoded.email,
-      roles: decoded.roles
-    });
+// validates jwt token
+// returns user obj if valid
+// TODO call once per session begin in frontend
+const validateToken = async (req, res) => {
+  const { user } = req.user;
+  res.status(200).json({ message: 'Token is valid', user });
+};
+
+/************************ JWT AUTHENTICATION MIDDLEWARE ************************/
+
+// POST /user/auth
+const authenticateToken = async (req, res, next) => {
+  try {
+    // get token from header
+    const token = req.header('Authorization').replace('Bearer ', '');
+
+    // decoded from token and put as request body
+    const decoded = jwt.verify(token, secretKey);
+    req.user = decoded;
+
+    // call actual request after
+    next();
   } catch (error) {
     res.status(401).send({ error: 'Not authorized to access this resource' }); 
   }
@@ -40,6 +65,7 @@ const signup = async (req, res) => {
   try {
     const hashedPassword = await hashPassword(password);
 
+    //TODO later dont return user only msg
     const newUser = await User.create({
       username,
       email,
@@ -62,17 +88,8 @@ const login = async (req, res) => {
     if (!user || !await comparePassword(password, user.password)) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-    
-    const token = jwt.sign({
-      userId: user.userId,
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      roles: user.roles 
-    }, secretKey, { expiresIn: '1h' }); 
-      
-    user.token = token;
-    user.tokenExpiration = new Date(Date.now() + 3600000); // 1 hour expiration time in ms
+  
+    const token = await generateToken(user);
 
     await user.save();
     res.status(200).json({ message: 'Login successful', token });
@@ -142,8 +159,10 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   signup,
+  validateToken,
   login,
   profile,
   updateUser,
-  deleteUser 
+  deleteUser,
+  authenticateToken
 };

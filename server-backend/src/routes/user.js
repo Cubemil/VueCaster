@@ -1,3 +1,5 @@
+/************************ ROUTER SETUP ************************/
+
 const express = require('express');
 const router = express.Router();
 
@@ -7,14 +9,15 @@ const userController = require('../controllers/user');
 
 /************************ HTTP ROUTE HANDLERS ************************/
 
-// requests without userId
-router.post('/user/signup', userController.signup);
-router.get('/user/login', userController.login);
+// public router: no auth required
+router.post('/signup', userController.signup);
+router.post('/login', userController.login);
+router.get('/:userId/profile', userController.profile);
 
-// single dataset requests
-router.get('/user/:userId/profile', userController.profile);
-router.put('/user/:userId/update', userController.updateUser);
-router.delete('/user/:userId/delete', userController.deleteUser);
+// protected router: auth required
+router.get('/validateToken', userController.authenticateToken , userController.validateToken); // test route
+router.put('/update', userController.authenticateToken, userController.updateUser);
+router.delete('/delete', userController.authenticateToken, userController.deleteUser);
 
 /************************ EXPORT ROUTES ************************/
 
