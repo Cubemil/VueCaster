@@ -1,31 +1,27 @@
 const path = require('path');
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
+const { initializeDatabase } = require('./src/models/user');
+const routes = require('./src/routes/user');
+
 const app = express();
+
+/************ APP SETUP ************/
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
+app.use('/', routes);
 
-// connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+/************ SERVER INITIALIZATION ************/
 
-// Example route with Hello World
-app.get('/api', (req, res) => {
-  res.send('Hello from Express!');
-});
+const PORT = process.env.SERVER_PORT || 5050;
 
-// Start the server
-const PORT = process.env.PORT || 5050;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+(async () => {
+  await initializeDatabase(); // sync db
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+})();
