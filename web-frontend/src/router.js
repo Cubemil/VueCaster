@@ -4,6 +4,7 @@ import SearchView from '@/views/SearchView.vue';
 import PodcastView from '@/views/PodcastView.vue';
 import LikedPodcastsView from '@/views/LikedPodcastsView.vue';
 import SavedEpisodesView from '@/views/SavedEpisodesView.vue';
+import UserLoginView from './views/UserLoginView.vue';
 
 //TODO #-router 
 const routes = [
@@ -38,11 +39,15 @@ const routes = [
         component: SavedEpisodesView
     },
     {
+        path: '/login',
+        name: 'UserLoginView',
+        component: UserLoginView
+    },
+    {
         path: '/:catchAll(.*)',
         redirect: '/home'
     }
 ];
-
 
 const router = createRouter({
     history: createWebHistory(),
