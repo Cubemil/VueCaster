@@ -5,33 +5,33 @@
     <form id="user-login-form" @submit.prevent="handleLogin">
       <div class="input-group">
         <input
-          type="text"
-          id="emailOrUsername"
-          name="emailOrUsername"
-          v-model="emailOrUsername"
-          @blur="validateEmailOrUsername"
-          placeholder="Email or Username"
-          required
+            type="text"
+            id="emailOrUsername"
+            name="emailOrUsername"
+            v-model="emailOrUsername"
+            @blur="validateEmailOrUsername"
+            placeholder="Email or Username"
+            required
         />
         <p v-if="emailOrUsernameError" class="error-message">Please enter a valid username or email address.</p>
       </div>
-      
+
       <div class="input-group">
         <input
-          type="password"
-          id="password"
-          name="password"
-          v-model="password"
-          placeholder="Password"
-          @blur="validatePassword"
-          required
+            type="password"
+            id="password"
+            name="password"
+            v-model="password"
+            placeholder="Password"
+            @blur="validatePassword"
+            required
         />
         <p v-if="passwordError" class="error-message">Please enter a valid password.</p>
       </div>
 
       <div class="remember-me-area">
         <label for="remember-me" class="custom-checkbox-label">
-          <input type="checkbox" id="remember-me" name="rememberMe" v-model="rememberMe" />
+          <input type="checkbox" id="remember-me" name="rememberMe" v-model="rememberMe"/>
           <span class="custom-checkbox"></span>
           Remember me
         </label>
@@ -39,20 +39,21 @@
 
       <button type="submit" id="login-btn" :disabled="isSubmitting">Log In</button>
     </form>
-      
+
     <div id="password-reset">
       <router-link to="/forgot-password">Forgot your password?</router-link>
     </div>
 
     <div id="switch-to-register-area">
-      Don't have an account? <router-link to="/register">Register</router-link>
+      Don't have an account?
+      <router-link to="/register">Register</router-link>
     </div>
 
   </div>
 </template>
 
 <script setup>
-import { getApiUrl } from '../api'
+import {getApiUrl} from '@/api'
 </script>
 
 <script>
@@ -71,10 +72,12 @@ export default {
   methods: {
     validateEmailOrUsername() {
       const emailOrUsernameRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      this.emailOrUsernameError = !this.emailOrUsername || !emailOrUsernameRegex.test(this.emailOrUsername)
+      if (document.getElementById("emailOrUsername").value !== "")
+        this.emailOrUsernameError = !this.emailOrUsername || !emailOrUsernameRegex.test(this.emailOrUsername)
     },
     validatePassword() {
-      this.passwordError = !this.password || this.password.length < 4
+      if (document.getElementById("password").value !== "")
+        this.passwordError = !this.password || this.password.length < 4
     },
     async handleLogin() {
       this.validateEmailOrUsername()
@@ -83,7 +86,7 @@ export default {
       if (this.isSubmitting || this.emailOrUsernameError || this.passwordError) return
       this.isSubmitting = true
 
-      if (this.responseMessage != '') {
+      if (this.responseMessage !== '') {
         this.isSubmitting = false
         return
       }
@@ -140,6 +143,7 @@ export default {
   max-width: 400px;
   margin: 0 auto;
   color: #ffffff;
+  background: #101010;
 }
 
 h1 {
@@ -280,5 +284,4 @@ input {
   color: #1ed760;
   text-decoration: underline;
 }
-
 </style>
