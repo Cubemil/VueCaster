@@ -5,26 +5,26 @@
     <form id="user-login-form" @submit.prevent="handleLogin">
       <div class="input-group">
         <input
-            type="text"
-            id="emailOrUsername"
-            name="emailOrUsername"
-            v-model="emailOrUsername"
-            @blur="validateEmailOrUsername"
-            placeholder="Email or Username"
-            required
+          type="text"
+          id="emailOrUsername"
+          name="emailOrUsername"
+          v-model="emailOrUsername"
+          @blur="validateEmailOrUsername"
+          placeholder="Email or Username"
+          required
         />
         <p v-if="emailOrUsernameError" class="error-message">Please enter a valid username or email address.</p>
       </div>
 
       <div class="input-group">
         <input
-            type="password"
-            id="password"
-            name="password"
-            v-model="password"
-            placeholder="Password"
-            @blur="validatePassword"
-            required
+          type="password"
+          id="password"
+          name="password"
+          v-model="password"
+          placeholder="Password"
+          @blur="validatePassword"
+          required
         />
         <p v-if="passwordError" class="error-message">Please enter a valid password.</p>
       </div>
@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import {getApiUrl} from '@/api'
+import { getApiUrl } from '@/api'
 </script>
 
 <script>
@@ -72,12 +72,11 @@ export default {
   methods: {
     validateEmailOrUsername() {
       const emailOrUsernameRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (document.getElementById("emailOrUsername").value !== "")
-        this.emailOrUsernameError = !this.emailOrUsername || !emailOrUsernameRegex.test(this.emailOrUsername)
+      this.emailOrUsernameError = !this.emailOrUsername ||
+        !emailOrUsernameRegex.test(this.emailOrUsername)
     },
     validatePassword() {
-      if (document.getElementById("password").value !== "")
-        this.passwordError = !this.password || this.password.length < 4
+      this.passwordError = !this.password || this.password.length < 4
     },
     async handleLogin() {
       this.validateEmailOrUsername()
