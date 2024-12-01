@@ -15,9 +15,11 @@ router.post('/login', userController.login);
 router.get('/:userId/profile', userController.profile);
 
 // protected router: auth required
-router.get('/validateToken', userController.authenticateToken, userController.validateToken); // test route
-router.put('/update', userController.authenticateToken, userController.updateUser);
-router.delete('/delete', userController.authenticateToken, userController.deleteUser);
+router.put('/update', userController.authenticate, userController.updateUser);
+router.delete('/delete', userController.authenticate, userController.deleteUser);
+
+// testing token validation
+router.get('/validate-token', userController.authenticate, userController.validateToken);
 
 /************************ EXPORT ROUTES ************************/
 

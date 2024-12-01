@@ -29,18 +29,10 @@ const generateToken = async (data) => {
   return jwt.sign({ user }, secretKey, { expiresIn: '1h' }); 
 };
 
-// validates jwt token
-// returns user obj if valid
-// TODO call once per session begin in frontend
-const validateToken = async (req, res) => {
-  const { user } = req.user;
-  res.status(200).json({ message: 'Token is valid', user });
-};
-
 /************************ JWT AUTHENTICATION MIDDLEWARE ************************/
 
-// POST /user/auth
-const authenticateToken = async (req, res, next) => {
+// POST /user/authenticate
+const authenticate = async (req, res, next) => {
   try {
     // get token from header
     const token = req.header('Authorization').replace('Bearer ', '');
@@ -155,14 +147,24 @@ const deleteUser = async (req, res) => {
   }
 };
 
+/************************ JWT TOKEN VALIDATION ************************/
+
+// validates jwt token
+// returns user obj if valid
+// TODO call once per session begin in frontend
+const validateToken = async (req, res) => {
+  const { user } = req.user;
+  res.status(200).json({ message: 'Token is valid', user });
+};
+
 /************************ EXPORT CONTROLLERS ************************/
 
 module.exports = {
   signup,
-  validateToken,
   login,
   profile,
   updateUser,
   deleteUser,
-  authenticateToken
+  authenticate,
+  validateToken
 };
