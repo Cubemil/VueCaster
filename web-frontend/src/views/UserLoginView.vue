@@ -72,11 +72,11 @@ export default {
   methods: {
     validateEmailOrUsername() {
       const emailOrUsernameRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (document.getElementById("emailOrUsername").value !== "")
+      if (this.emailOrUsername !== '')
         this.emailOrUsernameError = !this.emailOrUsername || !emailOrUsernameRegex.test(this.emailOrUsername)
     },
     validatePassword() {
-      if (document.getElementById("password").value !== "")
+      if (this.password !== "")
         this.passwordError = !this.password || this.password.length < 4
     },
     async handleLogin() {
@@ -143,7 +143,6 @@ export default {
   max-width: 400px;
   margin: 0 auto;
   color: #ffffff;
-  background: #101010;
 }
 
 h1 {
