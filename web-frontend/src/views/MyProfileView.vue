@@ -49,7 +49,9 @@ export default {
       try {
         const url = getApiUrl('/user/profile')
 
-        const response = await authFetch(url)
+        const response = await authFetch(url, {
+          method: 'GET'
+        })
         const body = await response.json()
 
         this.profileDetails = body.data

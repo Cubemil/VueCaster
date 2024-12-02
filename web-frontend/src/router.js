@@ -65,4 +65,18 @@ const router = createRouter({
     routes
 });
 
+import { useUserStore } from './stores/user'
+// reroute to home if user is logged in and tries to log in / sign up
+router.beforeEach(async (to, from, next) => {
+    const store = useUserStore()
+    if (to.name === "UserLoginView" && store.isLoggedIn)
+        next("/")
+    else if (to.name === "UserSignupView" && store.isLoggedIn)
+        next("/")
+    else if (to.name === "MyProfileView" && !store.isLoggedIn)    
+        next("/login")
+    else
+        next()
+})
+
 export default router;

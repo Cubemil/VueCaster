@@ -11,7 +11,6 @@ app.component('draggable', VueDraggableNext) // registers a global component
 app.mount('#app')
 
 /*
-import { useUserStore } from './stores/user'
 
 const appReady = async () => {
   const store = useUserStore()
@@ -20,8 +19,9 @@ const appReady = async () => {
     await authenticate(token)
   }
 }
-
 Promise.all([appReady()])
+   
+import { useUserStore } from './stores/user'
 
 router.beforeEach(async (to, from, next) => {
   const store = useUserStore()
@@ -29,9 +29,10 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.name === "login" && store.isLoggedIn)
     next("/")
-  else if (to.name === "register" && store.isLoggedIn)
+  else if (to.name === "signup" && store.isLoggedIn)
     next("/")
   else
     next()
 })
+
 */
