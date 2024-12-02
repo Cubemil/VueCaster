@@ -10,9 +10,12 @@ app.use(router)
 app.component('draggable', VueDraggableNext) // registers a global component
 app.mount('#app')
 
+/*
+import { useUserStore } from './stores/user'
+
 const appReady = async () => {
   const store = useUserStore()
-  const token = JSON.parse(localStorage.getItem("token"))
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token")
   if (token) {
     await authenticate(token)
   }
@@ -31,3 +34,4 @@ router.beforeEach(async (to, from, next) => {
   else
     next()
 })
+*/
