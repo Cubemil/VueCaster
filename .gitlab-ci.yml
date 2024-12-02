@@ -2,18 +2,18 @@ stages:
   - build
   - deploy
 
-build-project:
+build-frontend:
   stage: build
   script:
     - cd web-frontend
-    - npm install
+    - npm i
     - npm run build
   image: node:22-alpine
   artifacts:
     paths:
       - web-frontend/dist/
 
-deploy-docker-image:
+deploy-frontend-docker-image:
   stage: deploy
   image:
     name: gcr.io/kaniko-project/executor:debug
@@ -23,4 +23,16 @@ deploy-docker-image:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/web-frontend/dockerfile"
-      --destination ${CI_REGISTRY_IMAGE}:latest
+      --destination ${CI_REGISTRY_IMAGE}:frontend
+
+deploy-backend-docker-image:
+  stage: deploy
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - echo Writing docker image to registry $CI_REGISTRY_IMAGE
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/server-backend"
+      --dockerfile "${CI_PROJECT_DIR}/server-backend/dockerfile"
+      --destination ${CI_REGISTRY_IMAGE}:backend
