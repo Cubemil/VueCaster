@@ -4,15 +4,17 @@
 
 Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend/) web app [Podcast player](http://webengineering.ins.hs-anhalt.de:10051)
 
-### Functionality
+### Functionality / Progress
 
 - [x] Account Management
   - [x] Registration
   - [x] Login
   - [x] Authorization
+- [ ] 80% Test Coverage
+- [ ] Dashboard
+- [ ] Logging
 - [ ] Offline functionality
 - [ ] Downloads
-- [ ] PWA
 - [ ] Desktop App with electron
 
 ## Team
