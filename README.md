@@ -6,10 +6,10 @@ Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend
 
 ### Functionality
 
-- [ ] Account Management
-  - [ ] Registration
-  - [ ] Login
-  - [ ] Authorization
+- [x] Account Management
+  - [x] Registration
+  - [x] Login
+  - [x] Authorization
 - [ ] Offline functionality
 - [ ] Downloads
 - [ ] PWA
