@@ -63,7 +63,6 @@ export default {
         }))
 
         this.likedPodcasts = podcasts
-        console.log('Liked Podcasts fetched: ', this.likedPodcasts)
       } catch (error) {
         this.errorMessage = error.message
       } finally {

@@ -85,7 +85,6 @@ export default {
         this.clickedPodcastIds.push(newPodcast);
         localStorage.setItem('clickedPodcastIds', JSON.stringify(this.clickedPodcastIds));
       }
-      console.log('Clicked Podcasts: ', this.clickedPodcastIds);
     }
   }
 }

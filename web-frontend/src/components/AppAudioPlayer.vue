@@ -174,7 +174,6 @@ export default {
     loadEpisode(episode) {
       const audio = this.$refs.audio
       if (audio) {
-        console.log('Loading episode:', episode)
         audio.src = episode.enclosure
         audio.load()
         audio.onloadedmetadata = () => {

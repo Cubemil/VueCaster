@@ -48,7 +48,6 @@ export default {
   watch: {
     data(newData) {
       if (newData) {
-        console.log('Podcast data loaded:', newData)
         this.checkIfLiked()
       }
     }

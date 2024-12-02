@@ -134,7 +134,6 @@ export default {
         }
 
         const body = await response.json()
-        console.log("body", body)
 
         const podcasts = body.data.podcasts.map(podcast => ({
           id: podcast.id,

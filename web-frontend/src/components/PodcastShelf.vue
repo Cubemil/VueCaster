@@ -41,8 +41,7 @@ export default {
       default: () => []
     },
     section: { 
-      type: String, 
-      required: true 
+      type: String
     }
   },
   data() { 

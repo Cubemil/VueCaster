@@ -63,7 +63,6 @@ export default {
         }))
 
         this.hotPodcasts = fetchedPods
-        console.log("Hot Podcasts fetched: ", this.hotPodcasts)
         this.isLoading = false
       } catch (err) {
         console.error('Podcast could not be fetched.', err)

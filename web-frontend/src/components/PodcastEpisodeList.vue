@@ -103,7 +103,7 @@ export default {
         this.$emit('updateQueue', queue)
         episode.addedToQueue = false
       } else {
-        console.log('Episode not found in queue')
+        console.error('Episode not found in queue')
       }
     },
     toggleLike(episode) {

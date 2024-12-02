@@ -89,7 +89,6 @@ export default {
         }))
 
         this.latestPodcasts = fetchedPods
-        console.log("Latest Podcasts fetched: ", this.latestPodcasts)
       } catch (err) {
         console.error('Podcast could not be fetched.', err)
       } finally {
@@ -122,7 +121,6 @@ export default {
         }))
 
         this.recentlyPlayedPodcasts = podcasts
-        console.log('Recently Played Podcasts fetched: ', this.recentlyPlayedPodcasts)
       } catch (error) {
         console.error('Failed to fetch recently played podcasts:', error.message)
       } finally {
