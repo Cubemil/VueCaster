@@ -7,9 +7,6 @@
       <div id="sidenav-area">
         <AppSidenav ref="sidenav"/>
       </div>
-
-      <h1>YOYOYOy</h1>
-      
       <div id="main-area">
         <router-view 
           @playEpisode="setCurrentEpisode" 
