@@ -2,8 +2,15 @@
   <div id="podcast-view-container">
     <div id="profile-area">
       <h2>Profile of {{ userStore.username }}</h2>
+      <div id="profile-picture-container">
+        <img
+          :src="profilePictureUrl"
+          alt="Profile Picture" 
+          id="profile-picture"
+        >
+      </div>
       <div id="liked-podcast-container">
-        <h3>Liked Podcasts</h3>
+        <h3 id="liked-podcasts-title">Liked Podcasts from {{userStore.username }}</h3>
         <LikedPodcastsList/>
       </div>  
     </div>
@@ -26,6 +33,7 @@ export default {
     return {
       userStore: useUserStore(),
       profileDetails: null,
+      profilePictureUrl: "https://via.placeholder.com/150?text=User" || this.profileDetails.profilePictureUrl
     }
   },
   mounted() {
@@ -61,26 +69,41 @@ export default {
 #podcast-view-container {
   display: flex;
   flex-direction: row;
-  padding: 1%;
   font-size: 100%;
   width: 100%;
-  height: 100vh;
   overflow: hidden;
+}
+
+#profile-area {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2% 2%;
+  overflow-x: hidden;
+}
+
+#profile-picture-container {
+  margin: 20px 0;
+}
+
+#profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #1db954;
+  transition: all 0.3s;
+}
+
+#liked-podcasts-title {
+  margin-bottom: -70px;
 }
 
 #details-area {
   flex: 1 1 50%;
   display: flex;
   align-items: flex-start;
-  overflow-x: hidden;
-}
-
-#episodes-area {
-  flex: 1 1 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-left: 2%;
   overflow-x: hidden;
 }
 

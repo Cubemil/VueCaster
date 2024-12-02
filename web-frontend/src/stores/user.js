@@ -5,15 +5,18 @@ export const useUserStore = defineStore("user", {
     // on startup also check session storage
     const storedUsername = localStorage.getItem("username") || sessionStorage.getItem("username")
     const storedToken = localStorage.getItem("token") || sessionStorage.getItem("token")
+    const storedProfilePictureUrl = localStorage.getItem("profilePictureUrl") || sessionStorage.getItem("profilePictureUrl")
 
     return {
       username: storedUsername || null,
-      token: storedToken || null
+      token: storedToken || null,
+      profilePictureUrl: storedProfilePictureUrl || null
     }
   },
   getters: {
     getUsername: (state) => state.username,
     isLoggedIn: (state) => !!state.token,
+    getProfilePictureUrl: (state) => state.profilePictureUrl
   },
   actions: {
     login(username, token, rememberMe) {
