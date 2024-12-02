@@ -44,9 +44,9 @@
       <router-link to="/forgot-password">Forgot your password?</router-link>
     </div>
 
-    <div id="switch-to-register-area">
+    <div id="switch-to-signup-area">
       Don't have an account?
-      <router-link to="/register">Register</router-link>
+      <router-link to="/signup">Sign up</router-link>
     </div>
 
   </div>
@@ -54,6 +54,7 @@
 
 <script setup>
 import { getApiUrl } from '@/api'
+import { useUserStore } from '@/stores/user'
 </script>
 
 <script>
@@ -91,7 +92,7 @@ export default {
         return
       }
 
-      // TODO this says email now but it should be email or username later (need to update the API)
+      // TODO this says email now but it should be email or username later (need to update the API and use regex)
       const loginData = {
         email: this.emailOrUsername,
         password: this.password,
@@ -106,8 +107,6 @@ export default {
           },
           body: JSON.stringify(loginData)
         })
-        console.log('Login data: ', loginData)
-        console.log('Posting to: ', getApiUrl('/user/login'))
 
         if (!response.ok) {
           throw new Error('HTTP error! status: ' + response.status)
@@ -117,7 +116,13 @@ export default {
         this.responseMessage = result.message
 
         if (result.token) {
-          document.cookie = `token=${result.token}; path=/`
+          const store = useUserStore()
+          
+          // 'rememberMe' is sent here since the store takes care of the location of token/credentials
+          console.log("loggin in with username: ", result.username)
+          store.login(result.username, result.token, this.rememberMe)
+
+          console.log(store.getUsername)
           this.$router.push('/')
         } else {
           this.responseMessage = 'Invalid credentials.'
@@ -269,17 +274,17 @@ input {
   text-decoration: underline;
 }
 
-#switch-to-register-area {
+#switch-to-signup-area {
   margin-top: 20px;
   font-size: 0.85rem;
 }
 
-#switch-to-register-area a {
+#switch-to-signup-area a {
   color: #1db954;
   text-decoration: none;
 }
 
-#switch-to-register-area a:hover {
+#switch-to-signup-area a:hover {
   color: #1ed760;
   text-decoration: underline;
 }
