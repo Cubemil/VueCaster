@@ -51,7 +51,6 @@ const User = sequelize.define('User', {
 const initializeDatabase = async () => {
   try {
     await sequelize.sync({ alter: true }); // adjusts tables to match models
-    console.log('Database synced!');
   } catch (error) {
     console.error('Error initializing database:', error);
   }
