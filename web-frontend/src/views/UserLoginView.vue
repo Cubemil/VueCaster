@@ -3,11 +3,11 @@
     <h1>Login to VueCaster Pro</h1>
 
     <form id="user-login-form" @submit.prevent="handleLogin">
-      <label for="emailOrUsername">Email or Username</label>
+      <label for="email-or-username">Email or Username</label>
       <div class="input-group">
         <input
           type="text"
-          id="email-or-sername"
+          id="email-or-username"
           name="emailOrUsername"
           v-model="emailOrUsername"
           @blur="validateEmailOrUsername"
@@ -18,9 +18,9 @@
       </div>
 
       <label for="password">Password</label>
-      <div class="input-group">
+      <div class="input-group password-group">
         <input
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
           id="password"
           name="password"
           v-model="password"
@@ -28,6 +28,10 @@
           placeholder="Password"
           required
         />
+        <i
+          :class="['toggle-password-icon', showPassword ? 'fas fa-eye-slash' : 'fas fa-eye']"
+          @click="togglePasswordVisibility"
+        ></i>
         <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
       </div>
 
@@ -38,6 +42,8 @@
           Remember me
         </label>
       </div>
+
+      <p v-if="responseMessage" class="api-error-message">{{ responseMessage }}</p>
 
       <button type="submit" id="login-btn" :disabled="isSubmitting">Log In</button>
     </form>
@@ -69,7 +75,8 @@ export default {
       passwordError: false,
       rememberMe: false,
       responseMessage: '',
-      isSubmitting: false
+      isSubmitting: false,
+      showPassword: false
     }
   },
   methods: {
@@ -98,6 +105,9 @@ export default {
       else
         this.passwordError = ''
     },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword
+    },
     async handleLogin() {
       this.validateEmailOrUsername()
       this.validatePassword()
@@ -105,11 +115,6 @@ export default {
       if (this.isSubmitting || this.emailOrUsernameError || this.passwordError) return
     
       this.isSubmitting = true
-
-      if (this.responseMessage !== '') {
-        this.isSubmitting = false
-        return
-      }
 
       // checks for email regex
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -130,7 +135,8 @@ export default {
         })
 
         if (!response.ok) {
-          throw new Error('HTTP error! status: ' + response.status)
+          const errorText = response.status === 401 ? 'Invalid credentials.' : 'An error occurred.'
+          throw new Error(errorText)
         }
 
         const result = await response.json()
@@ -198,6 +204,32 @@ input {
   color: #ff0000;
   font-size: 0.85rem;
   margin-top: -5px;
+}
+
+.password-group {
+  position: relative;
+}
+
+.toggle-password-icon {
+  position: absolute;
+  right: -5px;
+  top: 19%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ccc;
+  transition: all 0.3s;
+}
+
+.toggle-password-icon:hover {
+  color: #fff;
+  transform: scale(1.01);
+}
+
+.api-error-message {
+  color: #ff0000;
+  font-size: 0.85rem;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .remember-me-area {
