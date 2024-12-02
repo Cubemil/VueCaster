@@ -84,7 +84,7 @@ const login = async (req, res) => {
     const token = await generateToken(user);
 
     await user.save();
-    res.status(200).json({ message: 'Login successful', token });
+    res.status(200).json({ message: 'Login successful', token, username: user.username });
   } catch (error) {
     res.status(400).json({ message: 'Error logging in', error: error.message });
   }
