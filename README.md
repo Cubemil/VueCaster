@@ -43,13 +43,3 @@ Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend
 3. In the IDE: ```cd web-frontend``` (change into project folder)
 4. ```npm i``` (installs 'node_modules' / vue library)
 5. ```npm run serve``` (starts live server for web page)
-
-TODO:
-
-storing token in frontend cookies
-
-// get token from fetch request
-const token = await res.json();
-
-// set token in cookie
-document.cookie = `token=${token}`
