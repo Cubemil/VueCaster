@@ -13,7 +13,7 @@
           placeholder="Email"
           required
         />
-        <p v-if="emailError" class="error-message">Please enter a valid email address.</p>
+        <p v-if="emailError" class="error-message">{{ emailError }}</p>
       </div>
 
       <div class="input-group">
@@ -26,7 +26,7 @@
           placeholder="username"
           required
         />
-        <p v-if="usernameError" class="error-message">Please enter a valid username.</p>
+        <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
       </div>
 
       <div class="input-group">
@@ -39,7 +39,20 @@
           @blur="validatePassword"
           required
         />
-        <p v-if="passwordError" class="error-message">Please enter a valid password.</p>
+        <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
+      </div>
+
+      <div class="input-group">
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirmPassword"
+          v-model="confirmPassword"
+          @blur="validateConfirmPassword"
+          placeholder="Confirm Password"
+          required
+        />
+        <p v-if="confirmPasswordError" class="error-message">{{ confirmPasswordError }}</p>
       </div>
 
       <button type="submit" id="signup-btn" :disabled="isSubmitting">Sign Up</button>
@@ -64,33 +77,63 @@ export default {
       email: '',
       username: '',
       password: '',
+      confirmPassword: '',
       emailError: false,
       usernameError: false,
       passwordError: false,
+      confirmPasswordError: false,
       responseMessage: '',
-      isSubmitting: false
+      isSubmitting: false,
     }
   },
   methods: {
     validateEmail() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (this.email !== '')
-        this.emailError = !this.email || !emailRegex.test(this.email)
+      if (!this.email)
+        this.emailError = 'Please enter an email address.'
+      else if (!emailRegex.test(this.email))
+        this.emailError = 'Please enter a valid email address.'
+      else
+        this.emailError = ''
     },
     validateUsername() {
-      if (this.username !== "")
-        this.usernameError = !this.username || this.username.length < 4
+      if (!this.username)
+        this.usernameError = 'Please enter a username.'
+      else if (this.username.length < 4)
+        this.usernameError = 'Username must contain at least 4 characters.'
+      else
+        this.usernameError = ''
     },
     validatePassword() {
-      if (this.password !== "")
-        this.passwordError = !this.password || this.password.length < 4
+      if (!this.password)
+        this.passwordError = 'Please enter a password.'
+      else if (this.password.length < 6)
+        this.passwordError = 'Password must contain at least 6 characters.'
+      else
+        this.passwordError = ''
+    },
+    validateConfirmPassword() {
+      if (!this.confirmPassword)
+        this.confirmPasswordError = 'Please confirm your password.'
+      else if (this.confirmPassword !== this.password)
+        this.confirmPasswordError = 'Passwords do not match.'
+      else
+        this.confirmPasswordError = ''
     },
     async handleSignup() {
       this.validateEmail()
       this.validateUsername()
       this.validatePassword()
+      this.validateConfirmPassword()
 
-      if (this.isSubmitting || this.emailError || this.usernameError || this.passwordError) return
+      if (
+        this.isSubmitting   ||
+        this.emailError     ||
+        this.usernameError  ||
+        this.passwordError  ||
+        this.confirmPasswordError
+      ) return
+
       this.isSubmitting = true
 
       if (this.responseMessage !== '') {
@@ -98,7 +141,6 @@ export default {
         return
       }
 
-      // TODO this says email now but it should be email or username later (need to update the API and use regex)
       const signupData = {
         email: this.email,
         username: this.username,
@@ -120,12 +162,10 @@ export default {
 
         const result = await response.json()
         this.responseMessage = result.message
-
         console.log('Signup successful:', result)
         this.$router.push('/login')
       } catch (error) {
         console.error('Error singing up:', error)
-        this.responseMessage = 'An error occurred while signing up. Please try again.'
       } finally {
         this.isSubmitting = false
       }
