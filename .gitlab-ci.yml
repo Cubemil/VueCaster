@@ -11,7 +11,7 @@ build-frontend:
   image: node:22-alpine
   artifacts:
     paths:
-      - web-frontend-v2/dist/
+      - web-frontend/dist/
 
 deploy-frontend-docker-image:
   stage: deploy
@@ -22,7 +22,7 @@ deploy-frontend-docker-image:
     - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/web-frontend-v2/dockerfile"
+      --dockerfile "${CI_PROJECT_DIR}/web-frontend/dockerfile"
       --destination ${CI_REGISTRY_IMAGE}:frontend
 
 deploy-backend-docker-image:
