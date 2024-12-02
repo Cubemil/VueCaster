@@ -52,6 +52,9 @@ export default {
   text-decoration: none;
   color: #B3B3B3;
   transition: all 0.3s;
+}
+
+.router-link:hover {
 	transform: scale(1.1);
 	color: #ffffff;
 }
