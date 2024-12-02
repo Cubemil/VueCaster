@@ -5,7 +5,7 @@
   </div>
   <div id="right-section">
 		<span id="log-in-text" v-if="userStore.username">Welcome, {{ userStore.username }}!</span>
-		<span id="log-in-text" v-else>Log in to use all features</span>
+		<span id="log-in-text" v-else>Log in</span>
     <router-link :to="redirectPath" class="router-link">
       <i class="fas fa-user-circle"></i>
     </router-link>
@@ -44,6 +44,19 @@ export default {
 	color: #B3B3B3;
 }
 
+#left-section {
+	flex-shrink: 0;
+}
+
+#right-section {
+	flex-grow: 1;
+	justify-content: flex-end;
+}
+
+#log-in-text {
+	margin-right: 1%;
+}
+
 .fa-ellipsis-h, .fa-user-circle {
 	font-size: 2em;
 }
@@ -57,9 +70,5 @@ export default {
 .router-link:hover {
 	transform: scale(1.1);
 	color: #ffffff;
-}
-
-#log-in-text {
-	margin-right: 1%;
 }
 </style>
