@@ -4,9 +4,8 @@
 	  <i class="fas fa-ellipsis-h"></i>
   </div>
   <div id="right-section">
-		<router-link :to="redirectPath" class="router-link" id="log-in-link">
-			<span id="log-in-text" v-if="userStore.username">Welcome, {{ userStore.username }}!</span>
-			<span id="log-in-text" v-else>Log in</span>
+		<span id="welcome-text" v-if="userStore.username" aria-label="Show profile" title="Show profile">Welcome, {{ userStore.username }}!</span>
+		<router-link :to="redirectPath" class="router-link" id="log-in-link" title="Log in" aria-label="Log in">
       <i class="fas fa-user-circle"></i>
     </router-link>
 	</div>
@@ -53,15 +52,14 @@ export default {
 	justify-content: flex-end;
 }
 
-#log-in-text {
+#welcome-text {
 	white-space: nowrap;
 	margin-right: 1%;
+	cursor: default;
 }
 
 #log-in-link {
-	display: flex;
-	align-items: center;
-	gap: 5px;
+	margin-left: 1%;
 }
 
 .fa-ellipsis-h, .fa-user-circle {
@@ -75,7 +73,7 @@ export default {
 }
 
 .router-link:hover {
-	transform: scale(1.1);
+	transform: scale(1.01);
 	color: #ffffff;
 }
 </style>

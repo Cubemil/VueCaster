@@ -28,7 +28,8 @@ export default {
 		return {
 			likedPodcasts: [],
 			isLoading: false,
-			errorMessage: ''
+			errorMessage: '',
+			isCollapsed: false
 		}
 	},
 	mounted() {

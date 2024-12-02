@@ -4,6 +4,7 @@ import SearchView from '@/views/SearchView.vue';
 import PodcastView from '@/views/PodcastView.vue';
 import LikedPodcastsView from '@/views/LikedPodcastsView.vue';
 import SavedEpisodesView from '@/views/SavedEpisodesView.vue';
+import MyProfileView from './views/MyProfileView.vue';
 import UserLoginView from './views/UserLoginView.vue';
 import UserSignupView from './views/UserSignupView.vue';
 
@@ -37,6 +38,11 @@ const routes = [
         path: '/saved-episodes',
         name: 'SavedEpisodesView',
         component: SavedEpisodesView
+    },
+    {
+        path: '/profile',
+        name: 'MyProfileView',
+        component: MyProfileView
     },
     {
         path: '/login',

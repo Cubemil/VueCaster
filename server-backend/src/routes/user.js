@@ -17,6 +17,7 @@ router.get('/:userId/profile', userController.profile);
 // protected router: auth required
 router.put('/update', userController.authenticate, userController.updateUser);
 router.delete('/delete', userController.authenticate, userController.deleteUser);
+router.get('/profile', userController.authenticate, userController.ownerProfile);
 
 // testing token validation
 router.get('/validate-token', userController.authenticate, userController.validateToken);

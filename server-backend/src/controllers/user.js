@@ -92,12 +92,33 @@ const login = async (req, res) => {
 
 // GET /user/:userId/profile
 const profile = async (req, res) => {
-  const { userId } = req.params;
+  const { userId } = req.body;
 
   try {
     const user = await User.findByPk(userId, {
       attributes: ['username']
     });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(400).json({ message: 'Error fetching user profile', error: error.message });
+  }
+};
+
+/********************* Authenticated User Routes **********************/
+
+// GET /user/profile
+const ownerProfile = async (req, res) => {
+  const { userId } = req.user.userId;
+
+  try {
+    const user = await User.findByPk(userId, {
+      attributes: ['username']
+    });
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -163,6 +184,7 @@ module.exports = {
   signup,
   login,
   profile,
+  ownerProfile,
   updateUser,
   deleteUser,
   authenticate,
