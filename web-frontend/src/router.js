@@ -5,8 +5,8 @@ import PodcastView from '@/views/PodcastView.vue';
 import LikedPodcastsView from '@/views/LikedPodcastsView.vue';
 import SavedEpisodesView from '@/views/SavedEpisodesView.vue';
 import UserLoginView from './views/UserLoginView.vue';
+import UserSignupView from './views/UserSignupView.vue';
 
-//TODO #-router 
 const routes = [
     {
         path: '/',
@@ -42,6 +42,11 @@ const routes = [
         path: '/login',
         name: 'UserLoginView',
         component: UserLoginView
+    },
+    {
+        path: '/signup',
+        name: 'UserSignupView',
+        component: UserSignupView
     },
     {
         path: '/:catchAll(.*)',
