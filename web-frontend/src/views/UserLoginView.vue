@@ -3,30 +3,32 @@
     <h1>Login to VueCaster Pro</h1>
 
     <form id="user-login-form" @submit.prevent="handleLogin">
+      <label for="emailOrUsername">Email or Username</label>
       <div class="input-group">
         <input
           type="text"
-          id="emailOrUsername"
+          id="email-or-sername"
           name="emailOrUsername"
           v-model="emailOrUsername"
           @blur="validateEmailOrUsername"
           placeholder="Email or Username"
           required
         />
-        <p v-if="emailOrUsernameError" class="error-message">Please enter a valid username or email address.</p>
+        <p v-if="emailOrUsernameError" class="error-message">{{ emailOrUsernameError }}</p>
       </div>
 
+      <label for="password">Password</label>
       <div class="input-group">
         <input
           type="password"
           id="password"
           name="password"
           v-model="password"
-          placeholder="Password"
           @blur="validatePassword"
+          placeholder="Password"
           required
         />
-        <p v-if="passwordError" class="error-message">Please enter a valid password.</p>
+        <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
       </div>
 
       <div class="remember-me-area">
@@ -72,19 +74,36 @@ export default {
   },
   methods: {
     validateEmailOrUsername() {
-      const emailOrUsernameRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (this.emailOrUsername !== '')
-        this.emailOrUsernameError = !this.emailOrUsername || !emailOrUsernameRegex.test(this.emailOrUsername)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      const isEmail = emailRegex.test(this.emailOrUsername)
+
+      if (!this.emailOrUsername)
+        this.emailOrUsernameError = 'Please enter an email or username.'
+      else if (!isEmail && this.emailOrUsername.length < 4)
+        this.emailOrUsernameError = 'Username must contain at least 4 characters.'
+      else if (!isEmail && this.emailOrUsername.length > 20)
+        this.emailOrUsernameError = 'Username must contain at most 20 characters.'
+      else if (isEmail && this.emailOrUsername.length < 6)
+        this.emailOrUsernameError = 'Email must contain at least 6 characters.'
+      else if (isEmail && this.emailOrUsername.length > 100)
+        this.emailOrUsernameError = 'Email must contain at most 100 characters.'
+      else
+        this.emailOrUsernameError = ''
     },
     validatePassword() {
-      if (this.password !== "")
-        this.passwordError = !this.password || this.password.length < 4
+      if (!this.password)
+        this.passwordError = 'Please enter a password.'
+      else if (this.password.length < 6)
+        this.passwordError = 'Password must contain at least 6 characters.'
+      else
+        this.passwordError = ''
     },
     async handleLogin() {
       this.validateEmailOrUsername()
       this.validatePassword()
 
       if (this.isSubmitting || this.emailOrUsernameError || this.passwordError) return
+    
       this.isSubmitting = true
 
       if (this.responseMessage !== '') {
@@ -92,12 +111,14 @@ export default {
         return
       }
 
-      // TODO this says email now but it should be email or username later (need to update the API and use regex)
-      const loginData = {
-        email: this.emailOrUsername,
-        password: this.password,
-        rememberMe: this.rememberMe
-      }
+      // checks for email regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      const isEmail = emailRegex.test(this.emailOrUsername)
+
+      // renames json key based on whether email or username is used
+      const loginData = isEmail
+        ? { email: this.emailOrUsername, password: this.password }
+        : { username: this.emailOrUsername, password: this.password }
 
       try {
         const response = await fetch(getApiUrl('/user/login'), {
@@ -117,12 +138,9 @@ export default {
 
         if (result.token) {
           const store = useUserStore()
-          
-          // 'rememberMe' is sent here since the store takes care of the location of token/credentials
-          console.log("loggin in with username: ", result.username)
+          // 'rememberMe' is sent here since the store takes care of location of the credentials
           store.login(result.username, result.token, this.rememberMe)
-
-          console.log(store.getUsername)
+          // reroute to home after successful login
           this.$router.push('/')
         } else {
           this.responseMessage = 'Invalid credentials.'
@@ -161,6 +179,11 @@ h1 {
   flex-direction: column;
 }
 
+label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
 input {
   width: 100%;
   padding: 10px;
@@ -168,18 +191,19 @@ input {
   border: 1px solid #ccc;
   background: #181818;
   color: #ffffff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .error-message {
   color: #ff0000;
   font-size: 0.85rem;
-  margin-top: 5px;
+  margin-top: -5px;
 }
 
 .remember-me-area {
   display: flex;
   align-items: center;
+  margin-top: 15px;
   margin-bottom: 15px;
   color: #ffffff;
   font-size: 0.9rem;

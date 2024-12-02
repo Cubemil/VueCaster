@@ -3,6 +3,7 @@
     <h1>Sign up to use VueCaster Pro</h1>
 
     <form id="user-signup-form" @submit.prevent="handleSignup">
+      <label for="email">Email</label>
       <div class="input-group">
         <input
           type="text"
@@ -16,6 +17,7 @@
         <p v-if="emailError" class="error-message">{{ emailError }}</p>
       </div>
 
+      <label for="username">Username</label>
       <div class="input-group">
         <input
           type="text"
@@ -29,9 +31,10 @@
         <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
       </div>
 
-      <div class="input-group">
+      <label for="password">Password</label>
+      <div class="input-group password-group">
         <input
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
           id="password"
           name="password"
           v-model="password"
@@ -39,12 +42,17 @@
           @blur="validatePassword"
           required
         />
+        <i
+          :class="['toggle-password-icon', showPassword ? 'fas fa-eye-slash' : 'fas fa-eye']"
+          @click="togglePasswordVisibility"
+        ></i>
         <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
       </div>
 
-      <div class="input-group">
+      <label for="confirm-password">Confirm Password</label>
+      <div class="input-group password-group">
         <input
-          type="password"
+          :type="showConfirmPassword ? 'text' : 'password'"
           id="confirm-password"
           name="confirmPassword"
           v-model="confirmPassword"
@@ -52,6 +60,10 @@
           placeholder="Confirm Password"
           required
         />
+        <i
+          :class="['toggle-password-icon', showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye']"
+          @click="toggleConfirmPasswordVisibility"
+        ></i>
         <p v-if="confirmPasswordError" class="error-message">{{ confirmPasswordError }}</p>
       </div>
 
@@ -84,6 +96,8 @@ export default {
       confirmPasswordError: false,
       responseMessage: '',
       isSubmitting: false,
+      showPassword: false,
+      showConfirmPassword: false
     }
   },
   methods: {
@@ -101,6 +115,8 @@ export default {
         this.usernameError = 'Please enter a username.'
       else if (this.username.length < 4)
         this.usernameError = 'Username must contain at least 4 characters.'
+      else if (this.username.length > 20)
+        this.usernameError = 'The maximum length for a username is 20 characters.'
       else
         this.usernameError = ''
     },
@@ -119,6 +135,12 @@ export default {
         this.confirmPasswordError = 'Passwords do not match.'
       else
         this.confirmPasswordError = ''
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword
+    },
+    toggleConfirmPasswordVisibility() {
+      this.showConfirmPassword = !this.showConfirmPassword
     },
     async handleSignup() {
       this.validateEmail()
@@ -197,6 +219,11 @@ h1 {
   flex-direction: column;
 }
 
+label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
 input {
   width: 100%;
   padding: 10px;
@@ -204,13 +231,32 @@ input {
   border: 1px solid #ccc;
   background: #181818;
   color: #ffffff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .error-message {
   color: #ff0000;
   font-size: 0.85rem;
-  margin-top: 5px;
+  margin-top: -5px;
+}
+
+.password-group {
+  position: relative;
+}
+
+.toggle-password-icon {
+  position: absolute;
+  right: -5px;
+  top: 19%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ccc;
+  transition: all 0.3s;
+}
+
+.toggle-password-icon:hover {
+  color: #fff;
+  transform: scale(1.01);
 }
 
 .remember-me-area {
