@@ -21,3 +21,4 @@ yarn-error.log
 /blob-report/
 /playwright/.cache/
 /test-examples/
+server-backend/src/data/users.db
