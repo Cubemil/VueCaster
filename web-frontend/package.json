@@ -24,6 +24,7 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "http-server": "^14.1.1",
+    "monocart-coverage-reports": "^2.11.4",
     "sass": "^1.80.6"
   }
 }

@@ -22,6 +22,14 @@ module.exports = defineConfig({
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  
+  // TODO resolve fetches respective function in testServerControl.js
+  // globalSetup: require.resolve('./testServerControl.js'),
+  // globalTeardown: require.resolve('./testServerControl.js'),
+  // OR
+  globalSetup: 'global.setup.ts',
+  globalTeardown: 'global.teardown.ts',
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
