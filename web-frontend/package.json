@@ -19,8 +19,11 @@
     "web-frontend": "file:"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.1",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "http-server": "^14.1.1",
     "sass": "^1.80.6"
   }
 }
