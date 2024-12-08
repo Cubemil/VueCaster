@@ -66,7 +66,13 @@ export default {
       userStore: useUserStore(),
       profileDetails: null,
       profilePictureUrl: "https://via.placeholder.com/150?text=User" || this.profileDetails.profilePictureUrl,
-      showSettings: false
+      showSettings: false,
+      username: '',
+      confirmUsername: '',
+      password: '',
+      confirmPassword: '',
+      email: '',
+      confirmEmail: ''
     }
   },
   mounted() {
@@ -98,6 +104,138 @@ export default {
     logout() {
       this.userStore.logout()
       this.$router.push('/login')
+    },
+    async changeUsername() {
+      if (!this.username || !this.confirmUsername) {
+        alert("Both username fields are required.")
+        return
+      }
+
+      if (this.username !== this.confirmUsername) {
+        alert("Usernames do not match.")
+        return
+      }
+
+      try {
+        const response = await fetch(getApiUrl('/user/update-username'), {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.userStore.token}`
+          },
+          body: JSON.stringify({ username: this.username })
+        })
+
+        if (!response.ok) throw new Error('Failed to update username.')
+
+        const result = await response.json()
+        this.userStore.username = this.username
+        alert(result.message || 'Username updated successfully.')
+      } catch (error) {
+        console.error('Error updating username:', error)
+        alert('Error updating username. Please try again.')
+      }
+    },
+    async changePassword() {
+      if (!this.password || !this.confirmPassword) {
+        alert("Both password fields are required.")
+        return
+      }
+
+      if (this.password !== this.confirmPassword) {
+        alert("Passwords do not match.")
+        return
+      }
+
+      if (this.password.length < 6) {
+        alert("Password must be at least 6 characters long.")
+        return
+      }
+
+      try {
+        const response = await fetch(getApiUrl('/user/update-password'), {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.userStore.token}`
+          },
+          body: JSON.stringify({ password: this.password })
+        })
+
+        if (!response.ok) throw new Error('Failed to update password.')
+
+        const result = await response.json()
+        alert(result.message || 'Password updated successfully.')
+      } catch (error) {
+        console.error('Error updating password:', error)
+        alert('Error updating password. Please try again.')
+      }
+    },
+    async changeEmail() {
+      if (!this.email || !this.confirmEmail) {
+        alert("Both email fields are required.")
+        return
+      }
+
+      if (this.email !== this.confirmEmail) {
+        alert("Emails do not match.")
+        return
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(this.email)) {
+        alert("Please enter a valid email address.")
+        return
+      }
+
+      try {
+        const response = await fetch(getApiUrl('/user/update-email'), {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.userStore.token}`
+          },
+          body: JSON.stringify({ email: this.email })
+        })
+
+        if (!response.ok) throw new Error('Failed to update email.')
+
+        const result = await response.json()
+        this.userStore.email = this.email
+        alert(result.message || 'Email updated successfully.')
+      } catch (error) {
+        console.error('Error updating email:', error)
+        alert('Error updating email. Please try again.')
+      }
+    },
+    async uploadProfilePicture() {
+      const fileInput = document.getElementById('profile-picture-input')
+      if (!fileInput || !fileInput.files[0]) {
+        alert("Please select a profile picture to upload.")
+        return
+      }
+
+      const formData = new FormData()
+      formData.append('profilePicture', fileInput.files[0])
+
+      try {
+        const response = await fetch(getApiUrl('/user/update-profile-picture'), {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${this.userStore.token}`
+          },
+          body: formData
+        })
+
+        if (!response.ok) throw new Error('Failed to upload profile picture.')
+
+        const result = await response.json()
+        this.profilePictureUrl = result.profilePictureUrl // Update local profile picture
+        alert(result.message || 'Profile picture updated successfully.')
+      } catch (error) {
+        console.error('Error uploading profile picture:', error)
+        alert('Error uploading profile picture. Please try again.')
+      }
     }
   }
 }
