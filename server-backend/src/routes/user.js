@@ -7,7 +7,7 @@ const router = express.Router();
 
 const userController = require('../controllers/user');
 
-/************************ HTTP ROUTE HANDLERS ************************/
+/************************ HTTP USER ROUTE HANDLERS ************************/
 
 // public router: no auth required
 router.post('/signup', userController.signup);
@@ -17,7 +17,7 @@ router.get('/:userId/profile', userController.profile);
 // protected router: auth required
 router.put('/update', userController.authenticate, userController.updateUser);
 router.delete('/delete', userController.authenticate, userController.deleteUser);
-router.get('/profile', userController.authenticate, userController.ownerProfile);
+router.get('/dashboard', userController.authenticate, userController.dashboard);
 
 // testing token validation
 router.get('/validate-token', userController.authenticate, userController.validateToken);

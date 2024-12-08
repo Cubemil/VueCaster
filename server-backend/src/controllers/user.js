@@ -110,8 +110,8 @@ const profile = async (req, res) => {
 
 /********************* Authenticated User Routes **********************/
 
-// GET /user/profile
-const ownerProfile = async (req, res) => {
+// GET /user/dashboard
+const dashboard = async (req, res) => {
   const { userId } = req.user.userId;
 
   try {
@@ -125,7 +125,7 @@ const ownerProfile = async (req, res) => {
 
     res.status(200).json({ user });
   } catch (error) {
-    res.status(400).json({ message: 'Error fetching user profile', error: error.message });
+    res.status(400).json({ message: 'Error fetching user dashboard', error: error.message });
   }
 };
 
@@ -184,7 +184,7 @@ module.exports = {
   signup,
   login,
   profile,
-  ownerProfile,
+  dashboard,
   updateUser,
   deleteUser,
   authenticate,

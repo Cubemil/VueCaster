@@ -78,9 +78,26 @@ module.exports = defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: process.env.CI ? 'npm run preview' : 'npm run build',
+    // port: process.env.PORT || 8080,
+    url: 'http://localhost:8080',
+    reuseExistingServer: !process.env.CI || false,
+  }
 });
+
+export default defineConfig({
+  reporter: [
+    ['list'],
+    ['monocart-coverage-reports', {
+      output: './coverage-reports',
+      include: ['src/**/*.js'],
+      exclude: ['node_modules']
+    }]
+  ],
+  use: {
+    headless: true,
+    video: 'on',
+    trace: 'on-first-retry'
+  }
+})
