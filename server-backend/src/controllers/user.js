@@ -129,10 +129,30 @@ const dashboard = async (req, res) => {
   }
 };
 
-// PUT /user/:userId/update
-const updateUser = async (req, res) => {
-  const { userId } = req.params;
-  const { username, email, password } = req.body;
+// PUT /user/change-username
+const changeUsername = async (req, res) => {
+  const { userId } = req.user.userId;
+  const { username } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (username) user.username = username;
+    
+    await user.save();
+    res.status(200).json({ message: 'Username updated successfully', user });
+  } catch (error) {
+    res.status(400).json({ message: 'Error updating username', error: error.message });
+  }
+}
+
+// PUT /user/change-password
+const changePassword = async (req, res) => {
+  const { userId } = req.user.userId;
+  const { password } = req.body;
 
   try {
     const user = await User.findByPk(userId);
@@ -148,6 +168,46 @@ const updateUser = async (req, res) => {
     res.status(200).json({ message: 'User updated successfully', user });
   } catch (error) {
     res.status(400).json({ message: 'Error updating user', error: error.message });
+  }
+};
+
+// PUT /user/change-email
+const changeEmail = async (req, res) => {
+  const { userId } = req.user.userId;
+  const { email } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (email) user.email = email;
+    
+    await user.save();
+    res.status(200).json({ message: 'Email updated successfully', user });
+  } catch (error) {
+    res.status(400).json({ message: 'Error updating email', error: error.message });
+  }
+};
+
+// PUT /user/change-profile-picture
+const changeProfilePicture = async (req, res) => {
+  const { userId } = req.user.userId;
+  const { profilePictureUrl } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (profilePictureUrl) user.profilePictureUrl = profilePictureUrl;
+    
+    await user.save();
+    res.status(200).json({ message: 'Profile picture updated successfully', user });
+  } catch (error) {
+    res.status(400).json({ message: 'Error updating profile picture', error: error.message });
   }
 };
 
@@ -185,7 +245,10 @@ module.exports = {
   login,
   profile,
   dashboard,
-  updateUser,
+  changeUsername,
+  changePassword,
+  changeEmail,
+  changeProfilePicture,
   deleteUser,
   authenticate,
   validateToken

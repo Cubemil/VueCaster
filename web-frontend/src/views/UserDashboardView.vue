@@ -11,7 +11,7 @@
         >
       </div>
       <div id="liked-podcast-container">
-        <h3 id="liked-podcasts-title">Liked Podcasts from {{ userStore.username }}</h3>
+        <h2 id="liked-podcasts-title">Liked Podcasts from {{ userStore.username }}</h2>
         <LikedPodcastsList/>
       </div>  
     </div>
@@ -19,26 +19,51 @@
     <div v-if="showSettings" id="settings-area">
       <h2>Profile Settings</h2>
       <div id="profile-settings-container">
-        <h3>Change Profile Picture</h3>
-        <input type="file" id="profile-picture-input" accept="image/*">
-        <button id="upload-profile-picture-btn">Upload</button>
+        <div class="input-group">
+          <h2>Change Profile Picture</h2>
+          <input type="file" id="profile-picture-input" accept="image/*">
+          <p v-if="profilePictureError" class="error-message">{{ profilePictureError }}</p>
+        </div>  
+        <button id="upload-profile-picture-btn" @click="changeProfilePicture">Change</button>
 
-        <h3>Change username</h3>
-        <input type="text" id="username-input" placeholder="New Username">
-        <input type="text" id="confirm-username-input" placeholder="Confirm New Username">
-        <button id="change-username-btn">Change</button>
+        <h2>Change username</h2>
+        <div class="input-group">
+          <input type="text" v-model="username" id="username-input" placeholder="New Username">
+          <input type="text" v-model="confirmUsername" id="confirm-username-input" placeholder="Confirm New Username">
+          <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
+        </div>
+        <button id="change-username-btn" @click="changeUsername">Change</button>
 
-        <h3>Change password</h3>
-        <input type="password" id="password-input" placeholder="New Password">
-        <input type="password" id="confirm-password-input" placeholder="Confirm New Password">
-        <button id="change-password-btn">Change</button>
+        <h2>Change password</h2>
+        <div class="input-group">
+          <input type="password" v-model="oldPassword" id="old-password-input" placeholder="Old Password">
+          <input type="password" v-model="password" id="password-input" placeholder="New Password">
+          <input type="password" v-model="confirmPassword" id="confirm-password-input" placeholder="Confirm New Password">
+          <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
+        </div>
+        <button id="change-password-btn" @click="changePassword">Change</button>
 
-        <h3>Change email</h3>
-        <input type="text" id="email-input" placeholder="New Email">
-        <input type="text" id="confirm-email-input" placeholder="Confirm New Email">
+        <h2>Change email</h2>
+        <div class="input-group">
+          <input type="text" v-model="email" id="email-input" placeholder="New Email">
+          <input type="text" v-model="confirmEmail" id="confirm-email-input" placeholder="Confirm New Email">
+          <p v-if="emailError" class="error-message">{{ emailError }}</p>
+        </div>
         <button id="change-email-btn">Change</button>
 
-        <h3>Delete Account</h3>
+        <h2>Delete Account</h2>
+        <div class="input-group">
+          <p>This action is irreversible. Are you sure you want to delete your account?</p>
+          <p>If so, type "Delete Account"</p>
+          <input type="text" v-model="deleteAccountInput" id="delete-account-input" placeholder="...">
+          <p v-if="deleteAccountError" class="error-message">{{ deleteAccountError }}</p>
+        </div>
+        <div class="input-group">
+          <label>
+            <input type="checkbox" v-model="confirmDeleteAccount" id="confirm-delete-account-checkbox">
+            I understand that this action is irreversible.
+          </label>
+        </div>        
         <button id="delete-account-btn">Delete Account</button>
 
       </div>
@@ -66,13 +91,22 @@ export default {
       userStore: useUserStore(),
       profileDetails: null,
       profilePictureUrl: "https://via.placeholder.com/150?text=User" || this.profileDetails.profilePictureUrl,
+      profilePictureError: '',
       showSettings: false,
       username: '',
       confirmUsername: '',
+      usernameError: '',
+      oldPassword: '',
       password: '',
       confirmPassword: '',
+      passwordError: '',
       email: '',
-      confirmEmail: ''
+      confirmEmail: '',
+      emailError: '',
+      deleteAccountInput: '',
+      confirmDeleteAccount: false,
+      deleteAccountError: '',
+      resultMessage: ''
     }
   },
   mounted() {
@@ -107,89 +141,74 @@ export default {
     },
     async changeUsername() {
       if (!this.username || !this.confirmUsername) {
-        alert("Both username fields are required.")
+        this.usernameError = "Both username fields are required."
         return
       }
-
       if (this.username !== this.confirmUsername) {
-        alert("Usernames do not match.")
+        this.usernameError = "Usernames do not match."
         return
       }
+      this.usernameError = ''
 
       try {
-        const response = await fetch(getApiUrl('/user/update-username'), {
+        const response = await fetch(getApiUrl('/user/change-username'), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.userStore.token}`
+            Authorization: `Bearer ${this.userStore.getToken}`
           },
           body: JSON.stringify({ username: this.username })
         })
 
         if (!response.ok) throw new Error('Failed to update username.')
-
         const result = await response.json()
         this.userStore.username = this.username
-        alert(result.message || 'Username updated successfully.')
+        this.resultMessage = result.message || 'Username updated successfully.'
       } catch (error) {
-        console.error('Error updating username:', error)
-        alert('Error updating username. Please try again.')
+        this.usernameError = 'Error updating username. Please try again.'
       }
     },
     async changePassword() {
-      if (!this.password || !this.confirmPassword) {
-        alert("Both password fields are required.")
+      if (!this.oldPassword || !this.password || !this.confirmPassword) {
+        this.passwordError = "All password fields are required."
         return
       }
-
       if (this.password !== this.confirmPassword) {
-        alert("Passwords do not match.")
+        this.passwordError = "Passwords do not match."
         return
       }
-
-      if (this.password.length < 6) {
-        alert("Password must be at least 6 characters long.")
-        return
-      }
+      this.passwordError = ''
 
       try {
-        const response = await fetch(getApiUrl('/user/update-password'), {
+        const response = await fetch(getApiUrl('/user/change-password'), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${this.userStore.token}`
           },
-          body: JSON.stringify({ password: this.password })
+          body: JSON.stringify({ oldPassword: this.oldPassword, newPassword: this.password })
         })
 
         if (!response.ok) throw new Error('Failed to update password.')
-
         const result = await response.json()
-        alert(result.message || 'Password updated successfully.')
+        this.resultMessage = result.message || 'Password updated successfully.'
       } catch (error) {
-        console.error('Error updating password:', error)
-        alert('Error updating password. Please try again.')
+        this.passwordError = 'Error updating password. Please try again.'
       }
     },
     async changeEmail() {
       if (!this.email || !this.confirmEmail) {
-        alert("Both email fields are required.")
+        this.emailError = "Both email fields are required."
         return
       }
-
       if (this.email !== this.confirmEmail) {
-        alert("Emails do not match.")
+        this.emailError = "Emails do not match."
         return
       }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(this.email)) {
-        alert("Please enter a valid email address.")
-        return
-      }
+      this.emailError = ''
 
       try {
-        const response = await fetch(getApiUrl('/user/update-email'), {
+        const response = await fetch(getApiUrl('/user/change-email'), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -199,28 +218,28 @@ export default {
         })
 
         if (!response.ok) throw new Error('Failed to update email.')
-
         const result = await response.json()
-        this.userStore.email = this.email
-        alert(result.message || 'Email updated successfully.')
+        this.resultMessage = result.message || 'Email updated successfully.'
       } catch (error) {
-        console.error('Error updating email:', error)
-        alert('Error updating email. Please try again.')
+        this.emailError = 'Error updating email. Please try again.'
       }
     },
-    async uploadProfilePicture() {
+    async changeProfilePicture() {
       const fileInput = document.getElementById('profile-picture-input')
-      if (!fileInput || !fileInput.files[0]) {
-        alert("Please select a profile picture to upload.")
+      const file = fileInput.files[0]
+
+      if (!file) {
+        this.profilePictureError = 'Please select a file.'
         return
       }
+      this.profilePictureError = ''
 
       const formData = new FormData()
-      formData.append('profilePicture', fileInput.files[0])
+      formData.append('profilePicture', file)
 
       try {
-        const response = await fetch(getApiUrl('/user/update-profile-picture'), {
-          method: 'PUT',
+        const response = await fetch(getApiUrl('/user/change-picture'), {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${this.userStore.token}`
           },
@@ -228,13 +247,38 @@ export default {
         })
 
         if (!response.ok) throw new Error('Failed to upload profile picture.')
-
         const result = await response.json()
-        this.profilePictureUrl = result.profilePictureUrl // Update local profile picture
-        alert(result.message || 'Profile picture updated successfully.')
+        this.profilePictureUrl = result.profilePictureUrl
       } catch (error) {
-        console.error('Error uploading profile picture:', error)
-        alert('Error uploading profile picture. Please try again.')
+        this.profilePictureError = 'Error uploading profile picture. Please try again.'
+      }
+    },
+    async deleteAccount() {
+      if (!this.deleteAccountInput || this.deleteAccountInput !== 'Delete Account') {
+        this.deleteAccountError = 'Please type "Delete Account" to confirm.'
+        return
+      }
+      if (!this.confirmDeleteAccount) {
+        this.deleteAccountError = 'Please confirm that you understand this action is irreversible.'
+        return
+      }
+      this.deleteAccountError = ''
+
+      try {
+        const response = await fetch(getApiUrl('/user/delete-account'), {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${this.userStore.token}`
+          }
+        })
+
+        if (!response.ok) throw new Error('Failed to delete account.')
+        const result = await response.json()
+        this.resultMessage = result.message || 'Account deleted successfully.'
+        this.userStore.logout()
+        this.$router.push('/login')
+      } catch (error) {
+        this.deleteAccountError = 'Error deleting account. Please try again.'
       }
     }
   }
@@ -246,9 +290,9 @@ export default {
   display: flex;
   flex-direction: column;
   font-size: 100%;
-  width: 75%;
+  width: 100%;
+  overflow-y: auto;
   margin: 0 auto;
-  overflow: hidden;
   padding: 20px;
 }
 
@@ -305,6 +349,12 @@ button:hover {
 
 #settings-btn:hover {
   background: #d6d6d6;
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 0.85rem;
+  margin: 5px 0;
 }
 
 #delete-account-btn {
