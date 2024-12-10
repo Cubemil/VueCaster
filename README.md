@@ -10,6 +10,8 @@ Creating a [backend](/server-backend/) for our existing [frontend](/web-frontend
   - [x] Registration
   - [x] Login
   - [x] Authorization
+  - [] Change Password
+  - [] Delete
 - [ ] 80% Test Coverage
 - [ ] Dashboard
 - [ ] Logging
