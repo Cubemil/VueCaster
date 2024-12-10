@@ -127,6 +127,12 @@ export default {
         })
         const body = await response.json()
 
+        if (!response.ok) throw new Error('Failed to fetch user dashboard.')
+
+        if (!body.data) {
+          console.error('No user data found.')
+          return
+        }
         this.profileDetails = body.data
       } catch (err) {
         console.error('Error fetching podcast details:', err)

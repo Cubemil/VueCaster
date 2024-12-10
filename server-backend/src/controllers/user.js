@@ -72,15 +72,21 @@ const signup = async (req, res) => {
 
 // POST /user/login
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { emailOrUsername, password } = req.body;
 
   try {
-    const user = await User.findOne({ where: { email } });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const isEmail = emailRegex.test(emailOrUsername)
 
+    const user = await User.findOne({
+      where: isEmail ? { email: emailOrUsername } : { username: emailOrUsername }
+    });
+
+    const loginVal = isEmail ? 'email' : 'username';
     if (!user || !await comparePassword(password, user.password)) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: `Invalid ${loginVal} or password` });
     }
-  
+
     const token = await generateToken(user);
 
     await user.save();
