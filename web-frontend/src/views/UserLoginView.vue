@@ -116,14 +116,10 @@ export default {
     
       this.isSubmitting = true
 
-      // checks for email regex
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      const isEmail = emailRegex.test(this.emailOrUsername)
-
-      // renames json key based on whether email or username is used
-      const loginData = isEmail
-        ? { email: this.emailOrUsername, password: this.password }
-        : { username: this.emailOrUsername, password: this.password }
+      const loginData = {
+        emailOrUsername: this.emailOrUsername,
+        password: this.password
+      }
 
       try {
         const response = await fetch(getApiUrl('/user/login'), {
