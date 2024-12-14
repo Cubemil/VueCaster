@@ -10,15 +10,15 @@ const coverageOptions: CoverageReportOptions = {
         "lcovonly"
     ],
 
-    // entryFilter: {
-    //     '**/node_modules/**': false,
-    //     '**/*.js': true
-    // },
+    entryFilter: {
+        '**/node_modules/**': false,
+        '**/*.js': true
+    },
 
-    // sourceFilter: {
-    //     '**/node_modules/**': false,
-    //     '**/*.js': true
-    // },
+    sourceFilter: {
+        '**/node_modules/**': false,
+        '**/*.js': true
+    },
 
     outputDir: './coverage-reports'
 }

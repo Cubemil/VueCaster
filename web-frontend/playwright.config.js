@@ -21,7 +21,15 @@ module.exports = defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: 'list',
+  // reporter: [
+  //   ['list'],
+  //   ['monocart-coverage-reports', {
+  //     output: './coverage-reports',
+  //     include: ['src/**/*.js'],
+  //     exclude: ['node_modules']
+  //   }]
+  // ],
   
   // TODO resolve fetches respective function in testServerControl.js
   // globalSetup: require.resolve('./testServerControl.js'),
@@ -79,25 +87,18 @@ module.exports = defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: process.env.CI ? 'npm run preview' : 'npm run build',
+    // command: process.env.CI ? 'npm run preview' : 'npm run build',
+    command: 'npm run preview',
     // port: process.env.PORT || 8080,
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI || false,
   }
 });
 
-export default defineConfig({
-  reporter: [
-    ['list'],
-    ['monocart-coverage-reports', {
-      output: './coverage-reports',
-      include: ['src/**/*.js'],
-      exclude: ['node_modules']
-    }]
-  ],
-  use: {
-    headless: true,
-    video: 'on',
-    trace: 'on-first-retry'
-  }
-})
+// export default defineConfig({
+//   use: {
+//     headless: true,
+//     video: 'on',
+//     trace: 'on-first-retry'
+//   }
+// })
