@@ -1,11 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
-/************************ DATABASE CONNECTION ************************/
-
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './src/data/users.db'
-});
+const { DataTypes } = require('sequelize');
+const sequelize = require('../data/connection');
 
 /************************ DEFINE USER MODEL ************************/
 
@@ -39,27 +33,9 @@ const User = sequelize.define('User', {
   },
   tokenExpiration: {
     type: DataTypes.DATE
-  },
-  roles: {
-    type: DataTypes.ENUM('user', 'admin'),
-    defaultValue: 'user'
   }
 });
 
-/************************ DATABASE INITIALIZATION ************************/
+/************************ EXPORT USER MODEL ************************/
 
-const initializeDatabase = async () => {
-  try {
-    await sequelize.sync({ alter: true }); // adjusts tables to match models
-  } catch (error) {
-    console.error('Error initializing database:', error);
-  }
-};
-
-/************************ EXPORT MODULES ************************/
-
-module.exports = {
-  User,
-  initializeDatabase,
-  sequelize
-};
+module.exports = User;

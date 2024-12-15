@@ -24,7 +24,6 @@ const generateToken = async (data) => {
     userId: data.userId,
     username: data.username,
     email: data.email,
-    roles: data.roles
   }
   return jwt.sign({ user }, secretKey, { expiresIn: '1h' }); 
 };
@@ -35,13 +34,23 @@ const generateToken = async (data) => {
 const authenticate = async (req, res, next) => {
   try {
     // get token from header
-    const token = req.header('Authorization').replace('Bearer ', '');
+    const authHeader = req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send({ error: 'Authorization header missing or malformed' });
+    }
+    const token = authHeader.replace('Bearer ', '');
 
     // decoded from token and put as request body
     const decoded = jwt.verify(token, secretKey);
-    req.user = decoded;
+    req.user = decoded.user;
 
-    // call actual request after
+    console.log("Auththenticate middleware called, data:");
+    console.log("authHeader: ", authHeader);
+    console.log("req.body: ", req.body);
+    console.log("decoded: ", decoded);
+    console.log("req.user: ", req.user);
+
+    // call actual request handler after
     next();
   } catch (error) {
     res.status(401).send({ error: 'Not authorized to access this resource' }); 
@@ -52,7 +61,7 @@ const authenticate = async (req, res, next) => {
 
 // POST /user/signup
 const signup = async (req, res) => {
-  const { username, email, password, roles } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     const hashedPassword = await hashPassword(password);
@@ -62,7 +71,6 @@ const signup = async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      roles
     });
     res.status(201).json({ message: 'User created', user: newUser });
   } catch (error) {
@@ -157,8 +165,8 @@ const changeUsername = async (req, res) => {
 
 // PUT /user/change-password
 const changePassword = async (req, res) => {
-  const { userId } = req.user.userId;
-  const { password } = req.body;
+  const { userId } = req.user;
+  const { password, newPassword } = req.body;
 
   try {
     const user = await User.findByPk(userId);
@@ -166,10 +174,12 @@ const changePassword = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (username) user.username = username;
-    if (email) user.email = email;
-    if (password) user.password = await hashPassword(password);
+    const passwordMatch = await comparePassword(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Current Password is not correct' });
+    }
     
+    user.password = await hashPassword(newPassword);
     await user.save();
     res.status(200).json({ message: 'User updated successfully', user });
   } catch (error) {

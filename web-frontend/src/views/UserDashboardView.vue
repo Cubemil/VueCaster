@@ -36,7 +36,7 @@
 
         <h2>Change password</h2>
         <div class="input-group">
-          <input type="password" v-model="oldPassword" id="old-password-input" placeholder="Old Password">
+          <input type="password" v-model="currentPassword" id="current-password-input" placeholder="Current Password">
           <input type="password" v-model="password" id="password-input" placeholder="New Password">
           <input type="password" v-model="confirmPassword" id="confirm-password-input" placeholder="Confirm New Password">
           <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
@@ -96,7 +96,7 @@ export default {
       username: '',
       confirmUsername: '',
       usernameError: '',
-      oldPassword: '',
+      currentPassword: '',
       password: '',
       confirmPassword: '',
       passwordError: '',
@@ -175,7 +175,7 @@ export default {
       }
     },
     async changePassword() {
-      if (!this.oldPassword || !this.password || !this.confirmPassword) {
+      if (!this.currentPassword || !this.password || !this.confirmPassword) {
         this.passwordError = "All password fields are required."
         return
       }
@@ -186,13 +186,19 @@ export default {
       this.passwordError = ''
 
       try {
-        const response = await fetch(getApiUrl('/user/change-password'), {
+        const sendBody = {
+          password: this.currentPassword,
+          newPassword: this.password
+        }
+
+        console.log(sendBody)
+
+        const response = await authFetch(getApiUrl('/user/change-password'), {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.userStore.token}`
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ oldPassword: this.oldPassword, newPassword: this.password })
+          body: JSON.stringify(sendBody)
         })
 
         if (!response.ok) throw new Error('Failed to update password.')
