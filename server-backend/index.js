@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-const { initializeDatabase } = require('./src/models/index.js');
+const { initializeDatabase } = require('./src/models/initializeUserDb');
 const userRouter = require('./src/routes/user');
 
 const app = express();
@@ -33,3 +33,4 @@ const PORT = process.env.SERVER_PORT || 5050;
     console.error('Failed to initialize database or server:', error);
   }
 })();
+

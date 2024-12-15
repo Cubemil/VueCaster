@@ -1,78 +1,128 @@
 <template>
   <div id="user-dashboard-view-container">
-    
+    <!-- Profile Overview Section -->
     <div v-if="!showSettings" id="profile-area">
       <h2>Profile of {{ userStore.username }}</h2>
       <div id="profile-picture-container">
         <img
           :src="profilePictureUrl"
-          alt="Profile Picture" 
+          alt="Profile Picture"
           id="profile-picture"
-        >
+        />
       </div>
       <div id="liked-podcast-container">
         <h2 id="liked-podcasts-title">Liked Podcasts from {{ userStore.username }}</h2>
-        <LikedPodcastsList/>
-      </div>  
-    </div>
-
-    <div v-if="showSettings" id="settings-area">
-      <h2>Profile Settings</h2>
-      <div id="profile-settings-container">
-        <div class="input-group">
-          <h2>Change Profile Picture</h2>
-          <input type="file" id="profile-picture-input" accept="image/*">
-          <p v-if="profilePictureError" class="error-message">{{ profilePictureError }}</p>
-        </div>  
-        <button id="upload-profile-picture-btn" @click="changeProfilePicture">Change</button>
-
-        <h2>Change username</h2>
-        <div class="input-group">
-          <input type="text" v-model="username" id="username-input" placeholder="New Username">
-          <input type="text" v-model="confirmUsername" id="confirm-username-input" placeholder="Confirm New Username">
-          <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
-        </div>
-        <button id="change-username-btn" @click="changeUsername">Change</button>
-
-        <h2>Change password</h2>
-        <div class="input-group">
-          <input type="password" v-model="currentPassword" id="current-password-input" placeholder="Current Password">
-          <input type="password" v-model="password" id="password-input" placeholder="New Password">
-          <input type="password" v-model="confirmPassword" id="confirm-password-input" placeholder="Confirm New Password">
-          <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
-        </div>
-        <button id="change-password-btn" @click="changePassword">Change</button>
-
-        <h2>Change email</h2>
-        <div class="input-group">
-          <input type="text" v-model="email" id="email-input" placeholder="New Email">
-          <input type="text" v-model="confirmEmail" id="confirm-email-input" placeholder="Confirm New Email">
-          <p v-if="emailError" class="error-message">{{ emailError }}</p>
-        </div>
-        <button id="change-email-btn">Change</button>
-
-        <h2>Delete Account</h2>
-        <div class="input-group">
-          <p>This action is irreversible. Are you sure you want to delete your account?</p>
-          <p>If so, type "Delete Account"</p>
-          <input type="text" v-model="deleteAccountInput" id="delete-account-input" placeholder="...">
-          <p v-if="deleteAccountError" class="error-message">{{ deleteAccountError }}</p>
-        </div>
-        <div class="input-group">
-          <label>
-            <input type="checkbox" v-model="confirmDeleteAccount" id="confirm-delete-account-checkbox">
-            I understand that this action is irreversible.
-          </label>
-        </div>        
-        <button id="delete-account-btn">Delete Account</button>
-
+        <LikedPodcastsList />
       </div>
     </div>
 
+    <!-- Profile Settings Section -->
+    <div v-if="showSettings" id="settings-container">
+      <h2>Profile Settings</h2>
+      
+      <div id="settings-layout">
+        <div id="profile-picture-section">
+          <div id="profile-picture-container">
+            <img
+              :src="profilePictureUrl"
+              alt="Profile Picture"
+              id="profile-picture-large"
+            />
+          </div>
+          <div id="change-profile-picture">
+            <h3>Change Profile Picture</h3>
+            <div class="input-group">
+              <input type="file" id="profile-picture-input" accept="image/*" />
+              <p v-if="profilePictureError" class="error-message">{{ profilePictureError }}</p>
+            </div>
+            <button @click="changeProfilePicture">Change</button>
+          </div>
+        </div>
+
+        <div id="account-settings-section">
+          <h3>Change Account Information</h3>
+          <div id="settings-actions">
+            <div>
+              <button @click="toggleSetting('username')">Change Username</button>
+              <transition name="slide">
+                <div v-if="currentSetting === 'username'" class="settings-area">
+                  <h4>Change Username</h4>
+                  <div class="input-group">
+                    <input type="text" v-model="username" placeholder="New Username" />
+                    <input type="password" v-model="currentPasswordForUsername" placeholder="Current Password" />
+                    <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
+                  </div>
+                  <button @click="changeUsername">Change</button>
+                  <button class="cancel-btn" @click="closeSetting">Cancel</button>
+                </div>
+              </transition>
+            </div>
+
+            <div>
+              <button @click="toggleSetting('password')">Change Password</button>
+              <transition name="slide">
+                <div v-if="currentSetting === 'password'" class="settings-area">
+                  <h4>Change Password</h4>
+                  <div class="input-group">
+                    <input type="password" v-model="password" placeholder="New Password" />
+                    <input type="password" v-model="confirmPassword" placeholder="Confirm New Password" />
+                    <input type="password" v-model="currentPasswordForPassword" placeholder="Current Password" />
+                    <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
+                  </div>
+                  <button @click="changePassword">Change</button>
+                  <button class="cancel-btn" @click="closeSetting">Cancel</button>
+                </div>
+              </transition>
+            </div>
+
+            <div>
+              <button @click="toggleSetting('email')">Change Email</button>
+              <transition name="slide">
+                <div v-if="currentSetting === 'email'" class="settings-area">
+                  <h4>Change Email</h4>
+                  <div class="input-group">
+                    <input type="email" v-model="email" placeholder="New Email" />
+                    <input type="email" v-model="confirmEmail" placeholder="Confirm New Email" />
+                    <input type="password" v-model="currentPasswordForEmail" placeholder="Current Password" />
+                    <p v-if="emailError" class="error-message">{{ emailError }}</p>
+                  </div>
+                  <button @click="changeEmail">Change</button>
+                  <button class="cancel-btn" @click="closeSetting">Cancel</button>
+                </div>
+              </transition>
+            </div>
+          </div>
+
+          <h3>Account Deletion</h3>
+          <div>
+            <button class="delete-btn" @click="toggleSetting('deleteAccount')">Delete Account</button>
+            <transition name="slide">
+              <div v-if="currentSetting === 'deleteAccount'" class="settings-area">
+                <h4>Delete Account</h4>
+                <div class="input-group">
+                  <p>This action is irreversible. Are you sure you want to delete your account?</p>
+                  <p>If so, type "Delete Account"</p>
+                  <input type="text" v-model="deleteAccountInput" placeholder="Type here..." />
+                  <p v-if="deleteAccountError" class="error-message">{{ deleteAccountError }}</p>
+                  <label>
+                    <input type="checkbox" v-model="confirmDeleteAccount" />
+                    I understand that this action is irreversible.
+                  </label>
+                </div>
+                <button class="delete-btn" @click="deleteAccount">Delete Account</button>
+                <button class="cancel-btn" @click="closeSetting">Cancel</button>
+              </div>
+            </transition>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons Section -->
     <div id="actions-area">
-      <button v-if="!showSettings" id="settings-btn" @click="toggleProfileSettings">Profile Settings</button>
-      <button v-if="showSettings" id="settings-btn" @click="toggleProfileSettings">Back to Profile</button>
-      <button id="logout-btn" @click="logout">Log Out</button>
+      <button v-if="!showSettings" class="cancel-btn" @click="toggleSettings">Profile Settings</button>
+      <button v-if="showSettings" class="cancel-btn" @click="toggleSettings">Back to Profile</button>
+      <button @click="logout">Log Out</button>
     </div>
   </div>
 </template>
@@ -92,21 +142,23 @@ export default {
       profileDetails: null,
       profilePictureUrl: "https://via.placeholder.com/150?text=User" || this.profileDetails.profilePictureUrl,
       profilePictureError: '',
-      showSettings: false,
+      currentPasswordForUsername: '',
       username: '',
-      confirmUsername: '',
       usernameError: '',
-      currentPassword: '',
+      currentPasswordForPassword: '',
       password: '',
       confirmPassword: '',
       passwordError: '',
+      currentPasswordForEmail: '',
       email: '',
       confirmEmail: '',
       emailError: '',
       deleteAccountInput: '',
       confirmDeleteAccount: false,
       deleteAccountError: '',
-      resultMessage: ''
+      resultMessage: '',
+      showSettings: true,
+      currentSetting: ''
     }
   },
   mounted() {
@@ -120,50 +172,61 @@ export default {
   methods: {
     async getUserDashboard() {
       try {
-        const url = getApiUrl('/user/dashboard')
-
-        const response = await authFetch(url, {
-          method: 'GET'
+        const response = await authFetch(getApiUrl('/user/dashboard'), {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(sendBody)
         })
+
         const body = await response.json()
 
-        if (!response.ok) throw new Error('Failed to fetch user dashboard.')
+        if (!response.ok) throw new Error('Server response to sending dashboard failed.')
 
         if (!body.data) {
           console.error('No user data found.')
           return
         }
+
         this.profileDetails = body.data
       } catch (err) {
-        console.error('Error fetching podcast details:', err)
+        console.error('Error fetching user dashboard:', err)
       }
     },
-    toggleProfileSettings() {
+    toggleSettings() {
       this.showSettings = !this.showSettings
+      this.currentSetting = ''
+    },
+    toggleSetting(setting) {
+      this.currentSetting = this.currentSetting === setting ? '' : setting
+    },
+    closeSetting() {
+      this.currentSetting = ''
     },
     logout() {
       this.userStore.logout()
       this.$router.push('/login')
     },
     async changeUsername() {
-      if (!this.username || !this.confirmUsername) {
-        this.usernameError = "Both username fields are required."
-        return
-      }
-      if (this.username !== this.confirmUsername) {
-        this.usernameError = "Usernames do not match."
+      if (!this.currentPasswordForUsername || !this.username) {
+        this.usernameError = "Current password and new username are required."
         return
       }
       this.usernameError = ''
 
       try {
-        const response = await fetch(getApiUrl('/user/change-username'), {
+        const sendBody = {
+          password: this.currentPasswordForUsername,
+          newUsername: this.username
+        }
+
+        const response = await authFetch(getApiUrl('/user/change-username'), {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.userStore.getToken}`
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ username: this.username })
+          body: JSON.stringify(sendBody)
         })
 
         if (!response.ok) throw new Error('Failed to update username.')
@@ -171,11 +234,11 @@ export default {
         this.userStore.username = this.username
         this.resultMessage = result.message || 'Username updated successfully.'
       } catch (error) {
-        this.usernameError = 'Error updating username. Please try again.'
+        this.usernameError = error.message || 'Error updating username. Please try again.'
       }
     },
     async changePassword() {
-      if (!this.currentPassword || !this.password || !this.confirmPassword) {
+      if (!this.currentPasswordForPassword || !this.password || !this.confirmPassword) {
         this.passwordError = "All password fields are required."
         return
       }
@@ -187,11 +250,9 @@ export default {
 
       try {
         const sendBody = {
-          password: this.currentPassword,
+          currentPassword: this.currentPasswordForPassword,
           newPassword: this.password
         }
-
-        console.log(sendBody)
 
         const response = await authFetch(getApiUrl('/user/change-password'), {
           method: 'PUT',
@@ -209,8 +270,8 @@ export default {
       }
     },
     async changeEmail() {
-      if (!this.email || !this.confirmEmail) {
-        this.emailError = "Both email fields are required."
+      if (!this.currentPasswordForEmail || !this.email || !this.confirmEmail) {
+        this.emailError = "Current password and both email fields are required."
         return
       }
       if (this.email !== this.confirmEmail) {
@@ -220,13 +281,17 @@ export default {
       this.emailError = ''
 
       try {
+        const sendBody = {
+          currentPassword: this.currentPasswordForEmail,
+          newEmail: this.email
+        }
+
         const response = await fetch(getApiUrl('/user/change-email'), {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.userStore.token}`
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email: this.email })
+          body: JSON.stringify(sendBody)
         })
 
         if (!response.ok) throw new Error('Failed to update email.')
@@ -253,7 +318,7 @@ export default {
         const response = await fetch(getApiUrl('/user/change-picture'), {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.userStore.token}`
+            'Content-Type': 'application/json'
           },
           body: formData
         })
@@ -280,7 +345,7 @@ export default {
         const response = await fetch(getApiUrl('/user/delete-account'), {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${this.userStore.token}`
+            'Content-Type': 'application/json'
           }
         })
 
@@ -308,12 +373,13 @@ export default {
   padding: 20px;
 }
 
-#profile-area, #settings-area {
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
+#settings-container {
+  max-width: 600px;
+}
+
+.cancel-btn {
+  background: #333333;
+  color: #cccccc;
 }
 
 #profile-picture-container {
@@ -321,12 +387,54 @@ export default {
   display: flex;
 }
 
+#settings-actions {
+  margin-bottom: 20px;
+}
+
+.settings-area {
+  max-width: 100%;
+  margin: 20px auto;
+  padding-left: 13px;
+  padding-top: 1px;
+  padding-bottom: 15px;
+  background-color: #1b1b1b;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  background: #1db954;
+  color: #ffffff;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  margin: 10px 0;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background: #1ed760;
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  background: #ff0000;
+}
+
+.delete-btn:hover {
+  background: #db6262;
+}
+
 #profile-picture {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #1db954;
+  border: 3px solid #1db954;
+  margin: 0 auto 20px;
   transition: all 0.3s;
 }
 
@@ -344,7 +452,7 @@ button {
   cursor: pointer;
   text-align: center;
   font-size: 1rem;
-  margin: 10px 0;
+  margin: 10px 10px 0 0;
   transition: all 0.3s;
 }
 
@@ -377,21 +485,35 @@ button:hover {
   background: #e60000;
 }
 
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
 input[type="text"],
 input[type="password"],
-input[type="file"] {
+input[type="file"],
+input[type="email"] {
   display: block;
+  width: 50%;
   padding: 10px;
-  margin: 10px 0 20px 0;
+  margin: 15px 0;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="file"]:focus {
+input:focus {
   border-color: #1db954;
   outline: none;
   box-shadow: 0 0 4px rgba(29, 185, 84, 0.4);
@@ -400,6 +522,16 @@ input[type="file"]:focus {
 #actions-area {
   text-align: center;
   margin-top: 20px;
+}
+
+h3 {
+  margin-top: 20px;
+  font-size: 1.25rem;
+}
+
+h4 {
+  margin-top: 10px;
+  font-size: 1.1rem;
 }
 
 @media screen and (max-width: 768px) {

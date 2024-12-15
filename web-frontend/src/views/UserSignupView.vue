@@ -187,7 +187,7 @@ export default {
         console.log('Signup successful:', result)
         this.$router.push('/login')
       } catch (error) {
-        console.error('Error singing up:', error)
+        console.error('Error signing up:', error)
       } finally {
         this.isSubmitting = false
       }

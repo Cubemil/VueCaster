@@ -1,4 +1,4 @@
-const { User } = require('../models/user');
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -61,7 +61,14 @@ const authenticate = async (req, res, next) => {
 
 // POST /user/signup
 const signup = async (req, res) => {
+  console.log("Signup called, data:");
+  console.log("req.body: ", req.body);
+
   const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: 'Username, email, and password are required' });
+  }
 
   try {
     const hashedPassword = await hashPassword(password);
@@ -72,9 +79,19 @@ const signup = async (req, res) => {
       email,
       password: hashedPassword,
     });
-    res.status(201).json({ message: 'User created', user: newUser });
+
+    res.status(201).json({ 
+      message: 'User created successfully',
+      user: {
+        username: newUser.username,
+        email: newUser.email
+      }
+    });
   } catch (error) {
-    res.status(400).json({ message: 'Error creating user', error: error.message });
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ message: 'Username or email already exists' });
+    }
+    res.status(500).json({ message: 'Error creating user', error: error.message });
   }
 };
 
@@ -126,27 +143,23 @@ const profile = async (req, res) => {
 
 // GET /user/dashboard
 const dashboard = async (req, res) => {
-  const { userId } = req.user.userId;
+  const { userId } = req.user;
 
   try {
-    const user = await User.findByPk(userId, {
-      attributes: ['username']
-    });
-
+    const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    res.status(200).json({ user });
+    res.status(200).json({ message: 'User dashboard fetched successfully', user });
   } catch (error) {
-    res.status(400).json({ message: 'Error fetching user dashboard', error: error.message });
+    res.status(400).json({ message: 'Error sending user dashboard', error: error.message });
   }
 };
 
 // PUT /user/change-username
 const changeUsername = async (req, res) => {
-  const { userId } = req.user.userId;
-  const { username } = req.body;
+  const { userId } = req.user;
+  const { password, newUsername } = req.body;
 
   try {
     const user = await User.findByPk(userId);
@@ -154,7 +167,12 @@ const changeUsername = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (username) user.username = username;
+    const passwordMatch = await comparePassword(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Current Password is not correct' });
+    }
+
+    user.username = newUsername;
     
     await user.save();
     res.status(200).json({ message: 'Username updated successfully', user });
@@ -181,9 +199,9 @@ const changePassword = async (req, res) => {
     
     user.password = await hashPassword(newPassword);
     await user.save();
-    res.status(200).json({ message: 'User updated successfully', user });
+    res.status(200).json({ message: 'Password updated successfully', user });
   } catch (error) {
-    res.status(400).json({ message: 'Error updating user', error: error.message });
+    res.status(400).json({ message: 'Error updating password', error: error.message });
   }
 };
 
