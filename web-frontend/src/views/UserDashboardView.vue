@@ -157,7 +157,7 @@ export default {
       confirmDeleteAccount: false,
       deleteAccountError: '',
       resultMessage: '',
-      showSettings: true,
+      showSettings: false,
       currentSetting: ''
     }
   },
@@ -203,6 +203,22 @@ export default {
     },
     closeSetting() {
       this.currentSetting = ''
+      this.resultMessage = ''
+      this.profilePictureError = ''
+      this.username = ''
+      this.currentPasswordForUsername = ''
+      this.usernameError = ''
+      this.password = ''
+      this.confirmPassword = ''
+      this.currentPasswordForPassword = ''
+      this.passwordError = ''
+      this.email = ''
+      this.confirmEmail = ''
+      this.currentPasswordForEmail = ''   
+      this.emailError = ''
+      this.deleteAccountInput = ''
+      this.confirmDeleteAccount = false
+      this.deleteAccountError = ''
     },
     logout() {
       this.userStore.logout()

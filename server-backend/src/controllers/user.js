@@ -61,9 +61,6 @@ const authenticate = async (req, res, next) => {
 
 // POST /user/signup
 const signup = async (req, res) => {
-  console.log("Signup called, data:");
-  console.log("req.body: ", req.body);
-
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
