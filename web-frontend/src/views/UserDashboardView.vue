@@ -176,8 +176,7 @@ export default {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(sendBody)
+          }
         })
 
         const body = await response.json()
@@ -298,11 +297,11 @@ export default {
 
       try {
         const sendBody = {
-          currentPassword: this.currentPasswordForEmail,
+          password: this.currentPasswordForEmail,
           newEmail: this.email
         }
 
-        const response = await fetch(getApiUrl('/user/change-email'), {
+        const response = await authFetch(getApiUrl('/user/change-email'), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'

@@ -126,9 +126,8 @@ const profile = async (req, res) => {
     const user = await User.findByPk(userId, {
       attributes: ['username']
     });
-    if (!user) {
+    if (!user)
       return res.status(404).json({ message: 'User not found' });
-    }
 
     res.status(200).json({ user });
   } catch (error) {
@@ -144,9 +143,8 @@ const dashboard = async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    if (!user) {
+    if (!user)
       return res.status(404).json({ message: 'User not found' });
-    }
     res.status(200).json({ message: 'User dashboard fetched successfully', user });
   } catch (error) {
     res.status(400).json({ message: 'Error sending user dashboard', error: error.message });
@@ -160,14 +158,12 @@ const changeUsername = async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    if (!user) {
+    if (!user)
       return res.status(404).json({ message: 'User not found' });
-    }
 
     const passwordMatch = await comparePassword(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ message: 'Current Password is not correct' });
-    }
+    if (!passwordMatch)
+      return res.status(401).json({ message: 'Password is not correct' });
 
     user.username = newUsername;
     
@@ -185,14 +181,12 @@ const changePassword = async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    if (!user) {
+    if (!user)
       return res.status(404).json({ message: 'User not found' });
-    }
 
     const passwordMatch = await comparePassword(password, user.password);
-    if (!passwordMatch) {
+    if (!passwordMatch)
       return res.status(401).json({ message: 'Current Password is not correct' });
-    }
     
     user.password = await hashPassword(newPassword);
     await user.save();
@@ -204,16 +198,34 @@ const changePassword = async (req, res) => {
 
 // PUT /user/change-email
 const changeEmail = async (req, res) => {
-  const { userId } = req.user.userId;
-  const { email } = req.body;
+  const { userId } = req.user;
+  const { password, newEmail } = req.body;
+
+  console.log("changeEmail called, data:");
+  console.log("userId: ", userId);
+  console.log("password: ", password);
+  console.log("newEmail: ", newEmail);
+  
+  if (!newEmail)
+    return res.status(400).json({ message: 'Email is required' });
+
+  if (!password)
+    return res.status(400).json({ message: 'Password is required' });
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!newEmail.match(emailRegex))
+    return res.status(400).json({ message: 'Invalid email format' });
 
   try {
     const user = await User.findByPk(userId);
-    if (!user) {
+    if (!user)
       return res.status(404).json({ message: 'User not found' });
-    }
 
-    if (email) user.email = email;
+    const passwordMatch = await comparePassword(password, user.password);
+    if (!passwordMatch)
+      return res.status(401).json({ message: 'Password is not correct' });
+
+    user.email = newEmail;
     
     await user.save();
     res.status(200).json({ message: 'Email updated successfully', user });
