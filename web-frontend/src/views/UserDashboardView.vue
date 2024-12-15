@@ -103,6 +103,7 @@
                   <p>This action is irreversible. Are you sure you want to delete your account?</p>
                   <p>If so, type "Delete Account"</p>
                   <input type="text" v-model="deleteAccountInput" placeholder="Type here..." />
+                  <input type="password" v-model="currentPasswordForAccountDeletion" placeholder="Current Password" />
                   <p v-if="deleteAccountError" class="error-message">{{ deleteAccountError }}</p>
                   <label>
                     <input type="checkbox" v-model="confirmDeleteAccount" />
@@ -155,6 +156,7 @@ export default {
       emailError: '',
       deleteAccountInput: '',
       confirmDeleteAccount: false,
+      currentPasswordForAccountDeletion: '',
       deleteAccountError: '',
       resultMessage: '',
       showSettings: false,
@@ -216,7 +218,8 @@ export default {
       this.currentPasswordForEmail = ''   
       this.emailError = ''
       this.deleteAccountInput = ''
-      this.confirmDeleteAccount = false
+      this.confirmDeleteAccount = false,
+      this.currentPasswordForAccountDeletion = '',
       this.deleteAccountError = ''
     },
     logout() {
@@ -330,7 +333,7 @@ export default {
       formData.append('profilePicture', file)
 
       try {
-        const response = await fetch(getApiUrl('/user/change-picture'), {
+        const response = await authFetch(getApiUrl('/user/change-picture'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -357,11 +360,17 @@ export default {
       this.deleteAccountError = ''
 
       try {
-        const response = await fetch(getApiUrl('/user/delete-account'), {
+        const sendBody = {
+          password: this.currentPasswordForAccountDeletion,
+          confirmation: this.deleteAccountInput
+        }
+
+        const response = await authFetch(getApiUrl('/user/delete'), {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
-          }
+          },
+          body: JSON.stringify(sendBody)
         })
 
         if (!response.ok) throw new Error('Failed to delete account.')

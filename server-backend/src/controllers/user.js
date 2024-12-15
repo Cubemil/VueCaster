@@ -1,11 +1,14 @@
 const User = require('../models/user');
+const TokenBlacklist = require('../models/tokenBlacklist');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 /************************ ENVIRONMENT VARIABLES AND HELPER FUNCTIONS ************************/
 
-// fetch jwt secret key from env variables (note: not added to git)
-const secretKey = process.env.JWT_SECRET;
+// fetch jwt secret key and token exp. time from env variables (note: not added to git)
+const SECRET_KEY = process.env.JWT_SECRET;
+const TOKEN_EXPIRATION_HOURS = process.env.JWT_SECRET || 1;
+const TOKEN_EXPIRATION_MS = process.env.TOKEN_EXPIRATION_MS || 3600000;
 
 // hashes password
 const hashPassword = async (password) => {
@@ -25,7 +28,7 @@ const generateToken = async (data) => {
     username: data.username,
     email: data.email,
   }
-  return jwt.sign({ user }, secretKey, { expiresIn: '1h' }); 
+  return jwt.sign({ user }, SECRET_KEY, { expiresIn: `${TOKEN_EXPIRATION_HOURS}h` }); 
 };
 
 /************************ JWT AUTHENTICATION MIDDLEWARE ************************/
@@ -40,8 +43,12 @@ const authenticate = async (req, res, next) => {
     }
     const token = authHeader.replace('Bearer ', '');
 
+    const isTokenBlacklisted = await TokenBlacklist.findOne({ where: { token } });
+    if (isTokenBlacklisted)
+      return res.status(401).send({ error: 'Token has been invalidated' });
+
     // decoded from token and put as request body
-    const decoded = jwt.verify(token, secretKey);
+    const decoded = jwt.verify(token, SECRET_KEY);
     req.user = decoded.user;
 
     console.log("Auththenticate middleware called, data:");
@@ -256,16 +263,37 @@ const changeProfilePicture = async (req, res) => {
 
 // DELETE /user/:userId/delete
 const deleteUser = async (req, res) => {
-  const { userId } = req.params;
+  const { userId } = req.user;
+  const { password, confirmation } = req.body;
+
+  if (!password || !confirmation)
+    return res.status(400).json({ message: 'Password and confirmation are required' });
+
+  if (confirmation !== 'Delete Account')
+    return res.status(400).json({ message: 'Confirmation text does not match' });
 
   try {
     const user = await User.findByPk(userId);
-    if (!user) {
+    if (!user)
       return res.status(404).json({ message: 'User not found' });
+
+    const passwordMatch = await comparePassword(password, user.password);
+    if (!passwordMatch)
+      return res.status(401).json({ message: 'Password is not correct' });
+
+    const authHeader = req.header('Authorization');
+    const token = authHeader ? authHeader.replace('Bearer ', '') : null;
+    if (token) {
+      await TokenBlacklist.create({
+        token,
+        userId,
+        reason: 'User deleted account',
+        expiresAt: new Date(Date.now() + TOKEN_EXPIRATION_MS) // natural expiration
+      });
     }
 
     await user.destroy();
-    res.status(200).json({ message: 'User deleted successfully' });
+    res.status(200).json({ message: 'Account deleted successfully' });
   } catch (error) {
     res.status(400).json({ message: 'Error deleting user', error: error.message });
   }

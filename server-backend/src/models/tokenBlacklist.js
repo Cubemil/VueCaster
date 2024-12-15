@@ -28,6 +28,20 @@ const TokenBlacklist = sequelize.define('TokenBlacklist', {
   }
 });
 
+async function cleanUpExpiredTokens() {
+  try {
+    await TokenBlacklist.destroy({
+      where: {
+        expiresAt: {
+          [Op.lt]: new Date()
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error cleaning up expired tokens:', error);
+  }
+}
+
 /************************ EXPORT USER MODEL ************************/
 
 module.exports = TokenBlacklist;
