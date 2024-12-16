@@ -1,6 +1,5 @@
 const sequelize = require('../data/connection');
-const User = require('./user');
-const TokenBlacklist = require('./tokenBlacklist');
+const { User, TokenBlacklist, FailedLogins } = require('./index.js');
 
 /************************ DATABASE INITIALIZATION ************************/
 
@@ -16,8 +15,6 @@ const initializeDatabase = async () => {
 
 module.exports = {
   sequelize,
-  User,
-  TokenBlacklist,
   initializeDatabase
 };
 

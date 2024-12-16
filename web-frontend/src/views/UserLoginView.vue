@@ -130,12 +130,8 @@ export default {
           body: JSON.stringify(loginData)
         })
 
-        if (!response.ok) {
-          const errorText = response.status === 401 ? 'Invalid credentials.' : 'An error occurred.'
-          throw new Error(errorText)
-        }
-
         const result = await response.json()
+        console.log('Login response:', result)
         this.responseMessage = result.message
 
         if (result.token) {
@@ -145,11 +141,15 @@ export default {
           // reroute to home after successful login
           this.$router.push('/')
         } else {
-          this.responseMessage = 'Invalid credentials.'
+          this.responseMessage = result.message || 'Invalid credentials. Please try again.'
+          this.emailOrUsername = ''
+          this.password = ''
         }
       } catch (error) {
-        console.error('Error logging in:', error)
-        this.responseMessage = 'An error occurred while logging in. Please try again.'
+        console.error('Error logging in:', error.message)
+        this.responseMessage = error.message || 'An error occurred. Please try again.'
+        this.emailOrUsername = ''
+        this.password = ''
       } finally {
         this.isSubmitting = false
       }

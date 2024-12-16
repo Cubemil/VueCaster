@@ -33,6 +33,14 @@ const User = sequelize.define('User', {
   },
   tokenExpiration: {
     type: DataTypes.DATE
+  },
+  loginAttempts: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  lockedUntil: {
+    type: DataTypes.DATE,
+    allowNull: true
   }
 });
 
