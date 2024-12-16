@@ -11,27 +11,40 @@ const { defineConfig, devices } = require('@playwright/test');
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-  testDir: './test',
+  testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  // since we run on a local server, we can't run tests in parallel => set to 1
+  /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: 'list',
+  // reporter: [
+  //   ['list'],
+  //   ['monocart-coverage-reports', {
+  //     output: './coverage-reports',
+  //     include: ['src/**/*.js'],
+  //     exclude: ['node_modules']
+  //   }]
+  // ],
+  
+  // TODO resolve fetches respective function in testServerControl.js
+  // globalSetup: require.resolve('./testServerControl.js'),
+  // globalTeardown: require.resolve('./testServerControl.js'),
+  // OR
+  globalSetup: 'global.setup.ts',
+  globalTeardown: 'global.teardown.ts',
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
+    baseURL: 'http://localhost:8080/',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    /* coverageReport: {
-      reportsDirectory: './coverage-reports',
-    } */
   },
 
   /* Configure projects for major browsers */
@@ -41,15 +54,15 @@ module.exports = defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    //{
-    //  name: 'firefox',
-    //  use: { ...devices['Desktop Firefox'] },
-    //},
-    
-    //{
-    //  name: 'webkit',
-    //  use: { ...devices['Desktop Safari'] },
-    //},
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
+
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
@@ -73,9 +86,19 @@ module.exports = defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    // command: process.env.CI ? 'npm run preview' : 'npm run build',
+    command: 'npm run preview',
+    // port: process.env.PORT || 8080,
+    url: 'http://localhost:8080',
+    reuseExistingServer: !process.env.CI || false,
+  }
 });
+
+// export default defineConfig({
+//   use: {
+//     headless: true,
+//     video: 'on',
+//     trace: 'on-first-retry'
+//   }
+// })

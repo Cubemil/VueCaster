@@ -23,7 +23,7 @@ export default {
 			return useUserStore()
 		},
 		redirectPath() {
-			return this.userStore.username ? '/profile' : '/login'
+			return this.userStore.username ? '/dashboard' : '/login'
 		}
 	}
 }

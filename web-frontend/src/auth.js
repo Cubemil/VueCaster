@@ -23,5 +23,4 @@ export async function authenticate(token) {
     console.error("Error occured during authentication: " + error)
     store.logout()
   }
-
 }

@@ -107,7 +107,16 @@ export default {
 
       try {
         // retrieve categories from local storage
-        const categories = JSON.parse(localStorage.getItem('categories'))
+        const categoriesJSON = JSON.parse(localStorage.getItem('categories'))
+        if (!categoriesJSON) {
+          throw new Error('Categories not found in local storage')
+        }
+
+        const categories = JSON.parse(categoriesJSON)
+        if (!Array.isArray(categories)) {
+          throw new Error('Invalid categories data format')
+        }
+
         let category = null
 
         // find id that matches category name
@@ -124,7 +133,6 @@ export default {
         url.searchParams.append('category_id', categoryId)
 
         const response = await fetch(url)
-
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error(`Category not found. Status: ${response.status}`)
@@ -142,7 +150,6 @@ export default {
           image: podcast.layoutImageURL,
           url: podcast.url_fyyd,
         }))
-
         this.$emit('search-performed', podcasts)
       } catch (error) {
         console.error('Failed to fetch podcasts:', error.message)

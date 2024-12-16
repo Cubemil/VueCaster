@@ -1,6 +1,10 @@
+import { useUserStore } from "@/stores/user";
+
 /********** replaces fetch and adds authorization header + token to the request **********/
 export function authFetch(url, options = {}) {
-  const token = localStorage.getItem('token');
+  const userStore = useUserStore();
+  const token = userStore.getToken || localStorage.getItem('token') || sessionStorage.getItem('token');
+
   if (!token) throw new Error('No token found');
 
   options.headers = {

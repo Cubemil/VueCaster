@@ -16,6 +16,7 @@ export const useUserStore = defineStore("user", {
   getters: {
     getUsername: (state) => state.username,
     isLoggedIn: (state) => !!state.token,
+    getToken: (state) => state.token,
     getProfilePictureUrl: (state) => state.profilePictureUrl
   },
   actions: {

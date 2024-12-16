@@ -1,18 +1,16 @@
 {
+  "name": "webeng-app",
   "devDependencies": {
-    "@playwright/test": "^1.48.2",
     "concurrently": "^9.0.1",
-    "dotenv": "^16.4.5",
-    "http-server": "^14.1.1",
-    "monocart-coverage-reports": "^2.11.2"
+    "dotenv": "^16.4.5"
   },
   "scripts": {
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start:client": "npm --prefix web-frontend run serve",
-    "start:server": "npm --prefix server-backend run dev",
-    "test": "npx playwright test"
+    "start:server": "npm --prefix server-backend run dev"
   },
   "dependencies": {
-    "body-parser": "^1.20.3"
+    "body-parser": "^1.20.3",
+    "webeng-app": "file:"
   }
 }

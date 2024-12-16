@@ -4,7 +4,7 @@ import SearchView from '@/views/SearchView.vue';
 import PodcastView from '@/views/PodcastView.vue';
 import LikedPodcastsView from '@/views/LikedPodcastsView.vue';
 import SavedEpisodesView from '@/views/SavedEpisodesView.vue';
-import MyProfileView from './views/MyProfileView.vue';
+import UserDashboardView from './views/UserDashboardView.vue';
 import UserLoginView from './views/UserLoginView.vue';
 import UserSignupView from './views/UserSignupView.vue';
 
@@ -40,9 +40,9 @@ const routes = [
         component: SavedEpisodesView
     },
     {
-        path: '/profile',
-        name: 'MyProfileView',
-        component: MyProfileView
+        path: '/dashboard',
+        name: 'UserDashboardView',
+        component: UserDashboardView
     },
     {
         path: '/login',
@@ -65,15 +65,15 @@ const router = createRouter({
     routes
 });
 
-import { useUserStore } from './stores/user'
 // reroute to home if user is logged in and tries to log in / sign up
+import { useUserStore } from './stores/user'
 router.beforeEach(async (to, from, next) => {
     const store = useUserStore()
     if (to.name === "UserLoginView" && store.isLoggedIn)
         next("/")
     else if (to.name === "UserSignupView" && store.isLoggedIn)
         next("/")
-    else if (to.name === "MyProfileView" && !store.isLoggedIn)    
+    else if (to.name === "UserDashboardView" && !store.isLoggedIn)    
         next("/login")
     else
         next()
