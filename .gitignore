@@ -22,3 +22,4 @@ yarn-error.log
 /playwright/.cache/
 /test-examples/
 server-backend/src/data/users.db
+server-backend/src/data/users.db
