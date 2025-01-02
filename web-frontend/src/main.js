@@ -5,11 +5,13 @@ import router from './router'
 import { VueDraggableNext } from 'vue-draggable-next'
 
 const app = createApp(App)
-app.use(createPinia())
+const pinia = createPinia()
+
+app.use(pinia)
 app.use(router)
 app.component('draggable', VueDraggableNext) // registers a global component
-app.mount('#app')
 
+app.mount('#app')
 
 /*
 const appReady = async () => {

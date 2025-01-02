@@ -92,19 +92,9 @@ export default {
         // go back to first episode
         this.setCurrentEpisode(this.queue[0])
       }
-    },
-    async getCategories() {
-      try {
-        const response = await fetch('https://api.fyyd.de/0.2/categories')
-        const data = await response.json()
-        localStorage.setItem('categories', JSON.stringify(data.data))
-      } catch (error) {
-        console.error('Failed to fetch categories:', error.message)
-      }
     }
   },
   mounted() {
-    if (localStorage.getItem('categories') === null) this.getCategories()
     if (localStorage.getItem('likedPodcasts') === null) localStorage.setItem('likedPodcasts', JSON.stringify([]))
     if (localStorage.getItem('recentSearches') === null) localStorage.setItem('recentSearches', JSON.stringify([]))
   },

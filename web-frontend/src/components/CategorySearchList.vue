@@ -2,14 +2,14 @@
   <div id="categories-container">
     <div id="category-cards-container">
       <div
-          v-for="(category, index) in categories"
-          :key="index"
-          class="cards"
-          :style="{ background: category.color }"
-          @click="getPodcastsInCategory(category.name)"
+        v-for="(category, index) in categories"
+        :key="index"
+        class="cards"
+        :style="{ background: getCategoryColor(category.name) }"
+        @click="getPodcastsInCategory(category.name)"
       >
-        <i v-if="isLoading && loadingCategory === category.name" class="fas fa-spinner fa-spin"></i>
-        <h2 v-html="category.name"></h2>
+        <i v-if="loadingCategory === category.name" class="fas fa-spinner fa-spin"></i>
+        <h2>{{ category.name }}</h2>
       </div>
     </div>
     <div v-if="errorMessage" id="error-message">{{ errorMessage }}</div>
@@ -17,118 +17,40 @@
 </template>
 
 <script>
+import { useCategoriesStore } from '@/stores/categories'
+
 export default {
   data() {
     return {
-      errorMessage: null,
-      isLoading: false,
-      loadingCategory: null,
-      categories: [
-        {
-          name: 'Arts',
-          color: 'rgb(83, 122, 161)'
-        },
-        {
-          name: 'Business',
-          color: 'rgb(232, 17, 91)'
-        },
-        {
-          name: 'Comedy',
-          color: 'rgb(56, 102, 205)'
-        },
-        {
-          name: 'Education',
-          color: 'rgb(225, 51, 0)'
-        },
-        {
-          name: 'Fiction',
-          color: 'rgb(30, 50, 100)'
-        },
-        {
-          name: 'Government',
-          color: 'rgb(186, 93, 7)'
-        },
-        {
-          name: 'History',
-          color: 'rgb(0, 100, 80)'
-        },
-        {
-          name: 'Health & Fitness',
-          color: 'rgb(39, 133, 106)'
-        },
-        {
-          name: 'Kids & Family',
-          color: 'rgb(165, 103, 82)'
-        },
-        {
-          name: 'Leisure',
-          color: 'rgb(30, 50, 100)'
-        },
-        {
-          name: 'Music',
-          color: 'rgb(220, 20, 140)'
-        },
-        {
-          name: 'Religion & Spirituality',
-          color: 'rgb(96, 129, 8)'
-        },
-        {
-          name: 'Science',
-          color: 'rgb(13, 115, 236)'
-        },
-        {
-          name: 'Society & Culture',
-          color: 'rgb(220, 20, 140)'
-        },
-        {
-          name: 'Sports',
-          color: 'rgb(140, 25, 50)'
-        },
-        {
-          name: 'Technology',
-          color: 'rgb(141, 103, 171)'
-        },
-        {
-          name: 'True Crime',
-          color: 'rgb(225, 51, 0)'
-        },
-        {
-          name: 'TV & Film',
-          color: 'rgb(30, 50, 100)'
-        },
-      ]
+      loadingCategory: null
     }
+  },
+  computed: {
+    categories() {
+      const store = useCategoriesStore()
+      return store.categories
+    },
+    errorMessage() {
+      const store = useCategoriesStore()
+      return store.errorMessage
+    }
+  },
+  mounted() {
+    const store = useCategoriesStore()
+    store.fetchCategories()
   },
   methods: {
     async getPodcastsInCategory(categoryName) {
-      this.errorMessage = null
-      this.isLoading = true
-      this.loadingCategory = categoryName
-
+      const store = useCategoriesStore()
       try {
-        // retrieve categories from local storage
-        const categoriesJSON = JSON.parse(localStorage.getItem('categories'))
-        if (!categoriesJSON) {
-          throw new Error('Categories not found in local storage')
+        this.loadingCategory = categoryName
+        await store.fetchCategories() // categories are loaded before fetching podcasts
+
+        const categoryId = store.getCategoryIdByName(categoryName)
+        if (!categoryId) {
+          throw new Error(`Category not found by name: ${categoryName}`)
         }
 
-        const categories = JSON.parse(categoriesJSON)
-        if (!Array.isArray(categories)) {
-          throw new Error('Invalid categories data format')
-        }
-
-        let category = null
-
-        // find id that matches category name
-        for (let i = 0; i < categories.length; i++) {
-          if (categories[i].name.toLowerCase() === categoryName.toLowerCase()) {
-            category = categories[i]
-            break
-          }
-        }
-        if (!category) throw new Error('Category not found')
-
-        const categoryId = category.id
         const url = new URL('https://api.fyyd.de/0.2/category')
         url.searchParams.append('category_id', categoryId)
 
@@ -142,7 +64,6 @@ export default {
         }
 
         const body = await response.json()
-
         const podcasts = body.data.podcasts.map(podcast => ({
           id: podcast.id,
           title: podcast.title,
@@ -150,13 +71,35 @@ export default {
           image: podcast.layoutImageURL,
           url: podcast.url_fyyd,
         }))
+
         this.$emit('search-performed', podcasts)
       } catch (error) {
         console.error('Failed to fetch podcasts:', error.message)
-        this.errorMessage = error.message
       } finally {
-        this.isLoading = false
         this.loadingCategory = null
+      }
+    },
+    getCategoryColor(name) {
+      switch (name.toLowerCase()) {
+        case 'arts': return 'rgb(83, 122, 161)'
+        case 'business': return 'rgb(232, 17, 91)'
+        case 'comedy': return 'rgb(56, 102, 205)'
+        case 'education': return 'rgb(225, 51, 0)'
+        case 'fiction': return 'rgb(30, 50, 100)'
+        case 'government': return 'rgb(186, 93, 7)'
+        case 'history': return 'rgb(0, 100, 80)'
+        case 'health & fitness': return 'rgb(39, 133, 106)'
+        case 'kids & family': return 'rgb(165, 103, 82)'
+        case 'leisure': return 'rgb(30, 50, 100)'
+        case 'music': return 'rgb(220, 20, 140)'
+        case 'religion & spirituality': return 'rgb(96, 129, 8)'
+        case 'science': return 'rgb(13, 115, 236)'
+        case 'society & culture': return 'rgb(220, 20, 140)'
+        case 'sports': return 'rgb(140, 25, 50)'
+        case 'technology': return 'rgb(141, 103, 171)'
+        case 'true crime': return 'rgb(225, 51, 0)'
+        case 'tv & film': return 'rgb(30, 50, 100)'
+        default: return 'rgb(130, 130, 130)'
       }
     }
   }

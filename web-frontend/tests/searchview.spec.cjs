@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('test search view routing', async ({ page }) => {
+test('test route to search view', async ({ page }) => {
   await page.goto('/');
 
   await page.getByRole('link', { name: ' Search' }).click();
