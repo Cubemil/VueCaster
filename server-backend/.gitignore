@@ -11,6 +11,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+user_actions.log
+server_requests.log
+
 # Editor directories and files
 .idea
 .vscode
@@ -21,3 +24,5 @@ pnpm-debug.log*
 *.sw?
 
 *.db
+
+# log files
