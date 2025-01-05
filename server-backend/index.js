@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const { initializeDatabase } = require('./src/models/initializeUserDb');
 const userRouter = require('./src/routes/user');
-const { logRequest } = require('./src/middlewares/logRequest');
+const { logRequests } = require('./src/middlewares/logRequests');
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(logRequest);
+app.use(logRequests);
 
 /************ ROUTES ************/
 

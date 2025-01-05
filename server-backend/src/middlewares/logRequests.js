@@ -1,6 +1,6 @@
-const logger = require('../logger');
+const requestLogger = require('../logger');
 
-const logRequest = (req, res, next) => {
+const logRequests = (req, res, next) => {
   const start = Date.now();
 
   // listen for response to finish
@@ -9,7 +9,7 @@ const logRequest = (req, res, next) => {
     const { method, originalUrl } = req;
     const { statusCode } = res;
 
-    logger.info({
+    requestLogger.info({
       method,
       url: originalUrl,
       statusCode,
@@ -21,4 +21,4 @@ const logRequest = (req, res, next) => {
   next();
 }
 
-module.exports = { logRequest };
+module.exports = { logRequests };
