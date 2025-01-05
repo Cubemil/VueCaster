@@ -1,4 +1,4 @@
-const requestLogger = require('../logger');
+const requestLogger = require('../utils/logger');
 
 const logRequests = (req, res, next) => {
   const start = Date.now();
