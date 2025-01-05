@@ -1,7 +1,7 @@
 const { User, TokenBlacklist, FailedLogins } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userActionsLogger = require('../utils/logger');
+const { userActionsLogger } = require('../utils/logger');
 
 /************************ ENVIRONMENT VARIABLES AND HELPER FUNCTIONS ************************/
 
