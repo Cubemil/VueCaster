@@ -1,6 +1,7 @@
 const { User, TokenBlacklist, FailedLogins } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const logger = require('../logger');
 
 /************************ ENVIRONMENT VARIABLES AND HELPER FUNCTIONS ************************/
 
@@ -115,6 +116,7 @@ const signup = async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
+    logger.warn('Signup attempt with missing fields', { username, email });
     return res.status(400).json({ message: 'Username, email, and password are required' });
   }
 
@@ -128,6 +130,12 @@ const signup = async (req, res) => {
       password: hashedPassword,
     });
 
+    logger.info('User created successfully', {
+      userId: newUser.userId,
+      username: newUser.username,
+      email: newUser.email
+    });
+
     res.status(201).json({ 
       message: 'User created successfully',
       user: {
@@ -137,8 +145,10 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
+      logger.warn('Signup failed: Username or email already exists', { username, email });
       return res.status(400).json({ message: 'Username or email already exists' });
     }
+    logger.error('Error creating user', { error: error.message });
     res.status(500).json({ message: 'Error creating user', error: error.message });
   }
 };
@@ -176,16 +186,19 @@ const login = async (req, res) => {
     const user = await User.findOne({ where: whereClause });
 
     if (!user) {
+      logger.warn('User not found when logging in', { emailOrUsername });
       return handleFailedUnknownCredentialsLogin(emailOrUsername, res);
     }
 
     const now = new Date();
     if (user.lockedUntil && user.lockedUntil > now) {
       const secondsLeft = Math.ceil((user.lockedUntil - now) / 1000);
+      logger.warn('User account locked due to too many login attempts', { emailOrUsername });
       return res.status(401).json({ message: `Too many login attempts. Please try again in ${secondsLeft} seconds.` });
     }
 
     if (!comparePassword(password, user.password)) {
+      logger.warn('Incorrect password when logging in', { emailOrUsername });
       return handleFailedUserLogin(user, res);
     }
 
@@ -194,8 +207,10 @@ const login = async (req, res) => {
     await user.save();
 
     const token = await generateToken(user);
+    logger.info('User logged in successfully', { userId: user.userId, username: user.username });
     res.status(200).json({ message: 'Login successful', token, username: user.username });
   } catch (error) {
+    logger.error('Error logging in', { error: error.message });
     res.status(400).json({ message: 'Error logging in', error: error.message });
   }
 };
@@ -217,9 +232,12 @@ const profile = async (req, res) => {
     const user = await User.findByPk(userId, {
       attributes: ['username']
     });
-    if (!user)
+    if (!user) {
+      logger.warn('User not found when fetching profile', { userId });
       return res.status(404).json({ message: 'User not found' });
+    }
 
+    logger.info('User profile fetched successfully', { userId: user.userId, username: user.username });
     res.status(200).json({ user });
   } catch (error) {
     res.status(400).json({ message: 'Error fetching user profile', error: error.message });
@@ -243,10 +261,15 @@ const dashboard = async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    if (!user)
+    if (!user) {
+      logger.warn('User not found when fetching dashboard', { userId });
       return res.status(404).json({ message: 'User not found' });
+    }
+
+    logger.info('User dashboard fetched successfully', { userId: user.userId, username: user.username });
     res.status(200).json({ message: 'User dashboard fetched successfully', user });
   } catch (error) {
+    logger.error('Error fetching user dashboard', { error: error.message });
     res.status(400).json({ message: 'Error sending user dashboard', error: error.message });
   }
 };
@@ -270,18 +293,24 @@ const changeUsername = async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    if (!user)
+    if (!user) {
+      logger.warn('User not found when updating username', { userId });
       return res.status(404).json({ message: 'User not found' });
+    }
 
     const passwordMatch = comparePassword(password, user.password);
-    if (!passwordMatch)
+    if (!passwordMatch) {
+      logger.warn('Password is not correct when updating username', { userId });
       return res.status(401).json({ message: 'Password is not correct' });
+    }
 
     user.username = newUsername;
     
     await user.save();
+    logger.info('Username updated successfully', { userId: user.userId, username: user.username });
     res.status(200).json({ message: 'Username updated successfully', user });
   } catch (error) {
+    logger.error('Error updating username', { error: error.message });
     res.status(400).json({ message: 'Error updating username', error: error.message });
   }
 }
@@ -305,12 +334,16 @@ const changePassword = async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    if (!user)
+    if (!user) {
+      logger.warn('User not found when updating password', { userId });
       return res.status(404).json({ message: 'User not found' });
+    }
 
     const passwordMatch = comparePassword(password, user.password);
-    if (!passwordMatch)
+    if (!passwordMatch) {
+      logger.warn('Current password is not correct when updating password', { userId });
       return res.status(401).json({ message: 'Current Password is not correct' });
+    }
     
     user.password = await hashPassword(newPassword);
     await user.save();
@@ -342,30 +375,42 @@ const changeEmail = async (req, res) => {
   console.log("password: ", password);
   console.log("newEmail: ", newEmail);
   
-  if (!newEmail)
+  if (!newEmail) {
+    logger.warn('No email provided when updating email', { userId });
     return res.status(400).json({ message: 'Email is required' });
+  }
 
-  if (!password)
+  if (!password) {
+    logger.warn('No password provided when updating email', { userId });
     return res.status(400).json({ message: 'Password is required' });
+  }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!newEmail.match(emailRegex))
+  if (!newEmail.match(emailRegex)) {
+    logger.warn('Invalid email format when updating email', { userId });
     return res.status(400).json({ message: 'Invalid email format' });
+  }
 
   try {
     const user = await User.findByPk(userId);
-    if (!user)
+    if (!user) {
+      logger.warn('User not found when updating email', { userId });
       return res.status(404).json({ message: 'User not found' });
+    }
 
     const passwordMatch = comparePassword(password, user.password);
-    if (!passwordMatch)
+    if (!passwordMatch) {
+      logger.warn('Password is not correct when updating email', { userId });
       return res.status(401).json({ message: 'Password is not correct' });
+    }
 
     user.email = newEmail;
     
     await user.save();
+    logger.info('Email updated successfully', { userId: user.userId, email: user.email });
     res.status(200).json({ message: 'Email updated successfully', user });
   } catch (error) {
+    logger.error('Error updating email', { error: error.message });
     res.status(400).json({ message: 'Error updating email', error: error.message });
   }
 };
@@ -390,14 +435,17 @@ const changeProfilePicture = async (req, res) => {
   try {
     const user = await User.findByPk(userId);
     if (!user) {
+      logger.warn('User not found when updating profile picture', { userId });
       return res.status(404).json({ message: 'User not found' });
     }
 
     if (profilePictureUrl) user.profilePictureUrl = profilePictureUrl;
     
     await user.save();
+    logger.info('Profile picture updated successfully', { userId: user.userId, profilePictureUrl: user.profilePictureUrl });
     res.status(200).json({ message: 'Profile picture updated successfully', user });
   } catch (error) {
+    logger.error('Error updating profile picture', { error: error.message });
     res.status(400).json({ message: 'Error updating profile picture', error: error.message });
   }
 };
@@ -420,20 +468,28 @@ const deleteUser = async (req, res) => {
   const { userId } = req.user;
   const { password, confirmation } = req.body;
 
-  if (!password || !confirmation)
+  if (!password || !confirmation) {
+    logger.warn('Password or confirmation missing when deleting account', { userId });
     return res.status(400).json({ message: 'Password and confirmation are required' });
+  }
 
-  if (confirmation !== 'Delete Account')
+  if (confirmation !== 'Delete Account') {
+    logger.warn('Confirmation text does not match when deleting account', { userId });
     return res.status(400).json({ message: 'Confirmation text does not match' });
+  }
 
   try {
     const user = await User.findByPk(userId);
-    if (!user)
+    if (!user) {
+      logger.warn('User not found when deleting account', { userId });
       return res.status(404).json({ message: 'User not found' });
+    }
 
     const passwordMatch = comparePassword(password, user.password);
-    if (!passwordMatch)
+    if (!passwordMatch) {
+      logger.warn('Password is not correct when deleting account', { userId });
       return res.status(401).json({ message: 'Password is not correct' });
+    }
 
     const authHeader = req.header('Authorization');
     const token = authHeader ? authHeader.replace('Bearer ', '') : null;
@@ -447,8 +503,10 @@ const deleteUser = async (req, res) => {
     }
 
     await user.destroy();
+    logger.info('User account deleted successfully', { userId });
     res.status(200).json({ message: 'Account deleted successfully' });
   } catch (error) {
+    logger.error('Error deleting user', { error: error.message });
     res.status(400).json({ message: 'Error deleting user', error: error.message });
   }
 };
@@ -466,6 +524,7 @@ const deleteUser = async (req, res) => {
 // GET /user/validate-token
 const validateToken = async (req, res) => {
   const { user } = req.user;
+  logger.info('Validation of token successful', { userId: user.userId, username: user.username });
   res.status(200).json({ message: 'Token is valid', user });
 };
 
@@ -504,6 +563,7 @@ async function handleFailedUnknownCredentialsLogin(identifier, res) {
       failedLogins: 1,
       lockedUntil: null
     });
+    logger.warn('Unknown user login attempt with new identifier', { identifier });
     return res.status(401).json({ message: 'Invalid credentials or password' });
   }
 
@@ -522,6 +582,7 @@ async function handleFailedUnknownCredentialsLogin(identifier, res) {
   }
 
   await record.save();
+  logger.warn('Unknown user login attempt', { identifier });
   return res.status(401).json({ message: 'Invalid credentials or password' });
 }
 
@@ -548,10 +609,12 @@ async function handleFailedUserLogin(user, res) {
     user.lockedUntil = new Date(now.getTime() + 30000); // 30 sec lock
     await user.save();
     const secondsLeft = Math.ceil((user.lockedUntil - now) / 1000);
+    logger.warn('User account locked due to too many login attempts', { userId: user.userId });
     return res.status(401).json({ message: `Too many login attempts. Please try again in ${secondsLeft} seconds.` });
   }
 
   await user.save();
+  logger.warn('Incorrect password when logging in', { userId: user.userId });
   return res.status(401).json({ message: 'Invalid credentials or password. Please try again.' });
 }
 
