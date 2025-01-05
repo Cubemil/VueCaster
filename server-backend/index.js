@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const { initializeDatabase } = require('./src/models/initializeUserDb');
 const userRouter = require('./src/routes/user');
-const { logRequest } = require('./src/preRequestHandlers/logRequest');
+const { logRequest } = require('./src/middlewares/logRequest');
 
 const app = express();
 
