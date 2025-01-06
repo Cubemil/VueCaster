@@ -27,6 +27,7 @@ app.use('/user', userRouter);
 
 /************ SERVER INITIALIZATION ************/
 
+const ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.SERVER_PORT || 5050;
 
 // init db and setup server
@@ -34,7 +35,7 @@ const PORT = process.env.SERVER_PORT || 5050;
   try {
     await initializeDatabase();
 
-    if (NODE_ENV === 'development') {
+    if (ENV === 'development') {
       app.listen(PORT, () => {
         console.log(`Server running on http://localhost:${PORT}`);
       });
