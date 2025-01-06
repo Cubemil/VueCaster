@@ -48,8 +48,8 @@ const PORT = process.env.SERVER_PORT || 5050;
       const https = require('https');
       const fs = require('fs');
 
-      const privateKey = fs.readFileSync('home/students/stempete/ssl/server.key', 'utf8');
-      const certificate = fs.readFileSync('home/students/stempete/ssl/server.crt', 'utf8');
+      const privateKey = fs.readFileSync('ssl/server.key', 'utf8');
+      const certificate = fs.readFileSync('ssl/server.crt', 'utf8');
 
       // create https server
       const credentials = { key: privateKey, cert: certificate };
