@@ -29,26 +29,32 @@ app.use('/user', userRouter);
 
 const PORT = process.env.SERVER_PORT || 5050;
 
-// https setup
-const https = require('https');
-const fs = require('fs');
-
-const privateKey = fs.readFileSync('home/students/stempete/ssl/server.key', 'utf8');
-const certificate = fs.readFileSync('home/students/stempete/ssl/server.crt', 'utf8');
-
-// create https server
-const credentials = { key: privateKey, cert: certificate };
-const httpsServer = https.createServer(credentials, app); // app is included here
-
 // init db and setup server
 (async () => {
   try {
     await initializeDatabase();
+
+    if (NODE_ENV === 'development') {
+      app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+      });
+    } else {
+      // https setup
+      const https = require('https');
+      const fs = require('fs');
+
+      const privateKey = fs.readFileSync('home/students/stempete/ssl/server.key', 'utf8');
+      const certificate = fs.readFileSync('home/students/stempete/ssl/server.crt', 'utf8');
+
+      // create https server
+      const credentials = { key: privateKey, cert: certificate };
+      const httpsServer = https.createServer(credentials, app); // app is included here
+
+      httpsServer.listen(PORT, () => {
+        console.log(`Server running on https://webengineering.ins.hs-anhalt.de:${PORT}`);
+      });
+    }
     
-    // setup https server
-    httpsServer.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
   } catch (error) {
     console.error('Failed to initialize database or server:', error);
   }
