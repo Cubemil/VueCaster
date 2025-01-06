@@ -19,7 +19,7 @@ if(process.env.NODE_ENV === 'development') {
   app.use(cors());
 } else {
   const corsOptions = {
-    origin: ['https://webengineering.ins.hs-anhalt.de:10051'],
+    origin: 'https://webengineering.ins.hs-anhalt.de:10051',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
   }
   app.use(cors(corsOptions));
@@ -48,15 +48,15 @@ const PORT = process.env.SERVER_PORT || 5050;
       const https = require('https');
       const fs = require('fs');
 
-      const privateKey = fs.readFileSync('ssl/server.key', 'utf8');
-      const certificate = fs.readFileSync('ssl/server.crt', 'utf8');
+      const privateKey = fs.readFileSync('/ssl/server.key', 'utf8');
+      const certificate = fs.readFileSync('/ssl/server.crt', 'utf8');
 
       // create https server
       const credentials = { key: privateKey, cert: certificate };
       const httpsServer = https.createServer(credentials, app); // app is included here
 
       httpsServer.listen(PORT, () => {
-        console.log(`Server running on https://webengineering.ins.hs-anhalt.de:${PORT}`);
+        console.log(`Server running on https://webengineering.ins.hs-anhalt.de:10052`);
       });
     }
     

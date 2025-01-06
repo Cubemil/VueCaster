@@ -130,7 +130,6 @@ export default {
           body: JSON.stringify(loginData)
         })
 
-
         const result = await response.json()
         console.log('Login response:', result)
         this.responseMessage = result.message
