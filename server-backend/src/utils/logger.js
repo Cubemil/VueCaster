@@ -39,5 +39,5 @@ const consoleLogger = pino({
 module.exports = {
   requestLogger,
   userActionsLogger,
-  consoleLogger,
+  consoleLogger
 };
