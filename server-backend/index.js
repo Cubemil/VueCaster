@@ -15,11 +15,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logRequests);
 
-const corsOptions = {
-  origin: ['https://webengineering.ins.hs-anhalt.de:10051', 'http://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+if(process.env.NODE_ENV === 'development') {
+  app.use(cors());
+} else {
+  const corsOptions = {
+    origin: ['https://webengineering.ins.hs-anhalt.de:10051'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  }
+  app.use(cors(corsOptions));
 }
-app.use(cors(corsOptions));
 
 /************ ROUTES ************/
 
