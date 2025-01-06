@@ -11,10 +11,15 @@ const { logRequests } = require('./src/middlewares/logRequests');
 const app = express();
 
 app.use(express.json());
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logRequests);
+
+const corsOptions = {
+  origin: ['https://webengineering.ins.hs-anhalt.de:10051', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}
+app.use(cors(corsOptions));
 
 /************ ROUTES ************/
 
