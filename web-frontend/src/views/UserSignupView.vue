@@ -9,8 +9,10 @@
           type="text"
           id="email"
           name="email"
-          v-model="email"
+          v-model.trim="email"
           @blur="validateEmail"
+          autocomplete="email"
+          autofocus
           placeholder="Email"
           required
         />
@@ -23,8 +25,9 @@
           type="text"
           id="username"
           name="username"
-          v-model="username"
+          v-model.trim="username"
           @blur="validateUsername"
+          autocomplete="username"
           placeholder="username"
           required
         />
@@ -37,9 +40,9 @@
           :type="showPassword ? 'text' : 'password'"
           id="password"
           name="password"
-          v-model="password"
-          placeholder="Password"
+          v-model.trim="password"
           @blur="validatePassword"
+          placeholder="Password"
           required
         />
         <i
@@ -55,7 +58,7 @@
           :type="showConfirmPassword ? 'text' : 'password'"
           id="confirm-password"
           name="confirmPassword"
-          v-model="confirmPassword"
+          v-model.trim="confirmPassword"
           @blur="validateConfirmPassword"
           placeholder="Confirm Password"
           required
@@ -68,11 +71,20 @@
       </div>
 
       <button type="submit" id="signup-btn" :disabled="isSubmitting">Sign Up</button>
+    
+      <div id="message-area" v-if="errorMessage || successMessage">
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+        <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+      </div>
+      
     </form>
 
     <div id="switch-to-login-area">
       Already have an account?
-      <router-link to="/login">Log In</router-link>
+      <router-link to="/login">
+        <i v-if="isSubmitting" class="fas fa-spinner fa-spin"></i>
+        Log In
+      </router-link>
     </div>
 
   </div>
@@ -94,7 +106,8 @@ export default {
       usernameError: false,
       passwordError: false,
       confirmPasswordError: false,
-      responseMessage: '',
+      errorMessage: '',
+      successMessage: '',
       isSubmitting: false,
       showPassword: false,
       showConfirmPassword: false
@@ -156,12 +169,10 @@ export default {
         this.confirmPasswordError
       ) return
 
+      // clear messages
       this.isSubmitting = true
-
-      if (this.responseMessage !== '') {
-        this.isSubmitting = false
-        return
-      }
+      this.errorMessage = ''
+      this.successMessage = ''
 
       const signupData = {
         email: this.email,
@@ -178,19 +189,30 @@ export default {
           body: JSON.stringify(signupData)
         })
 
-        if (!response.ok) {
-          throw new Error('HTTP error! status: ' + response.status)
-        }
-
         const result = await response.json()
-        this.responseMessage = result.message
-        console.log('Signup successful:', result)
-        this.$router.push('/login')
+
+        if (response.ok) {
+          this.successMessage = result.message || 'Signup successful!'
+          this.clearInputFields()
+        } else {
+          this.errorMessage = result.message || 'An error occurred during signup.'
+          console.error('Error signing up:', result)
+        }
+        
+        //TODO decide whether to reroute to login after sign up or not -> would require global snackbar component
+        //this.$router.push('/login')
       } catch (error) {
+        this.errorMessage = 'A network or parsing error occurred.'
         console.error('Error signing up:', error)
       } finally {
         this.isSubmitting = false
       }
+    },
+    clearInputFields() {
+      this.email = ''
+      this.username = ''
+      this.password = ''
+      this.confirmPassword = ''
     }
   }
 }
@@ -234,8 +256,18 @@ input {
   margin-bottom: 10px;
 }
 
+#message-area {
+  margin-top: 10px;
+}
+
 .error-message {
   color: #ff0000;
+  font-size: 0.85rem;
+  margin-top: -5px;
+}
+
+.success-message {
+  color: #1db954;
   font-size: 0.85rem;
   margin-top: -5px;
 }

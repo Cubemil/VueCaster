@@ -9,8 +9,9 @@
           type="text"
           id="email-or-username"
           name="emailOrUsername"
-          v-model="emailOrUsername"
+          v-model.trim="emailOrUsername"
           @blur="validateEmailOrUsername"
+          autocomplete="username"
           placeholder="Email or Username"
           required
         />
@@ -23,7 +24,7 @@
           :type="showPassword ? 'text' : 'password'"
           id="password"
           name="password"
-          v-model="password"
+          v-model.trim="password"
           @blur="validatePassword"
           placeholder="Password"
           required
@@ -43,9 +44,15 @@
         </label>
       </div>
 
-      <p v-if="responseMessage" class="api-error-message">{{ responseMessage }}</p>
+      <div id="message-area">
+        <p v-if="errorMessage" class="api-error-message">{{ errorMessage }}</p>
+        <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+      </div>
 
-      <button type="submit" id="login-btn" :disabled="isSubmitting">Log In</button>
+      <button type="submit" id="login-btn" :disabled="isSubmitting">
+        <i v-if="isSubmitting" class="fas fa-spinner fa-spin"></i>
+        Log In
+      </button>
     </form>
 
     <div id="password-reset">
@@ -74,7 +81,8 @@ export default {
       emailOrUsernameError: false,
       passwordError: false,
       rememberMe: false,
-      responseMessage: '',
+      errorMessage: '',
+      successMessage: '',
       isSubmitting: false,
       showPassword: false
     }
@@ -115,6 +123,8 @@ export default {
       if (this.isSubmitting || this.emailOrUsernameError || this.passwordError) return
     
       this.isSubmitting = true
+      this.errorMessage = ''
+      this.successMessage = ''
 
       const loginData = {
         emailOrUsername: this.emailOrUsername,
@@ -131,23 +141,34 @@ export default {
         })
 
         const result = await response.json()
-        console.log('Login response:', result)
-        this.responseMessage = result.message
 
-        if (result.token) {
-          const store = useUserStore()
-          // 'rememberMe' is sent here since the store takes care of location of the credentials
-          store.login(result.username, result.token, this.rememberMe)
-          // reroute to home after successful login
-          this.$router.push('/')
+        if (response.ok) {
+          this.successMessage = result.message || 'Login successful!'
+          this.errorMessage = ''
+
+          if (result.token) {
+            const store = useUserStore()
+            // 'rememberMe' is sent here since the store takes care of location of the credentials
+            store.login(result.username, result.token, this.rememberMe)
+            
+            //TODO decide: reroute to home after successful login
+            //this.$router.push('/')
+
+            this.emailOrUsername = ''
+            this.password = ''
+          } 
         } else {
-          this.responseMessage = result.message || 'Invalid credentials. Please try again.'
+          // 4xx/5xx error, e.g. invalid creds
+          this.errorMessage = result.message || 'Invalid credentials. Please try again.'
+          this.successMessage = ''
+          // clear input if login fails
           this.emailOrUsername = ''
           this.password = ''
         }
       } catch (error) {
-        console.error('Error logging in:', error.message)
-        this.responseMessage = error.message || 'An error occurred. Please try again.'
+        console.error('Network error logging in:', error)
+        this.errorMessage = 'A network or parsing error occurred.'
+        this.successMessage = ''
         this.emailOrUsername = ''
         this.password = ''
       } finally {
@@ -198,6 +219,12 @@ input {
 
 .error-message {
   color: #ff0000;
+  font-size: 0.85rem;
+  margin-top: -5px;
+}
+
+.success-message {
+  color: #1db954;
   font-size: 0.85rem;
   margin-top: -5px;
 }

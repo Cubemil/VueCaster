@@ -11,7 +11,8 @@ const User = sequelize.define('User', {
   },
   username: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   email: {
     type: DataTypes.STRING,
@@ -23,7 +24,7 @@ const User = sequelize.define('User', {
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
     /*validate: {
       len: [8, 20],
     }*/
@@ -41,6 +42,26 @@ const User = sequelize.define('User', {
   lockedUntil: {
     type: DataTypes.DATE,
     allowNull: true
+  }
+},
+{
+  hooks: {
+    beforeCreate: (user) => {
+      if (user.username) {
+        user.username = user.username.toLowerCase();
+      }
+      if (user.email) {
+        user.email = user.email.toLowerCase();
+      }
+    },
+    beforeUpdate: (user) => {
+      if (user.username) {
+        user.username = user.username.toLowerCase();
+      }
+      if (user.email) {
+        user.email = user.email.toLowerCase();
+      }
+    }
   }
 });
 

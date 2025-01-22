@@ -145,7 +145,7 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
-      userActionsLogger.warn('Signup failed: Username or email already exists', { username, email });
+      userActionsLogger.warn('Signup failed:email already exists', { username, email });
       return res.status(400).json({ message: 'Username or email already exists' });
     }
     userActionsLogger.error('Error creating user', { error: error.message });
@@ -176,7 +176,10 @@ const signup = async (req, res) => {
  */
 // POST /user/login
 const login = async (req, res) => {
-  const { emailOrUsername, password } = req.body;
+  const password = req.body.password || '';
+
+  const rawInput = req.body.emailOrUsername || '';
+  const emailOrUsername = rawInput.trim().toLowerCase();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const isEmail = emailRegex.test(emailOrUsername)
