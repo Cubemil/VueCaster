@@ -277,6 +277,30 @@ const dashboard = async (req, res) => {
   }
 };
 
+const likedPodcasts = async (req, res) => {
+  const { userId } = req.user;
+  
+  try {
+    const user = await User.findByPk(userId);
+    if (!usre) {
+      userActionsLogger.warn("User not found when fetching liked podcasts", { userId });
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const likedPodcasts = await User.findAll({
+      where: {
+        userId: userId
+      }
+    })
+
+    userActionsLogger.info('Liked podcasts fetched successfully', { userId: user.userId, username: user.username });
+    res.status(200).json({ message: 'Liked podcasts fetched successfully', user, likedPodcasts });
+  } catch (error) {
+    userActionsLogger.info('Error fetching liked podcasts', { error: error.message });
+    res.status(400).json({ message: 'Error sending liked podcasts', error: error.message });
+  }
+};
+
 /**
  * Change the username of a user.
  *
@@ -628,6 +652,7 @@ module.exports = {
   login,
   profile,
   dashboard,
+  likedPodcasts,
   changeUsername,
   changePassword,
   changeEmail,

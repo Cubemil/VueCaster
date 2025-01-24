@@ -20,6 +20,7 @@ publicRouter.get('/:userId/profile', userController.profile);
 protectedRouter.use(userController.authenticate); // call authenticate middleware for all routes
 protectedRouter.delete('/delete', userController.deleteUser);
 protectedRouter.get('/dashboard', userController.dashboard);
+protectedRouter.get('/liked-podcasts', userController.likedPodcasts)
 protectedRouter.put('/change-username', userController.changeUsername);
 protectedRouter.put('/change-password', userController.changePassword);
 protectedRouter.put('/change-email', userController.changeEmail);

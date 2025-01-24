@@ -22,6 +22,10 @@
 	</div>
 </template>
 
+<script setup>
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
+</script>
+
 <script>
 export default {
 	data() {
@@ -41,7 +45,9 @@ export default {
 	},
 	methods: {
 		loadLikedPodcasts() {
-			const likedPodcastIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+			const useLikedPodcastsStore = useLikedPodcastsStore()
+
+			const likedPodcastIds = useLikedPodcastsStore.getLikedPodcasts() || '[]'
 			if (likedPodcastIds.length > 0) {
 				this.fetchLikedPodcasts(likedPodcastIds)
 			} else {
