@@ -260,16 +260,14 @@ input {
   margin-top: 10px;
 }
 
-.error-message {
+.error-message, .success-message {
   color: #ff0000;
   font-size: 0.85rem;
-  margin-top: -5px;
+  text-align: center;
 }
 
 .success-message {
   color: #1db954;
-  font-size: 0.85rem;
-  margin-top: -5px;
 }
 
 .password-group {
