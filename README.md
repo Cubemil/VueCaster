@@ -40,7 +40,7 @@ Refer to our [Wiki page](https://gitlab.hs-anhalt.de/stempete/webeng2425/-/wikis
 1. Clone the Repository and go inside the root folder
 
 ```
-git clone https://gitlab.hs-anhalt.de/stempete/webeng2425.git
+git clone https://github.com/Cubemil/VueCaster
 cd webeng2425
 ```
 
