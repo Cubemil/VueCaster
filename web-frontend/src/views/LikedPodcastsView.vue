@@ -21,6 +21,7 @@
 <script setup>
 import PodcastList from '../components/PodcastList.vue'
 import TopPodcasts from '../components/TopPodcasts.vue'
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
 </script>
 
 <script>
@@ -39,10 +40,13 @@ export default {
     async loadLikedPodcasts() {
       this.isLoading = true
       this.errorMessage = ''
-      const likedPodcastsIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+      // const likedPodcastsIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+
+      const store = useLikedPodcastsStore()
+      const likedPodcasts = store.getLikedPodcasts()
 
       try {
-        const podcasts = await Promise.all(likedPodcastsIds.map(async (id) => {
+        const podcasts = await Promise.all(likedPodcasts.map(async (id) => {
           const url = new URL('https://api.fyyd.de/0.2/podcast/')
           url.searchParams.append('podcast_id', id)
 

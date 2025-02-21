@@ -45,14 +45,13 @@ export default {
 	},
 	methods: {
 		loadLikedPodcasts() {
-			const useLikedPodcastsStore = useLikedPodcastsStore()
+			const store = useLikedPodcastsStore()
 
-			const likedPodcastIds = useLikedPodcastsStore.getLikedPodcasts() || '[]'
-			if (likedPodcastIds.length > 0) {
+			const likedPodcastIds = store.getLikedPodcasts() || '[]'
+			if (likedPodcastIds.length > 0)
 				this.fetchLikedPodcasts(likedPodcastIds)
-			} else {
+			else
 				this.likedPodcasts = []
-			}
 		},
 		async fetchLikedPodcasts(podcastIds) {
 			this.isLoading = true
@@ -78,6 +77,7 @@ export default {
 				}))
 
 				this.likedPodcasts = podcasts
+				console.log("Liked podcasts: ", this.likedPodcasts)
 			} catch (error) {
 				this.errorMessage = error.message
 			} finally {

@@ -32,6 +32,24 @@ export const useLikedPodcastsStore = defineStore("likedPodcasts", {
     },
     getLikedPodcasts() {
       return this.likedPodcasts || '[]'
+    },
+    isPodcastLiked(podcastId) {
+      return this.likedPodcasts.includes(podcastId)
+    },
+    setLikedPodcasts(likedPodcasts) {
+      this.likedPodcasts = likedPodcasts
+      try {
+        const url = getApiUrl("user/liked-podcasts")
+        authFetch(url, {
+          method: "POST",
+          body: JSON.stringify({ likedPodcasts })
+        })
+      } catch (error) {
+        console.error('Failed to update liked podcasts: ', error)
+        this.errorMessage = error.message
+      } finally {
+        this.isLoading = false
+      }
     }
   }
 })

@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { useLikedPodcastsStore } from '../stores/likedPodcasts';
 export default {
   props: {
     image: String,
@@ -58,14 +59,17 @@ export default {
     toggleLike() {
       this.liked = !this.liked
 
-      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+      //const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+      const likedPodcastsStore = useLikedPodcastsStore()
+      const likedPodcasts = likedPodcastsStore.getLikedPodcasts()
       if (this.liked) {
         likedPodcasts.push(this.podcastId)
       } else {
         const index = likedPodcasts.indexOf(this.podcastId)
         if (index !== -1) likedPodcasts.splice(index, 1)
       }
-      localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
+      //localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
+      likedPodcastsStore.setLikedPodcasts(likedPodcasts)
 
       // dispatch a storage event manually for live updates in other components
       window.dispatchEvent(new StorageEvent('storage', {

@@ -277,12 +277,12 @@ const dashboard = async (req, res) => {
   }
 };
 
-const likedPodcasts = async (req, res) => {
+const getLikedPodcasts = async (req, res) => {
   const { userId } = req.user;
   
   try {
     const user = await User.findByPk(userId);
-    if (!usre) {
+    if (!user) {
       userActionsLogger.warn("User not found when fetching liked podcasts", { userId });
       return res.status(404).json({ message: 'User not found' });
     }
@@ -293,13 +293,37 @@ const likedPodcasts = async (req, res) => {
       }
     })
 
+    // todo debug
+    console.log("likedPodcasts: ", likedPodcasts);
+
     userActionsLogger.info('Liked podcasts fetched successfully', { userId: user.userId, username: user.username });
     res.status(200).json({ message: 'Liked podcasts fetched successfully', user, likedPodcasts });
   } catch (error) {
     userActionsLogger.info('Error fetching liked podcasts', { error: error.message });
     res.status(400).json({ message: 'Error sending liked podcasts', error: error.message });
   }
-};
+}
+
+const updateLikedPodcasts = async (req, res) => {
+  const { userId } = req.user;
+  const { likedPodcasts } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      userActionsLogger.warn('User not found when updating liked podcasts', { userId });
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.likedPodcasts = likedPodcasts;
+    await user.save();
+    userActionsLogger.info('Liked podcasts updated successfully', { userId: user.userId, username: user.username });
+    res.status(200).json({ message: 'Liked podcasts updated successfully', user });
+  } catch (error) {
+    userActionsLogger.error('Error updating liked podcasts', { error: error.message });
+    res.status(400).json({ message: 'Error updating liked podcasts', error: error.message });
+  }
+}
 
 /**
  * Change the username of a user.
@@ -652,7 +676,8 @@ module.exports = {
   login,
   profile,
   dashboard,
-  likedPodcasts,
+  getLikedPodcasts,
+  updateLikedPodcasts,
   changeUsername,
   changePassword,
   changeEmail,
