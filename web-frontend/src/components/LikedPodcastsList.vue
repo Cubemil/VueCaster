@@ -1,6 +1,5 @@
 <template>
 	<div id="liked-podcast-list-container">
-
 		<ul id="liked-podcasts-list">
 			<li v-for="podcast in likedPodcasts" :key="podcast.id" class="liked-podcast-item">
 				<router-link 
@@ -22,11 +21,8 @@
 	</div>
 </template>
 
-<script setup>
-import { useLikedPodcastsStore } from '../stores/likedPodcasts'
-</script>
-
 <script>
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
 export default {
 	data() {
 		return {
@@ -36,22 +32,19 @@ export default {
 			isCollapsed: false
 		}
 	},
-	mounted() {
-		this.loadLikedPodcasts()
+	async mounted() {
+		await this.loadLikedPodcasts()
 		window.addEventListener('storage', this.handleStorageChange)
 	},
 	beforeUnmount() {
 		window.removeEventListener('storage', this.handleStorageChange)
 	},
 	methods: {
-		loadLikedPodcasts() {
+		async loadLikedPodcasts() {
 			const store = useLikedPodcastsStore()
-
-			const likedPodcastIds = store.getLikedPodcasts() || '[]'
+			const likedPodcastIds = await store.getLikedPodcasts()
 			if (likedPodcastIds.length > 0)
-				this.fetchLikedPodcasts(likedPodcastIds)
-			else
-				this.likedPodcasts = []
+				await this.fetchLikedPodcasts(likedPodcastIds)
 		},
 		async fetchLikedPodcasts(podcastIds) {
 			this.isLoading = true
@@ -77,7 +70,6 @@ export default {
 				}))
 
 				this.likedPodcasts = podcasts
-				console.log("Liked podcasts: ", this.likedPodcasts)
 			} catch (error) {
 				this.errorMessage = error.message
 			} finally {

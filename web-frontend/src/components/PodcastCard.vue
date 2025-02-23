@@ -7,10 +7,10 @@
         <div v-else class="skeleton-image"></div>
       </div>
       <button
-          @click.stop="toggleLike"
-          class="action-button"
-          :aria-label="liked ? 'Unlike podcast' : 'Like podcast'"
-          :class="{ 'active-button' : liked }"
+        @click.stop="toggleLike"
+        class="action-button"
+        :aria-label="liked ? 'Unlike podcast' : 'Like podcast'"
+        :class="{ 'active-button' : liked }"
       >
         <i :class="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
       </button>
@@ -56,26 +56,14 @@ export default {
     sendPodcastId() {
       this.$router.push({name: 'PodcastView', params: {podcastId: this.podcastId}})
     },
-    toggleLike() {
-      this.liked = !this.liked
-
-      //const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
-      const likedPodcastsStore = useLikedPodcastsStore()
-      const likedPodcasts = likedPodcastsStore.getLikedPodcasts()
+    async toggleLike() {
+      const store = useLikedPodcastsStore()
       if (this.liked) {
-        likedPodcasts.push(this.podcastId)
+        await store.removeLikedPodcast(this.podcastId)
       } else {
-        const index = likedPodcasts.indexOf(this.podcastId)
-        if (index !== -1) likedPodcasts.splice(index, 1)
+        await store.addLikedPodcast(this.podcastId)
       }
-      //localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
-      likedPodcastsStore.setLikedPodcasts(likedPodcasts)
-
-      // dispatch a storage event manually for live updates in other components
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'likedPodcasts',
-        newValue: JSON.stringify(likedPodcasts),
-      }))
+      this.liked = !this.liked // Update local state after API call succeeds
     },
     getSearchedPodcasts() {
       if (!this.clickedPodcastIds.some(p => p.id === this.podcastId)) { // check of podcast with the same id in array

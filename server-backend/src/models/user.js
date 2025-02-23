@@ -25,9 +25,6 @@ const User = sequelize.define('User', {
   password: {
     type: DataTypes.STRING,
     allowNull: false
-    /*validate: {
-      len: [8, 20],
-    }*/
   },
   token: {
     type: DataTypes.STRING
@@ -42,6 +39,11 @@ const User = sequelize.define('User', {
   lockedUntil: {
     type: DataTypes.DATE,
     allowNull: true
+  },
+  likedPodcasts: {
+    type: DataTypes.JSON,
+    allowNull: false,
+    defaultValue: []
   }
 },
 {

@@ -21,7 +21,7 @@
         :image="podcast.image"
         :podcastTitle="podcast.title"
         :podcastAuthor="podcast.author"
-        :isLiked="isPodcastLiked(podcast.id)"
+        :isLiked="podcast.isLiked"
       />
     </div>
 
@@ -52,12 +52,13 @@
 
 <script setup>
 import PodcastCard from './PodcastCard.vue'
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
 </script>
 
 <script>
 export default {
   props: {
-    podcasts: {type: Array, required: true}
+    podcasts: { type: Array, required: true }
   },
   data() {
     return {
@@ -76,12 +77,22 @@ export default {
       this.updateVisiblePodcasts()
     }
   },
-  mounted() {
-    this.updateVisiblePodcasts()
+  async mounted() {
+    await this.updateVisiblePodcasts()
   },
   methods: {
-    updateVisiblePodcasts() {
+    async updateVisiblePodcasts() {
       this.visiblePodcasts = this.podcasts.slice(this.currentPage * 15, (this.currentPage + 1) * 15)
+
+      // precompute "isLiked" for all visible podcasts
+      const store = useLikedPodcastsStore()
+      this.visiblePodcasts = await Promise.all(this.visiblePodcasts.map(async (podcast) => {
+        const isLiked = await store.isPodcastLiked(podcast.id)
+        return {
+          ...podcast,
+          isLiked
+        }
+      }))
     },
     nextPage() {
       this.currentPage++
@@ -98,10 +109,6 @@ export default {
     lastPage() {
       this.currentPage = this.totalPages
       this.updateVisiblePodcasts()
-    },
-    isPodcastLiked(podcastId) {
-      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
-      return likedPodcasts.includes(podcastId)
     }
   }
 }

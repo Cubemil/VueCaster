@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
 export default {
   props: {
     data: {}
@@ -54,7 +55,6 @@ export default {
   },
   mounted() {
     this.checkIfLiked()
-
     window.addEventListener('storage', this.handleStorageChange)
   },
   beforeUnmount() {
@@ -99,35 +99,38 @@ export default {
           return 'No regular interval'
       }
     },
-    checkIfLiked() {
-      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+    async checkIfLiked() {
+      // const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+      const store = useLikedPodcastsStore()
       if (this.data) {
-        this.liked = likedPodcasts.includes(this.data.id)
+        this.liked = await store.isPodcastLiked(this.data.id)
       }
     },
-    toggleLike() {
-      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+    async toggleLike() {
+      // const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
       if (!this.data) return
+      const store = useLikedPodcastsStore()
 
-      if (this.liked) {
-        const index = likedPodcasts.indexOf(this.data.id)
-        if (index !== -1) likedPodcasts.splice(index, 1)
+      console.log("Toggling like for podcast", this.data.id, "from", this.liked, "to", !this.liked)
+
+      if (!this.liked) {
+        await store.addLikedPodcast(this.data.id)
         this.liked = false
       } else {
-        likedPodcasts.push(this.data.id)
+        await store.removeLikedPodcast(this.data.id)
         this.liked = true
       }
 
-      localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
+      // localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
 
       window.dispatchEvent(new StorageEvent('storage', {
         key: 'likedPodcasts',
-        newValue: JSON.stringify(likedPodcasts)
+        newValue: JSON.stringify(store.getLikedPodcasts())
       }))
     },
-    handleStorageChange(event) {
+    async handleStorageChange(event) {
       if (event.key === 'likedPodcasts')
-        this.checkIfLiked()
+        await this.checkIfLiked()
     }
   }
 }

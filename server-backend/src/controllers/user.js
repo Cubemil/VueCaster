@@ -281,25 +281,21 @@ const getLikedPodcasts = async (req, res) => {
   const { userId } = req.user;
   
   try {
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(userId, {
+      attributes: ['likedPodcasts']
+    });
+
     if (!user) {
       userActionsLogger.warn("User not found when fetching liked podcasts", { userId });
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const likedPodcasts = await User.findAll({
-      where: {
-        userId: userId
-      }
-    })
+    const likedPodcasts = user.likedPodcasts || [];
 
-    // todo debug
-    console.log("likedPodcasts: ", likedPodcasts);
-
-    userActionsLogger.info('Liked podcasts fetched successfully', { userId: user.userId, username: user.username });
-    res.status(200).json({ message: 'Liked podcasts fetched successfully', user, likedPodcasts });
+    userActionsLogger.info('Liked podcasts fetched successfully', { userId });
+    res.status(200).json({ message: 'Liked podcasts fetched successfully', data: likedPodcasts });
   } catch (error) {
-    userActionsLogger.info('Error fetching liked podcasts', { error: error.message });
+    userActionsLogger.error('Error fetching liked podcasts', { error: error.message });
     res.status(400).json({ message: 'Error sending liked podcasts', error: error.message });
   }
 }
@@ -315,10 +311,16 @@ const updateLikedPodcasts = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    if (!Array.isArray(likedPodcasts)) {
+      userActionsLogger.warn('Invalid liked podcasts format when updating liked podcasts', { userId, likedPodcasts });
+      return res.status(400).json({ message: 'Invalid data format for liked podcasts' });
+    }
+
     user.likedPodcasts = likedPodcasts;
     await user.save();
-    userActionsLogger.info('Liked podcasts updated successfully', { userId: user.userId, username: user.username });
-    res.status(200).json({ message: 'Liked podcasts updated successfully', user });
+    
+    userActionsLogger.info('Liked podcasts updated successfully', { userId });
+    res.status(200).json({ message: 'Liked podcasts updated successfully', likedPodcasts });
   } catch (error) {
     userActionsLogger.error('Error updating liked podcasts', { error: error.message });
     res.status(400).json({ message: 'Error updating liked podcasts', error: error.message });

@@ -21,7 +21,7 @@ protectedRouter.use(userController.authenticate); // call authenticate middlewar
 protectedRouter.delete('/delete', userController.deleteUser);
 protectedRouter.get('/dashboard', userController.dashboard);
 protectedRouter.get('/liked-podcasts', userController.getLikedPodcasts)
-protectedRouter.post('/liked-podcasts', userController.updateLikedPodcasts);
+protectedRouter.put('/liked-podcasts', userController.updateLikedPodcasts);
 protectedRouter.put('/change-username', userController.changeUsername);
 protectedRouter.put('/change-password', userController.changePassword);
 protectedRouter.put('/change-email', userController.changeEmail);
