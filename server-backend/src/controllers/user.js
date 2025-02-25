@@ -777,6 +777,8 @@ module.exports = {
   dashboard,
   getLikedPodcasts,
   updateLikedPodcasts,
+  getQueue,
+  updateQueue,
   changeUsername,
   changePassword,
   changeEmail,
