@@ -11,21 +11,33 @@ const userController = require('../controllers/user');
 
 /************************ HTTP USER ROUTE HANDLERS ************************/
 
-// public router: no auth required
+/************* public router: no auth required *************/
 publicRouter.post('/signup', userController.signup);
 publicRouter.post('/login', userController.login);
+
 publicRouter.get('/:userId/profile', userController.profile);
 
-// protected router: auth required
+/************* protected router: auth required *************/
+
 protectedRouter.use(userController.authenticate); // call authenticate middleware for all routes
-protectedRouter.delete('/delete', userController.deleteUser);
+
 protectedRouter.get('/dashboard', userController.dashboard);
+
+// liked podcasts
 protectedRouter.get('/liked-podcasts', userController.getLikedPodcasts)
 protectedRouter.put('/liked-podcasts', userController.updateLikedPodcasts);
+
+// queue
+protectedRouter.get('/queue', userController.getQueue);
+protectedRouter.put('/queue', userController.updateQueue);
+
+// user settings
 protectedRouter.put('/change-username', userController.changeUsername);
 protectedRouter.put('/change-password', userController.changePassword);
 protectedRouter.put('/change-email', userController.changeEmail);
 protectedRouter.put('/change-profile-picture', userController.changeProfilePicture);
+
+// delete user
 protectedRouter.delete('/delete', userController.deleteUser);
 
 // testing token validation

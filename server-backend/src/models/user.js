@@ -44,7 +44,12 @@ const User = sequelize.define('User', {
     type: DataTypes.JSON,
     allowNull: false,
     defaultValue: []
-  }
+  },
+  queue: {
+    type: DataTypes.JSON,
+    allowNull: false,
+    defaultValue: []
+  },
 },
 {
   hooks: {

@@ -277,6 +277,17 @@ const dashboard = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves the liked podcasts for a specific user.
+ * @async
+ * @param {Object} req - Express request object containing user information.
+ * @param {Object} req.user - User object from the request.
+ * @param {string} req.user.userId - The ID of the user.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>} - Returns a JSON response with the liked podcasts or error message.
+ * @throws {Error} - If there's an error fetching the liked podcasts.
+ */
+// GET /user/liked-podcasts
 const getLikedPodcasts = async (req, res) => {
   const { userId } = req.user;
   
@@ -300,6 +311,19 @@ const getLikedPodcasts = async (req, res) => {
   }
 }
 
+/**
+ * Updates the liked podcasts array for a specific user
+ * @async
+ * @param {Object} req - Express request object
+ * @param {Object} req.user - Authenticated user object
+ * @param {string} req.user.userId - ID of the authenticated user
+ * @param {Object} req.body - Request body
+ * @param {Array} req.body.likedPodcasts - Array of podcast IDs that the user likes
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - Returns a promise that resolves with the updated liked podcasts
+ * @throws {Error} - Throws an error if the update operation fails
+ */
+// PUT /user/update-liked-podcasts
 const updateLikedPodcasts = async (req, res) => {
   const { userId } = req.user;
   const { likedPodcasts } = req.body;
@@ -324,6 +348,79 @@ const updateLikedPodcasts = async (req, res) => {
   } catch (error) {
     userActionsLogger.error('Error updating liked podcasts', { error: error.message });
     res.status(400).json({ message: 'Error updating liked podcasts', error: error.message });
+  }
+}
+
+/**
+ * Retrieves the queue associated with a user.
+ * @async
+ * @param {Object} req - Express request object containing user information.
+ * @param {Object} req.user - User object containing userId.
+ * @param {string} req.user.userId - The ID of the user whose queue is being fetched.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>} - Responds with queue data or error message.
+ * @throws {Error} - If there's an error fetching the queue.
+ */
+// GET /user/queue
+const getQueue = async (req, res) => {
+  const { userId } = req.user;
+  
+  try {
+    const user = await User.findByPk(userId, {
+      attributes: ['queue']
+    });
+
+    if (!user) {
+      userActionsLogger.warn("User not found when fetching queue", { userId });
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const queue = user.queue || [];
+
+    userActionsLogger.info('Queue fetched successfully', { userId });
+    res.status(200).json({ message: 'Queue fetched successfully', data: queue });
+  } catch (error) {
+    userActionsLogger.error('Error fetching queue', { error: error.message });
+    res.status(400).json({ message: 'Error sending queue', error: error.message });
+  }
+}
+
+/**
+ * Updates the queue array for a specific user
+ * @param {Object} req - Express request object
+ * @param {Object} req.user - User object from authentication middleware
+ * @param {string} req.user.userId - ID of the authenticated user
+ * @param {Object} req.body - Request body
+ * @param {Array} req.body.queue - New queue array to update
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - Resolves with updated queue or error response
+ * @throws {Error} - If database operation fails
+ */
+// PUT /user/update-queue
+const updateQueue = async (req, res) => {
+  const { userId } = req.user;
+  const { queue } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      userActionsLogger.warn('User not found when updating queue', { userId });
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (!Array.isArray(queue)) {
+      userActionsLogger.warn('Invalid queue format when updating queue', { userId, queue });
+      return res.status(400).json({ message: 'Invalid data format for queue' });
+    }
+
+    user.queue = queue;
+    await user.save();
+    
+    userActionsLogger.info('Queue updated successfully', { userId });
+    res.status(200).json({ message: 'Queue updated successfully', queue });
+  } catch (error) {
+    userActionsLogger.error('Error updating queue', { error: error.message });
+    res.status(400).json({ message: 'Error updating queue', error: error.message });
   }
 }
 
