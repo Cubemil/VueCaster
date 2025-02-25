@@ -52,13 +52,16 @@ export default {
           if (!response.ok)
             throw new Error('Network response was not ok')
           const body = await response.json()
+          
           if (!body.data)
-            throw new Error('No data found in response body')
+          throw new Error('No data found in response body')
+          
+          console.log(body.data)
 
           return {
             id: body.data.id,
             title: body.data.title,
-            artist: body.data.author,
+            author: body.data.author,
             image: body.data.imgURL,
             url: body.data.htmlURL
           }
