@@ -120,13 +120,6 @@ export default {
         await store.removeLikedPodcast(this.data.id)
         this.liked = true
       }
-
-      // localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
-
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'likedPodcasts',
-        newValue: JSON.stringify(store.getLikedPodcasts())
-      }))
     },
     async handleStorageChange(event) {
       if (event.key === 'likedPodcasts')

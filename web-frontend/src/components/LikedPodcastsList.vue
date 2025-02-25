@@ -49,7 +49,7 @@ export default {
 		async fetchLikedPodcasts(podcastIds) {
 			this.isLoading = true
 			this.errorMessage = ''
-
+			
 			try {
 				const podcasts = await Promise.all(podcastIds.map(async id => {
 					let url = new URL('https://api.fyyd.de/0.2/podcast/')
@@ -82,7 +82,6 @@ export default {
 			}
 		}
 	}
-
 }
 </script>
 

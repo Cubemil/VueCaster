@@ -91,6 +91,7 @@ export const useLikedPodcastsStore = defineStore("likedPodcasts", {
         }
 
         this.likedPodcasts = likedPodcasts // update only when api call is successful
+        this.sendStorageEvent()
       } catch (error) {
         console.error('Failed to update liked podcasts: ', error)
         this.errorMessage = error.message
@@ -124,6 +125,12 @@ export const useLikedPodcastsStore = defineStore("likedPodcasts", {
       this.likedPodcasts = []
       this.isLoading = false
       this.errorMessage = null
+    },
+    sendStorageEvent() {
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'likedPodcasts',
+        newValue: JSON.stringify(this.getLikedPodcasts())
+      }))
     }
   }
 })
