@@ -47,14 +47,14 @@ export default {
     }
   },
   watch: {
-    data(newData) {
+    async data(newData) {
       if (newData) {
-        this.checkIfLiked()
+        await this.checkIfLiked()
       }
     }
   },
-  mounted() {
-    this.checkIfLiked()
+  async mounted() {
+    await this.checkIfLiked()
     window.addEventListener('storage', this.handleStorageChange)
   },
   beforeUnmount() {
@@ -100,25 +100,27 @@ export default {
       }
     },
     async checkIfLiked() {
-      // const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
       const store = useLikedPodcastsStore()
       if (this.data) {
         this.liked = await store.isPodcastLiked(this.data.id)
       }
     },
     async toggleLike() {
-      // const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
       if (!this.data) return
       const store = useLikedPodcastsStore()
+      
+      const currLiked = this.liked
+      this.liked = !currLiked
 
-      console.log("Toggling like for podcast", this.data.id, "from", this.liked, "to", !this.liked)
-
-      if (!this.liked) {
-        await store.addLikedPodcast(this.data.id)
-        this.liked = false
-      } else {
-        await store.removeLikedPodcast(this.data.id)
-        this.liked = true
+      try {
+        if (currLiked) {
+          await store.removeLikedPodcast(this.data.id)
+        } else {
+          await store.addLikedPodcast(this.data.id)
+        }
+      } catch (error) {
+        this.liked = currLiked
+        console.error("Failed to toggle like status", error)
       }
     },
     async handleStorageChange(event) {
