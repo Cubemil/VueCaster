@@ -56,8 +56,6 @@ export default {
           if (!body.data)
           throw new Error('No data found in response body')
           
-          console.log(body.data)
-
           return {
             id: body.data.id,
             title: body.data.title,
