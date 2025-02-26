@@ -48,14 +48,20 @@
 
 <script>
 import { VueDraggableNext } from 'vue-draggable-next'
+import { useQueueStore } from '../stores/queue'
 
 export default {
   components: {
     draggable: VueDraggableNext
   },
+  data() {
+    return {
+      queueStore: useQueueStore()
+    }
+  },
   props: {
     queue: { type: Array, required: true },
-    currentEpisode: { type: Object }
+    currentEpisode: { type: Object },
   },
   methods: {
     playEpisode(episode) {
@@ -67,9 +73,10 @@ export default {
     removeAllFromQueue() {
       this.$emit('removeAllFromQueue')
     },
-    updateQueue() {
+    async updateQueue() {
       this.$emit('update:queue', this.queue)
       localStorage.setItem('queue', JSON.stringify(this.queue))
+      await this.queueStore.updateQueue(this.queue)
     },
     sendPodcastId(episode) {
       const podcastId = episode.podcast_id

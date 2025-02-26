@@ -41,6 +41,7 @@ import AppTopBar from "@/components/AppTopBar.vue"
 import AppSidenav from "@/components/AppSidenav.vue"
 import AppAudioPlayer from "@/components/AppAudioPlayer.vue"
 import QueueController from "@/components/QueueController.vue"
+import { useQueueStore } from "../src/stores/queue"
 </script>
 
 <script>
@@ -48,8 +49,9 @@ export default {
   data() {
     return {
       currentEpisode: null,
-      queue: JSON.parse(localStorage.getItem('queue') || '[]'),
-      showQueue: false
+      queue: JSON.parse(localStorage.getItem('queue') || []),
+      showQueue: false,
+      queueStore: useQueueStore()
     }
   },
   methods: {
@@ -58,15 +60,15 @@ export default {
     },
     addToQueue(episode) {
       this.queue.push(episode)
-      localStorage.setItem('queue', JSON.stringify(this.queue))
+      this.updateQueue(this.queue)
     },
     removeFromQueue(index) {
       this.queue.splice(index, 1)
-      localStorage.setItem('queue', JSON.stringify(this.queue))
+      this.updateQueue(this.queue)
     },
     removeAllFromQueue() {
       this.queue = []
-      localStorage.setItem('queue', JSON.stringify(this.queue))
+      this.updateQueue(this.queue)
     },
     toggleQueue() {
       this.showQueue = !this.showQueue
@@ -74,6 +76,7 @@ export default {
     updateQueue(newQueue) {
       this.queue = newQueue 
       localStorage.setItem('queue', JSON.stringify(newQueue))
+      this.queueStore.updateQueue(newQueue)
     },
     playNextEpisode() {
       const currentIndex = this.queue.findIndex(episode => episode.id === this.currentEpisode.id)
@@ -94,13 +97,17 @@ export default {
       }
     }
   },
-  mounted() {
-    //if (localStorage.getItem('likedPodcasts') === null) localStorage.setItem('likedPodcasts', JSON.stringify([]))
+  async mounted() {
     if (localStorage.getItem('recentSearches') === null) localStorage.setItem('recentSearches', JSON.stringify([]))
+    // update queue and get from store and sync with local storage
+    this.queue = await this.queueStore.getQueue()
+    this.updateQueue(this.queue)
   },
   watch: {
     queue(newQueue) {
-      localStorage.setItem('queue', JSON.stringify(newQueue))
+      this.updateQueue(newQueue)
+      console.log('queue updated, new queue:', newQueue)
+      console.log("this.queue", this.queue)
     }
   }
 }
