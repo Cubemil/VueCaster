@@ -1,19 +1,31 @@
 <template>
   <div id="queue-controller">
     <div v-if="queue.length > 0" id="visible-queue">
-      
       <div id="queue-header">
         <h2>Queue</h2>
-        <button class="action-button" @click="removeAllFromQueue" id="remove-all-button" aria-label="Remove">
-            <i class="fas fa-trash"></i>
-            Remove all
+        <button
+          class="action-button"
+          @click="queueStore.removeAllEpisodes"
+          id="remove-all-button"
+          aria-label="Remove"
+        >
+          <i class="fas fa-trash"></i>
+          Remove all
         </button>
       </div>
 
       <transition-group name="fade" tag="div">
-        <draggable :list="queue" @end="updateQueue" class="draggable">
-          <div v-for="(episode, index) in queue" :key="episode.id" :class="{ 'queue-item': true, 'playing': episode.id === currentEpisode?.id }">
-            <img :src="episode.imgURL" alt="Podcast image" @click="sendPodcastId(episode)">
+        <draggable :list="queue" @end="onDragEnd" class="draggable">
+          <div
+            v-for="(episode, index) in queue"
+            :key="episode.id"
+            :class="{ 'queue-item': true, 'playing': episode.id === currentEpisode?.id }"
+          >
+            <img
+              :src="episode.imgURL"
+              alt="Podcast image"
+              @click="sendPodcastId(episode)"
+            />
             
             <div id="episode-details">
               <h3 id="episode-title">{{ episode.title }}</h3>
@@ -25,14 +37,21 @@
             </div>
             
             <div id="button-area">
-              <button @click="playEpisode(episode)" class="action-button" aria-label="Play episode">
+              <button
+                @click="togglePlayEpisode(episode)"
+                class="action-button"
+                aria-label="Play episode"
+              >
                 <i :class=" episode.id === currentEpisode?.id ? 'fas fa-pause' : 'fas fa-play'"></i>
               </button>
-              <button @click="removeFromQueue(index)" class="action-button" aria-label="Remove episode from queue">
+              <button
+                @click="queueStore.removeEpisode(index)"
+                class="action-button"
+                aria-label="Remove episode from queue"
+              >
                 <i class="fas fa-trash"></i>
               </button>
             </div>
-
           </div>
         </draggable>
       </transition-group>
@@ -48,41 +67,51 @@
 
 <script>
 import { VueDraggableNext } from 'vue-draggable-next'
+import { mapStores } from 'pinia'
 import { useQueueStore } from '../stores/queue'
-
 export default {
+  name: 'QueueController',
   components: {
     draggable: VueDraggableNext
+  },
+  props: {
+    currentEpisode: { type: Object, default: null }
   },
   data() {
     return {
       queueStore: useQueueStore()
     }
   },
-  props: {
-    queue: { type: Array, required: true },
-    currentEpisode: { type: Object },
+  computed: {
+    ...mapStores(useQueueStore),
+    queue() {
+      return this.queueStore.queue
+    }
   },
   methods: {
-    playEpisode(episode) {
-      this.$emit('playEpisode', episode)
-    },
-    removeFromQueue(index) {
-      this.$emit('removeFromQueue', index)
-    },
-    removeAllFromQueue() {
-      this.$emit('removeAllFromQueue')
-    },
-    async updateQueue() {
-      this.$emit('update:queue', this.queue)
-      localStorage.setItem('queue', JSON.stringify(this.queue))
-      await this.queueStore.updateQueue(this.queue)
+    onDragEnd(e) {
+      /*
+       * after dragging, :list="queue" is already updated, so we call 
+       * reorderQueue with new qeueu to sync server/local storage
+       */
+      this.queueStore.reorderQueue(this.queue)
     },
     sendPodcastId(episode) {
       const podcastId = episode.podcast_id
-      const targetRoute = this.$router.resolve({ name: 'PodcastView', params: { podcastId } })
+      const targetRoute = this.$router.resolve({
+        name: 'PodcastView',
+        params: { podcastId }
+      })
 
-      if (targetRoute) this.$router.push(targetRoute.href)
+      if (targetRoute)
+        this.$router.push(targetRoute.href)
+    },
+    togglePlayEpisode(episode) {
+      if (episode.id === this.currentEpisode?.id) {
+        this.queueStore.togglePlayPause()
+      } else {
+        this.queueStore.playEpisode(episode)
+      }
     }
   }
 }

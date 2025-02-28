@@ -82,13 +82,6 @@ export default {
     if (localStorage.getItem('recentSearches') === null) {
       localStorage.setItem('recentSearches', JSON.stringify([]))
     }
-  },
-  watch: {
-    queue(newQueue) {
-      this.updateQueue(newQueue)
-      console.log('queue updated, new queue:', newQueue)
-      console.log("this.queue", this.queue)
-    }
   }
 }
 </script>
