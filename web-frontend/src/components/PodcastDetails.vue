@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
 export default {
   props: {
     data: {}
@@ -46,15 +47,14 @@ export default {
     }
   },
   watch: {
-    data(newData) {
+    async data(newData) {
       if (newData) {
-        this.checkIfLiked()
+        await this.checkIfLiked()
       }
     }
   },
-  mounted() {
-    this.checkIfLiked()
-
+  async mounted() {
+    await this.checkIfLiked()
     window.addEventListener('storage', this.handleStorageChange)
   },
   beforeUnmount() {
@@ -99,35 +99,33 @@ export default {
           return 'No regular interval'
       }
     },
-    checkIfLiked() {
-      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+    async checkIfLiked() {
+      const store = useLikedPodcastsStore()
       if (this.data) {
-        this.liked = likedPodcasts.includes(this.data.id)
+        this.liked = await store.isPodcastLiked(this.data.id)
       }
     },
-    toggleLike() {
-      const likedPodcasts = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+    async toggleLike() {
       if (!this.data) return
+      const store = useLikedPodcastsStore()
+      
+      const currLiked = this.liked
+      this.liked = !currLiked
 
-      if (this.liked) {
-        const index = likedPodcasts.indexOf(this.data.id)
-        if (index !== -1) likedPodcasts.splice(index, 1)
-        this.liked = false
-      } else {
-        likedPodcasts.push(this.data.id)
-        this.liked = true
+      try {
+        if (currLiked) {
+          await store.removeLikedPodcast(this.data.id)
+        } else {
+          await store.addLikedPodcast(this.data.id)
+        }
+      } catch (error) {
+        this.liked = currLiked
+        console.error("Failed to toggle like status", error)
       }
-
-      localStorage.setItem('likedPodcasts', JSON.stringify(likedPodcasts))
-
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'likedPodcasts',
-        newValue: JSON.stringify(likedPodcasts)
-      }))
     },
-    handleStorageChange(event) {
+    async handleStorageChange(event) {
       if (event.key === 'likedPodcasts')
-        this.checkIfLiked()
+        await this.checkIfLiked()
     }
   }
 }

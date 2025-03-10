@@ -5,5 +5,5 @@ const FailedLogins = require('./failedLogins');
 module.exports = {
   User,
   TokenBlacklist,
-  FailedLogins
+  FailedLogins,
 };

@@ -1,6 +1,5 @@
 <template>
 	<div id="liked-podcast-list-container">
-
 		<ul id="liked-podcasts-list">
 			<li v-for="podcast in likedPodcasts" :key="podcast.id" class="liked-podcast-item">
 				<router-link 
@@ -23,6 +22,7 @@
 </template>
 
 <script>
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
 export default {
 	data() {
 		return {
@@ -32,26 +32,24 @@ export default {
 			isCollapsed: false
 		}
 	},
-	mounted() {
-		this.loadLikedPodcasts()
+	async mounted() {
+		await this.loadLikedPodcasts()
 		window.addEventListener('storage', this.handleStorageChange)
 	},
 	beforeUnmount() {
 		window.removeEventListener('storage', this.handleStorageChange)
 	},
 	methods: {
-		loadLikedPodcasts() {
-			const likedPodcastIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
-			if (likedPodcastIds.length > 0) {
-				this.fetchLikedPodcasts(likedPodcastIds)
-			} else {
-				this.likedPodcasts = []
-			}
+		async loadLikedPodcasts() {
+			const store = useLikedPodcastsStore()
+			const likedPodcastIds = await store.getLikedPodcasts()
+			if (likedPodcastIds.length > 0)
+				await this.fetchLikedPodcasts(likedPodcastIds)
 		},
 		async fetchLikedPodcasts(podcastIds) {
 			this.isLoading = true
 			this.errorMessage = ''
-
+			
 			try {
 				const podcasts = await Promise.all(podcastIds.map(async id => {
 					let url = new URL('https://api.fyyd.de/0.2/podcast/')
@@ -84,7 +82,6 @@ export default {
 			}
 		}
 	}
-
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div v-if="likedPodcasts.length > 0" id="liked-podcasts-view-container">
     <div id="head-area">
-      <h1 style="margin-left: 0;margin-top: 0.5em; margin-bottom: 0.5em;padding-left: 0.5em;padding-bottom: 0.25em;">Liked Podcasts</h1>
+      <h1>Liked Podcasts</h1>
     </div>
 
     <div v-if="isLoading" id="loading-area">
@@ -10,7 +10,6 @@
     </div>
 
     <PodcastList :podcasts="likedPodcasts" @toggleExpand="toggleExpand"/>
-
   </div>
   <div v-else id="liked-podcasts-view-container">
     <h1 id="heading">It seems like You haven't liked any podcasts yet. Here is some inspiration to get you going!</h1>
@@ -21,6 +20,7 @@
 <script setup>
 import PodcastList from '../components/PodcastList.vue'
 import TopPodcasts from '../components/TopPodcasts.vue'
+import { useLikedPodcastsStore } from '../stores/likedPodcasts'
 </script>
 
 <script>
@@ -29,7 +29,7 @@ export default {
     return {
       likedPodcasts: [],
       isLoading: false,
-      errorMessage: '',
+      errorMessage: ''
     }
   },
   mounted() {
@@ -39,10 +39,12 @@ export default {
     async loadLikedPodcasts() {
       this.isLoading = true
       this.errorMessage = ''
-      const likedPodcastsIds = JSON.parse(localStorage.getItem('likedPodcasts') || '[]')
+
+      const store = useLikedPodcastsStore()
+      const likedPodcasts = await store.getLikedPodcasts()
 
       try {
-        const podcasts = await Promise.all(likedPodcastsIds.map(async (id) => {
+        const podcasts = await Promise.all(likedPodcasts.map(async (id) => {
           const url = new URL('https://api.fyyd.de/0.2/podcast/')
           url.searchParams.append('podcast_id', id)
 
@@ -50,13 +52,14 @@ export default {
           if (!response.ok)
             throw new Error('Network response was not ok')
           const body = await response.json()
+          
           if (!body.data)
-            throw new Error('No data found in response body')
-
+          throw new Error('No data found in response body')
+          
           return {
             id: body.data.id,
             title: body.data.title,
-            artist: body.data.author,
+            author: body.data.author,
             image: body.data.imgURL,
             url: body.data.htmlURL
           }
@@ -86,6 +89,14 @@ export default {
   color: #ffffff;
   align-items: flex-start;
   background: transparent;
+}
+
+#head-area h1 {
+  margin-left: 0;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-left: 0.5em;
+  padding-bottom: 0.25em;
 }
 
 #heading {

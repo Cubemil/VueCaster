@@ -3,104 +3,84 @@
     <div class="top-bar">
       <AppTopBar/>
     </div>
+
     <div id="content">
       <div id="sidenav-area">
         <AppSidenav ref="sidenav"/>
       </div>
       <div id="main-area">
+        <!-- 
+          We dont need to pass these, but this is just so the app doesnt crash for now
+          TODO: refactor audio player n shit
+        -->
         <router-view 
-          @playEpisode="setCurrentEpisode" 
-          @addToQueue="addToQueue"
-          @updateQueue="updateQueue">
+          @playEpisode="queueStore.setCurrentEpisode" 
+          @addToQueue="queueStore.addEpisode"
+          @updateQueue="queueStore.reorderQueue">
         </router-view>
       </div>
     </div>
+
     <div id="footer-area">
       <AppAudioPlayer 
         :episode="currentEpisode" 
         @toggleQueue="toggleQueue"
-        @playNextEpisode="playNextEpisode"
-        @playPreviousEpisode="playPreviousEpisode"
+        @playNextEpisode="queueStore.playNext"
+        @playPreviousEpisode="queueStore.playPrevious"
       />
+
+      <!--
+        QueueController is still toggled by showQueue,
+        but the data inside it is read from the store -> no more queue prop passing
+      -->
       <QueueController 
         v-if="showQueue" 
-        :queue="queue"
         :currentEpisode="currentEpisode"
-        @playEpisode="setCurrentEpisode"
-        @removeFromQueue="removeFromQueue"
-        @removeAllFromQueue="removeAllFromQueue" 
-        @update:queue="updateQueue"
       />
     </div>
   </div>
 </template>
 
-<script setup>
-import '@fortawesome/fontawesome-free/css/all.css'
+<script>
+import "@fortawesome/fontawesome-free/css/all.css"
 import AppTopBar from "@/components/AppTopBar.vue"
 import AppSidenav from "@/components/AppSidenav.vue"
 import AppAudioPlayer from "@/components/AppAudioPlayer.vue"
 import QueueController from "@/components/QueueController.vue"
-</script>
+import { mapStores } from "pinia"
+import { useQueueStore } from "@/stores/queue"
 
-<script>
 export default {
+  name: 'App',
   data() {
     return {
-      currentEpisode: null,
-      queue: JSON.parse(localStorage.getItem('queue') || '[]'),
       showQueue: false
     }
   },
-  methods: {
-    setCurrentEpisode(episode) {
-      this.currentEpisode = episode
+  computed: {
+    ...mapStores(useQueueStore), // access queueStore easily
+    /*
+     * convenient getters
+     */
+    queue() {
+      return this.queueStore.queue
     },
-    addToQueue(episode) {
-      this.queue.push(episode)
-      localStorage.setItem('queue', JSON.stringify(this.queue))
-    },
-    removeFromQueue(index) {
-      this.queue.splice(index, 1)
-      localStorage.setItem('queue', JSON.stringify(this.queue))
-    },
-    removeAllFromQueue() {
-      this.queue = []
-      localStorage.setItem('queue', JSON.stringify(this.queue))
-    },
-    toggleQueue() {
-      this.showQueue = !this.showQueue
-    },
-    updateQueue(newQueue) {
-      this.queue = newQueue 
-      localStorage.setItem('queue', JSON.stringify(newQueue))
-    },
-    playNextEpisode() {
-      const currentIndex = this.queue.findIndex(episode => episode.id === this.currentEpisode.id)
-      if (currentIndex !== -1 && currentIndex < this.queue.length - 1) {
-        this.setCurrentEpisode(this.queue[currentIndex + 1])
-      } else {
-        // repeat queue (TODO maybe change to something else later)
-        this.setCurrentEpisode(this.queue[0])
-      }
-    },
-    playPreviousEpisode() {
-      const currentIndex = this.queue.findIndex(episode => episode.id === this.currentEpisode.id)
-      if (currentIndex > 0) {
-        this.setCurrentEpisode(this.queue[currentIndex - 1])
-      } else {
-        // go back to first episode
-        this.setCurrentEpisode(this.queue[0])
-      }
+    currentEpisode() {
+      return this.queueStore.currentEpisode
     }
   },
-  mounted() {
-    if (localStorage.getItem('likedPodcasts') === null) localStorage.setItem('likedPodcasts', JSON.stringify([]))
-    if (localStorage.getItem('recentSearches') === null) localStorage.setItem('recentSearches', JSON.stringify([]))
+  methods: {
+    toggleQueue() {
+      this.showQueue = !this.showQueue
+    }
   },
-  watch: {
-    queue(newQueue) {
-      localStorage.setItem('queue', JSON.stringify(newQueue))
+  async mounted() {
+    // if first time / reload, sync with server / local storage
+    await this.queueStore.initQueue()
+
+    // recent searches still in local storage for now
+    if (localStorage.getItem('recentSearches') === null) {
+      localStorage.setItem('recentSearches', JSON.stringify([]))
     }
   }
 }
